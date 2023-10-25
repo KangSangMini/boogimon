@@ -2,6 +2,7 @@ ALTER SESSION SET NLS_DATE_FORMAT = 'YYYY-MM-DD';
 ALTER SESSION SET NLS_LANGUAGE = 'KOREAN';
 
 -- 휴지통 비우기
+-- PROMPT 휴지통 비우기
 -- purge recyclebin;
 
 SET TERMOUT ON
@@ -67,6 +68,7 @@ CREATE TABLE BoogiTrainer (
     DELETED NUMBER(1) DEFAULT 0 CONSTRAINT BoogiTrainer_DELETED_nn NOT NULL,
     CONSTRAINT BoogiTrainer_USER_ID_pk PRIMARY KEY(USER_ID),
     CONSTRAINT BoogiTrainer_PASSWD_ck CHECK(LENGTH(PASSWD) BETWEEN 4 AND 20),
+    CONSTRAINT BoogiTrainer_NICKNAME_uq UNIQUE(NICKNAME),
     CONSTRAINT BoogiTrainer_NICKNAME_ck CHECK(LENGTH(NICKNAME) BETWEEN 2 AND 15),
     CONSTRAINT BoogiTrainer_EXP_ck CHECK(EXP >= 0),
     CONSTRAINT BoogiTrainer_DELETED_ck CHECK(DELETED IN (0, 1))
@@ -95,7 +97,7 @@ CREATE TABLE PLACE (
     PLACE_ID NUMBER(4),
     NAME VARCHAR2(300) CONSTRAINT PLACE_NAME_nn NOT NULL,
     TYPE NUMBER(3) CONSTRAINT PLACE_TYPE_nn NOT NULL,
-    ADDR VARCHAR2(300) CONSTRAINT PLACE_ADDR_nn NOT NULL,
+    ADDR VARCHAR2(600),
     LAT VARCHAR2(20) CONSTRAINT PLACE_LAT_nn NOT NULL,
     LON VARCHAR2(20)CONSTRAINT PLACE_LON_nn NOT NULL,
     THUMBNAIL VARCHAR2(500),
@@ -225,7 +227,7 @@ VALUES ('white@google.com', 'white456', 'Iris', 0, 'profile2.jpg');
 
 SET TERMOUT ON
 PROMPT 명소 데이터 입력
--- SET TERMOUT OFF
+SET TERMOUT OFF
 
 SET ESCAPE ON
 
@@ -491,11 +493,7 @@ INSERT INTO PLACE (PLACE_ID, NAME, TYPE, ADDR, LAT, LON, THUMBNAIL, CONTENTS_ID)
 VALUES (seq_place_id.nextval, '화명장미원, 화명생태공원', 100, '화명장미원  부산광역시 북구 화명동 2280
 화명생태공원  부산광역시 북구 화명동 1718-17', '35.22568', '129.00327', 'https://www.visitbusan.net/uploadImgs/files/cntnts/20230519190619574_thumbL', '1434');
 INSERT INTO PLACE (PLACE_ID, NAME, TYPE, ADDR, LAT, LON, THUMBNAIL, CONTENTS_ID)
-VALUES (seq_place_id.nextval, '영도, 태종대, 자동차극장, 흰여울문화마을, 깡깡이예술마을', 100, 'CGV DRIVE IN 영도 : 부산광역시 영도구 동삼동 1009
-태종대 : 부산광역시 영도구 전망로 24
-흰여울문화마을 : 부산광역시영도구 영선동4가 605-3
-절영해안산책로 : 부산광역시 영도구 해안산책길 52
-깡깡이예술마을 : 부산광역시 영도구 대평북로 36', '35.062366', '129.08342', 'https://www.visitbusan.net/uploadImgs/files/cntnts/20230525134753245_thumbL', '1440');
+VALUES (seq_place_id.nextval, 'CGV DRIVE IN 영도 자동차극장', 100, 'CGV DRIVE IN 영도 : 부산광역시 영도구 동삼동 1009', '35.062366', '129.08342', 'https://www.visitbusan.net/uploadImgs/files/cntnts/20230525134753245_thumbL', '1440');
 INSERT INTO PLACE (PLACE_ID, NAME, TYPE, ADDR, LAT, LON, THUMBNAIL, CONTENTS_ID)
 VALUES (seq_place_id.nextval, '부산근현대역사관', 100, '부산광역시 중구 대청로 104', '35.10258', '129.03203', 'https://www.visitbusan.net/uploadImgs/files/cntnts/20230602095512309_thumbL', '1444');
 INSERT INTO PLACE (PLACE_ID, NAME, TYPE, ADDR, LAT, LON, THUMBNAIL, CONTENTS_ID)
@@ -549,7 +547,7 @@ VALUES (seq_place_id.nextval, '부산차이나타운특구 문화축제', 200, '
 INSERT INTO PLACE (PLACE_ID, NAME, TYPE, ADDR, LAT, LON, THUMBNAIL, CONTENTS_ID)
 VALUES (seq_place_id.nextval, '해운대빛축제', 200, '부산광역시 해운대구 해운대해변로 264', '35.15849', '129.15987', 'https://www.visitbusan.net/uploadImgs/files/cntnts/20221227165437336_thumbL', '440');
 INSERT INTO PLACE (PLACE_ID, NAME, TYPE, ADDR, LAT, LON, THUMBNAIL, CONTENTS_ID)
-VALUES (seq_place_id.nextval, '', 200, '부산광역시 기장군 일광면 이동길 43', '35.271782', '129.2447', 'https://www.visitbusan.net/uploadImgs/files/cntnts/20191231114635471_thumbL', '441');
+VALUES (seq_place_id.nextval, '기장미역다시마축제', 200, '부산광역시 기장군 일광면 이동길 43', '35.271782', '129.2447', 'https://www.visitbusan.net/uploadImgs/files/cntnts/20191231114635471_thumbL', '441');
 INSERT INTO PLACE (PLACE_ID, NAME, TYPE, ADDR, LAT, LON, THUMBNAIL, CONTENTS_ID)
 VALUES (seq_place_id.nextval, '광안리어방축제', 200, '부산광역시 수영구 광안해변로 219', '35.153156', '129.11893', 'https://www.visitbusan.net/uploadImgs/files/cntnts/20191231174925322_thumbL', '442');
 INSERT INTO PLACE (PLACE_ID, NAME, TYPE, ADDR, LAT, LON, THUMBNAIL, CONTENTS_ID)
