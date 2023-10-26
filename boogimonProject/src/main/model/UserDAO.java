@@ -38,10 +38,10 @@ public class UserDAO {
 			
 			this.sql = "select USER_ID from BoogiTrainer where user_id = ? union select NICKNAME from BoogiTrainer where NICKNAME = ?";
 			
-			System.out.println(boogiTrainer.getUser_id());
+			System.out.println(boogiTrainer.getUserId());
 			
 			pstmt = conn.prepareStatement(sql);			
-			pstmt.setString(1, boogiTrainer.getUser_id());
+			pstmt.setString(1, boogiTrainer.getUserId());
 			pstmt.setString(2, boogiTrainer.getNickname());
 			this.rs = pstmt.executeQuery();
 			
@@ -49,10 +49,10 @@ public class UserDAO {
 				this.sql = "insert into BoogiTrainer (USER_ID, PASSWD, NICKNAME, PROFILE_IMG)values (?, ?, ?,?)";
 				
 				pstmt = conn.prepareStatement(sql);			
-				pstmt.setString(1, boogiTrainer.getUser_id());
+				pstmt.setString(1, boogiTrainer.getUserId());
 				pstmt.setString(2, boogiTrainer.getPasswd());
 				pstmt.setString(3, boogiTrainer.getNickname());
-				pstmt.setString(4, boogiTrainer.getProfile_img());
+				pstmt.setString(4, boogiTrainer.getProfileImg());
 				
 				rowCount = pstmt.executeUpdate();
 				this.conn.commit();
@@ -139,7 +139,7 @@ public class UserDAO {
 	    try {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, BoogiTrainer.getNewNickname());
-			pstmt.setString(2, BoogiTrainer.getUser_id());
+			pstmt.setString(2, BoogiTrainer.getUserId());
 			rowCount = pstmt.executeUpdate(); 
 		} 
 	    catch (Exception e) {
@@ -165,7 +165,7 @@ public class UserDAO {
 		try {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, BoogiTrainer.getNewPasswd());
-			pstmt.setString(2, BoogiTrainer.getUser_id());
+			pstmt.setString(2, BoogiTrainer.getUserId());
 			rowCount = pstmt.executeUpdate(); 
 		}
 		catch(Exception e) {

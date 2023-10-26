@@ -2,25 +2,25 @@ package model;
 
 public class UserDO {
 
-	private String user_id;
+	private String userId;
 	private String passwd;
 	private String newPasswd;
 	private String nickname;
 	private String newNickname;
 	private String regdate;
 	private int exp;
-	private String profile_img;
+	private String profileImg;
 	
 	public UserDO(){
 		
 	}
 
-	public String getUser_id() {
-		return user_id;
+	public String getUserId() {
+		return userId;
 	}
 
-	public void setUser_id(String user_id) {
-		this.user_id = user_id;
+	public void setUser_id(String userId) {
+		this.userId = userId;
 	}
 
 	public String getPasswd() {
@@ -71,12 +71,12 @@ public class UserDO {
 		this.exp = exp;
 	}
 
-	public String getProfile_img() {
-		return profile_img;
+	public String getProfileImg() {
+		return profileImg;
 	}
 
-	public void setProfile_img(String profile_img) {
-		this.profile_img = profile_img;
+	public void setProfile_img(String profileImg) {
+		this.profileImg = profileImg;
 	}
 	
 	
