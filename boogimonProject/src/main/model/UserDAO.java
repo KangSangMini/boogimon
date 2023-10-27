@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 public class UserDAO {
 
@@ -36,7 +37,7 @@ public class UserDAO {
 		try {
 			this.conn.setAutoCommit(false);
 			
-			this.sql = "select USER_ID from BoogiTrainer where user_id = ? union select NICKNAME from BoogiTrainer where NICKNAME = ?";
+			this.sql = "select USER_ID from BoogiTrainer where USER_ID = ? union select NICKNAME from BoogiTrainer where NICKNAME = ?";
 			
 			System.out.println(boogiTrainer.getUserId());
 			
@@ -92,8 +93,48 @@ public class UserDAO {
 		return rowCount;
 	}
 	
+	//getAllUsers
+	public ArrayList<UserDO> getAllUsers() {
+		ArrayList<UserDO> userList = new ArrayList<UserDO>();
+		this.sql = "select USER_ID, NICKNAME, to_char(regdate, 'YYYY-MM-DD HH24:MI:SS') as regdate " + 
+				   "from BoogiTrainer order by regdate";
+		
+		try {
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery(sql);
+			UserDO user = null;
+			
+			while(rs.next()) {
+				user = new UserDO();
+				
+				user.setUserId(rs.getString("user_id"));
+				user.setNickname(rs.getString("nickname"));
+				user.setRegdate(rs.getString("regdate"));
+				
+				userList.add(user);
+			}
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+		finally {			
+			try {
+				if(!stmt.isClosed()) {
+					stmt.close();
+				}
+			}
+			catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		
+		
+		return userList;
+	}
+	
 //getUser
-	public UserDO getUser(String user_id ) {
+	public UserDO getUser(String userId ) {
 		UserDO BoogiTrainer = null;
 		this.sql = "select USER_ID, PASSWD, NICKNAME, PROFILE_IMG, to_char(regdate, 'YYYY-MM-DD HH24:MI:SS') as regdate " + 
 				   "from BoogiTrainer where USER_ID = ?";
@@ -101,13 +142,13 @@ public class UserDAO {
 		try {
 			this.pstmt = conn.prepareStatement(sql);
 			
-			this.pstmt.setString(1, user_id);
+			this.pstmt.setString(1, userId);
 			rs = this.pstmt.executeQuery();
 			
 			if(this.rs.next()) {
 				BoogiTrainer = new UserDO();
 				
-				BoogiTrainer.setUser_id(this.rs.getString("user_id"));
+				BoogiTrainer.setUserId(this.rs.getString("user_id"));
 				BoogiTrainer.setPasswd(rs.getString("passwd"));
 				BoogiTrainer.setNickname(rs.getString("nickname"));
 				BoogiTrainer.setProfile_img(rs.getString("profile_img"));
@@ -186,13 +227,13 @@ public class UserDAO {
 	}
 
 //deleteUser
-	public int deleteUser(String user_id) {
+	public int deleteUser(String userId) {
 		int rowCount = 0;
 		this.sql = "update BoogiTrainer set DELETED = ? where USER_ID = ?";
 	
 		try {
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, user_id);
+			pstmt.setString(1, userId);
 			rowCount = pstmt.executeUpdate(); 
 		}	
 		catch(Exception e) {

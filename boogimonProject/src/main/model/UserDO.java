@@ -19,7 +19,7 @@ public class UserDO {
 		return userId;
 	}
 
-	public void setUser_id(String userId) {
+	public void setUserId(String userId) {
 		this.userId = userId;
 	}
 
