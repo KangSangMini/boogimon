@@ -644,6 +644,93 @@ VALUES (seq_stampbook_id.currval, 8, 9);
 INSERT INTO STAMP (STAMPBOOK_ID, STAMPNO, PLACE_ID)
 VALUES (seq_stampbook_id.currval, 9, 7);
 
+-- 스탬프북 작성과 함께 작성자에게 스탬프북을 pick해야함
+INSERT INTO USER_PICK (USER_ID, STAMPBOOK_ID)
+VALUES ('admin', seq_stampbook_id.currval);
+
+
+-- 1번 무작위 스탬프북 
+INSERT INTO STAMPBOOK (STAMPBOOK_ID, TITLE, DESCRIPTION, USER_ID)
+VALUES (seq_stampbook_id.nextval, '무작위 더미 스탬프북1', '무작위 번호 부여한 스탬프북 차후에 수정해야함', 'admin');
+
+INSERT INTO STAMP (STAMPBOOK_ID, STAMPNO, PLACE_ID)
+VALUES (seq_stampbook_id.currval, 1, 23);
+INSERT INTO STAMP (STAMPBOOK_ID, STAMPNO, PLACE_ID)
+VALUES (seq_stampbook_id.currval, 2, 45);
+INSERT INTO STAMP (STAMPBOOK_ID, STAMPNO, PLACE_ID)
+VALUES (seq_stampbook_id.currval, 3, 121);
+INSERT INTO STAMP (STAMPBOOK_ID, STAMPNO, PLACE_ID)
+VALUES (seq_stampbook_id.currval, 4, 54);
+INSERT INTO STAMP (STAMPBOOK_ID, STAMPNO, PLACE_ID)
+VALUES (seq_stampbook_id.currval, 5, 99);
+INSERT INTO STAMP (STAMPBOOK_ID, STAMPNO, PLACE_ID)
+VALUES (seq_stampbook_id.currval, 6, 82);
+INSERT INTO STAMP (STAMPBOOK_ID, STAMPNO, PLACE_ID)
+VALUES (seq_stampbook_id.currval, 7, 14);
+INSERT INTO STAMP (STAMPBOOK_ID, STAMPNO, PLACE_ID)
+VALUES (seq_stampbook_id.currval, 8, 6);
+INSERT INTO STAMP (STAMPBOOK_ID, STAMPNO, PLACE_ID)
+VALUES (seq_stampbook_id.currval, 9, 1);
+
+-- 스탬프북 작성과 함께 작성자에게 스탬프북을 pick해야함
+INSERT INTO USER_PICK (USER_ID, STAMPBOOK_ID)
+VALUES ('admin', seq_stampbook_id.currval);
+
+-- 2번 무작위 스탬프북 
+INSERT INTO STAMPBOOK (STAMPBOOK_ID, TITLE, DESCRIPTION, USER_ID)
+VALUES (seq_stampbook_id.nextval, '무작위 더미 스탬프북2', '무작위 번호 부여한 스탬프북 차후에 수정해야함', 'admin');
+
+INSERT INTO STAMP (STAMPBOOK_ID, STAMPNO, PLACE_ID)
+VALUES (seq_stampbook_id.currval, 1, 3);
+INSERT INTO STAMP (STAMPBOOK_ID, STAMPNO, PLACE_ID)
+VALUES (seq_stampbook_id.currval, 2, 81);
+INSERT INTO STAMP (STAMPBOOK_ID, STAMPNO, PLACE_ID)
+VALUES (seq_stampbook_id.currval, 3, 49);
+INSERT INTO STAMP (STAMPBOOK_ID, STAMPNO, PLACE_ID)
+VALUES (seq_stampbook_id.currval, 4, 36);
+INSERT INTO STAMP (STAMPBOOK_ID, STAMPNO, PLACE_ID)
+VALUES (seq_stampbook_id.currval, 5, 111);
+INSERT INTO STAMP (STAMPBOOK_ID, STAMPNO, PLACE_ID)
+VALUES (seq_stampbook_id.currval, 6, 119);
+INSERT INTO STAMP (STAMPBOOK_ID, STAMPNO, PLACE_ID)
+VALUES (seq_stampbook_id.currval, 7, 56);
+INSERT INTO STAMP (STAMPBOOK_ID, STAMPNO, PLACE_ID)
+VALUES (seq_stampbook_id.currval, 8, 12);
+INSERT INTO STAMP (STAMPBOOK_ID, STAMPNO, PLACE_ID)
+VALUES (seq_stampbook_id.currval, 9, 42);
+
+-- 스탬프북 작성과 함께 작성자에게 스탬프북을 pick해야함
+INSERT INTO USER_PICK (USER_ID, STAMPBOOK_ID)
+VALUES ('admin', seq_stampbook_id.currval);
+
+
+-- 그린이 운영자가 만든 스탬프북을 긴빠이해서 만듬
+INSERT INTO STAMPBOOK (STAMPBOOK_ID, TITLE, DESCRIPTION, USER_ID)
+VALUES (seq_stampbook_id.nextval, '그린이 만든 세븐비치', '내용 긴빠이함', 'green@google.com');
+
+INSERT INTO STAMP (STAMPBOOK_ID, STAMPNO, PLACE_ID)
+VALUES (seq_stampbook_id.currval, 1, 71);
+INSERT INTO STAMP (STAMPBOOK_ID, STAMPNO, PLACE_ID)
+VALUES (seq_stampbook_id.currval, 2, 171);
+INSERT INTO STAMP (STAMPBOOK_ID, STAMPNO, PLACE_ID)
+VALUES (seq_stampbook_id.currval, 3, 141);
+INSERT INTO STAMP (STAMPBOOK_ID, STAMPNO, PLACE_ID)
+VALUES (seq_stampbook_id.currval, 4, 63);
+INSERT INTO STAMP (STAMPBOOK_ID, STAMPNO, PLACE_ID)
+VALUES (seq_stampbook_id.currval, 5, 27);
+INSERT INTO STAMP (STAMPBOOK_ID, STAMPNO, PLACE_ID)
+VALUES (seq_stampbook_id.currval, 6, 122);
+INSERT INTO STAMP (STAMPBOOK_ID, STAMPNO, PLACE_ID)
+VALUES (seq_stampbook_id.currval, 7, 24);
+INSERT INTO STAMP (STAMPBOOK_ID, STAMPNO, PLACE_ID)
+VALUES (seq_stampbook_id.currval, 8, 9);
+INSERT INTO STAMP (STAMPBOOK_ID, STAMPNO, PLACE_ID)
+VALUES (seq_stampbook_id.currval, 9, 7);
+
+-- 스탬프북 작성과 함께 작성자에게 스탬프북을 pick해야함
+INSERT INTO USER_PICK (USER_ID, STAMPBOOK_ID)
+VALUES ('green@google.com', seq_stampbook_id.currval);
+
 SET ESCAPE OFF
 
 COMMIT;
@@ -674,13 +761,46 @@ VALUES ('red@google.com', 0);
 INSERT INTO STB_CMT (COMMENT_ID, STAMPBOOK_ID, USER_ID, "COMMENT")
 VALUES (seq_comment_id.nextval, 0, 'red@google.com', '...');
 
--- 레드가 0번 스탬프북의 1, 3, 4번 스탬프를 찍음 
+-- 레드가 0번 스탬프북의 스탬프를 모두 찍음 
 INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
-VALUES ('red@google.com', 0, 1, '/ush/sample1.png');
+VALUES ('red@google.com', 0, 1, '/ush/sample.png');
 INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
-VALUES ('red@google.com', 0, 3, '/ush/sample2.png');
+VALUES ('red@google.com', 0, 2, '/ush/sample.png');
 INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
-VALUES ('red@google.com', 0, 4, '/ush/sample3.png');
+VALUES ('red@google.com', 0, 3, '/ush/sample.png');
+INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
+VALUES ('red@google.com', 0, 4, '/ush/sample.png');
+INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
+VALUES ('red@google.com', 0, 5, '/ush/sample.png');
+INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
+VALUES ('red@google.com', 0, 6, '/ush/sample.png');
+INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
+VALUES ('red@google.com', 0, 7, '/ush/sample.png');
+INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
+VALUES ('red@google.com', 0, 8, '/ush/sample.png');
+INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
+VALUES ('red@google.com', 0, 9, '/ush/sample.png');
+
+-- 레드가 담은 0번 스탬프북을 완성함
+UPDATE USER_PICK
+SET COMPLETE_DATE = SYSDATE
+WHERE USER_ID = 'red@google.com' AND STAMPBOOK_ID = 0;
+
+-- 레드가 그린이 만든 3번 스탬프북을 담음
+INSERT INTO USER_PICK (USER_ID, STAMPBOOK_ID)
+VALUES ('red@google.com', 3);
+
+-- 레드가 3번 스탬프북에 댓글을 담 
+INSERT INTO STB_CMT (COMMENT_ID, STAMPBOOK_ID, USER_ID, "COMMENT")
+VALUES (seq_comment_id.nextval, 3, 'red@google.com', '...!');
+
+-- 레드가 3번 스탬프북의 1, 4, 5번째 스탬프를 찍음
+INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
+VALUES ('red@google.com', 3, 1, '/ush/sample.png');
+INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
+VALUES ('red@google.com', 3, 4, '/ush/sample.png');
+INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
+VALUES ('red@google.com', 3, 5, '/ush/sample.png');
 
 SELECT * FROM USER_PICK;
 SELECT * FROM USER_LIKE;
