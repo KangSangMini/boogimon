@@ -2,8 +2,8 @@ ALTER SESSION SET NLS_DATE_FORMAT = 'YYYY-MM-DD';
 ALTER SESSION SET NLS_LANGUAGE = 'KOREAN';
 
 -- 휴지통 비우기
--- PROMPT 휴지통 비우기
--- purge recyclebin;
+PROMPT 휴지통 비우기
+purge recyclebin;
 
 SET TERMOUT ON
 PROMPT 테이블 초기화
@@ -753,9 +753,13 @@ SELECT * FROM STAMP;
 INSERT INTO USER_PICK (USER_ID, STAMPBOOK_ID)
 VALUES ('red@google.com', 0);
 
--- 레드가 0번 스탬프북 좋아요 
+-- 레드가 0번 스탬프북 좋아요
 INSERT INTO USER_LIKE (USER_ID, STAMPBOOK_ID)
 VALUES ('red@google.com', 0);
+
+UPDATE STAMPBOOK
+SET LIKECOUNT = LIKECOUNT + 1
+WHERE STAMPBOOK_ID = 0;
 
 -- 레드가 0번 스탬프북에 댓글을 담 
 INSERT INTO STB_CMT (COMMENT_ID, STAMPBOOK_ID, USER_ID, "COMMENT")
@@ -794,6 +798,30 @@ VALUES ('red@google.com', 3);
 INSERT INTO STB_CMT (COMMENT_ID, STAMPBOOK_ID, USER_ID, "COMMENT")
 VALUES (seq_comment_id.nextval, 3, 'red@google.com', '...!');
 
+-- 레드가 3번 스탬프북 좋아요
+INSERT INTO USER_LIKE (USER_ID, STAMPBOOK_ID)
+VALUES ('red@google.com', 3);
+
+UPDATE STAMPBOOK
+SET LIKECOUNT = LIKECOUNT + 1
+WHERE STAMPBOOK_ID = 3;
+
+-- 그린이 0번 스탬프북 좋아요
+INSERT INTO USER_LIKE (USER_ID, STAMPBOOK_ID)
+VALUES ('green@google.com', 0);
+
+UPDATE STAMPBOOK
+SET LIKECOUNT = LIKECOUNT + 1
+WHERE STAMPBOOK_ID = 0;
+
+-- 그린이 1번 스탬프북 좋아요
+INSERT INTO USER_LIKE (USER_ID, STAMPBOOK_ID)
+VALUES ('green@google.com', 1);
+
+UPDATE STAMPBOOK
+SET LIKECOUNT = LIKECOUNT + 1
+WHERE STAMPBOOK_ID = 1;
+
 -- 레드가 3번 스탬프북의 1, 4, 5번째 스탬프를 찍음
 INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
 VALUES ('red@google.com', 3, 1, '/ush/sample.png');
@@ -802,7 +830,28 @@ VALUES ('red@google.com', 3, 4, '/ush/sample.png');
 INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
 VALUES ('red@google.com', 3, 5, '/ush/sample.png');
 
+COMMIT;
+
 SELECT * FROM USER_PICK;
 SELECT * FROM USER_LIKE;
 SELECT * FROM USER_STAMP_HISTORY;
 SELECT * FROM STB_CMT;
+
+-- 로그인한 유저의 전체 스탬프북 조회 
+SELECT stb.stampbook_id, stb.title, stb.description, bt.nickname, to_char(stb.stampbook_regdate, 'YYYY-MM-DD HH24:MI:SS') as stampbookRegdate, 
+stb.likeCount, 
+nvl((SELECT 1 FROM user_like ul where ul.user_id = 'red@google.com' AND ul.stampbook_id = stb.stampbook_id), 0) AS isLike
+FROM stampbook stb INNER JOIN boogiTrainer bt ON stb.user_id = bt.user_id
+WHERE stb.deleted = 0;
+
+-- 비로그인 유저의 전체 스탬프북 조회
+SELECT stb.stampbook_id, stb.title, stb.description, bt.nickname, to_char(stb.stampbook_regdate, 'YYYY-MM-DD HH24:MI:SS') as stampbookRegdate, 
+stb.likeCount
+FROM stampbook stb INNER JOIN boogiTrainer bt ON stb.user_id = bt.user_id
+WHERE stb.deleted = 0;
+
+-- 로그인한 유저의 내가 담은 스탬프북 조회
+SELECT stb.stampbook_id, stb.title, stb.description, bt.nickname, to_char(stb.stampbook_regdate, 'YYYY-MM-DD HH24:MI:SS') as stampbookRegdate, 
+stb.likeCount
+FROM user_pick up INNER JOIN stampbook stb ON up.stampbook_id = stb.stampbook_id INNER JOIN boogiTrainer bt ON stb.user_id = bt.user_id
+WHERE up.user_id = 'red@google.com';
