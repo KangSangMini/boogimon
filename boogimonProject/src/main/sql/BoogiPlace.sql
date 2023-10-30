@@ -13,6 +13,8 @@
 --INSERT INTO PLACE_DETAIL (PLACE_ID, TEL, DETAIL, PAY, IMG, HOMEPAGE, OPEN, CLOSE, FACILITY)
 -- VALUES (seq_place_id.currval, '051-605-4128', '황령산 레포츠공원', '무료', 'example.jpg', 'https://www.jsports.or.kr/bbs/content.php?co_id=07_01', '09:00 AM', '06:00 PM', '와이파이, 주차장');
 
+SET ESCAPE ON
+
 -- 야경 테마 --
 INSERT INTO PLACE(PLACE_ID,NAME,TYPE,ADDR,LAT,LON,THUMBNAIL)
 VALUES(seq_place_id.nextval,'해운대 해수욕장','900','부산광역시 해운대구 달맞이길62번길 47','35.15853820529319' ,'129.15931739342994','thumbnail_url');
@@ -62,12 +64,7 @@ VALUES (seq_place_id.currval,'051-550-4081','동래읍성','무료',NULL,'https:
 INSERT INTO PLACE(PLACE_ID,NAME,TYPE,ADDR,LAT,LON,THUMBNAIL)
 VALUES(seq_place_id.nextval,'아미산 전망대','900','부산광역시 사하구 다대낙조2길 77','35.05265101080059','128.96078251932704','thumbnail_url');
 INSERT INTO PLACE_DETAIL (PLACE_ID, TEL, DETAIL, PAY, IMG, HOMEPAGE, OPEN, CLOSE, FACILITY)
-VALUES (seq_place_id.currval,'051-265-6863','하늘눈 전망대','무료',NULL,'https://www.busan.go.kr/wetland/index','12:00 AM','12:00 PM','중앙공원공영주차장');
-
-INSERT INTO PLACE(PLACE_ID,NAME,TYPE,ADDR,LAT,LON,THUMBNAIL)
-VALUES(seq_place_id.nextval,'하늘눈 전망대','900','부산광역시 중구 영주동 91-7','35.11438493525174','129.03040644547917','thumbnail_url');
-INSERT INTO PLACE_DETAIL (PLACE_ID, TEL, DETAIL, PAY, IMG, HOMEPAGE, OPEN, CLOSE, FACILITY)
-VALUES (seq_place_id.currval,'051-600-4000','아미산 전망대','무료',NULL,'http://busan.grandculture.net/Contents?local=busan&dataType=01&contents_id=GC04203418','09:00 AM','18:00 PM','공영주차장,화장실');
+VALUES (seq_place_id.currval,'051-265-6863','아미산 전망대','무료',NULL,'https://www.busan.go.kr/wetland/index','12:00 AM','12:00 PM','중앙공원공영주차장');
 
 --골목 테마--
 INSERT INTO PLACE(PLACE_ID,NAME,TYPE,ADDR,LAT,LON,THUMBNAIL)
@@ -83,7 +80,7 @@ VALUES (seq_place_id.currval,'051-204-1444','감천문화마을','무료',NULL,'
 INSERT INTO PLACE(PLACE_ID,NAME,TYPE,ADDR,LAT,LON,THUMBNAIL)
 VALUES(seq_place_id.nextval,'흰여울문화마을','900','부산광역시 영도구 영선동4가 1043','35.096282114549794','129.00934618866356 ','thumbnail_url');
 INSERT INTO PLACE_DETAIL (PLACE_ID, TEL, DETAIL, PAY, IMG, HOMEPAGE, OPEN, CLOSE, FACILITY)
-VALUES (seq_place_id.currval,'051-419-4067','흰여울문화마을','무료',NULL,'www.visitbusan.net/index.do?menuCd=DOM_000000201001001000&uc_seq=255&lang_cd=ko','12:00 AM','12:00 PM','공영주차장');
+VALUES (seq_place_id.currval,'051-419-4067','흰여울문화마을','무료',NULL,'www.visitbusan.net/index.do?menuCd=DOM_000000201001001000\&uc_seq=255\&lang_cd=ko','12:00 AM','12:00 PM','공영주차장');
 
 INSERT INTO PLACE(PLACE_ID,NAME,TYPE,ADDR,LAT,LON,THUMBNAIL)
 VALUES(seq_place_id.nextval,'백년송도골목길','900','부산광역시 서구 암남동 149','35.096282114549794','129.00934618866356','thumbnail_url');
@@ -93,17 +90,18 @@ VALUES (seq_place_id.currval,' 051-240-4000','백년송도골목길','무료',NU
 INSERT INTO PLACE(PLACE_ID,NAME,TYPE,ADDR,LAT,LON,THUMBNAIL)
 VALUES(seq_place_id.nextval,'망미단길','900','부산광역시 수영구 망미동 403-23','35.172276310309705','129.11011032204564','thumbnail_url');
 INSERT INTO PLACE_DETAIL (PLACE_ID, TEL, DETAIL, PAY, IMG, HOMEPAGE, OPEN, CLOSE, FACILITY)
-VALUES (seq_place_id.currval,'051-761-2855','망미단길','무료',NULL,'www.visitbusan.net/kr/index.do?menuCd=DOM_000000202003001000&uc_seq=385&lang_cd=ko','12:00 AM','12:00 PM','공영주차장,화장실');
+VALUES (seq_place_id.currval,'051-761-2855','망미단길','무료',NULL,'www.visitbusan.net/kr/index.do?menuCd=DOM_000000202003001000\&uc_seq=385\&lang_cd=ko','12:00 AM','12:00 PM','공영주차장,화장실');
 
 INSERT INTO PLACE(PLACE_ID,NAME,TYPE,ADDR,LAT,LON,THUMBNAIL)
 VALUES(seq_place_id.nextval,'전포공구길','900','부산광역시 부산진구 서전로37번길 18','35.15861739496153','129.06407922744978','thumbnail_url');
 INSERT INTO PLACE_DETAIL (PLACE_ID, TEL, DETAIL, PAY, IMG, HOMEPAGE, OPEN, CLOSE, FACILITY)
-VALUES (seq_place_id.currval,'051-1670-0812','전포공구길','무료',NULL,'www.visitbusan.net/index.do?menuCd=DOM_000000202002001000&uc_seq=1329&lang_cd=ko','12:00 AM','12:00 PM','유료주차장' );
+VALUES (seq_place_id.currval,'051-1670-0812','전포공구길','무료',NULL,'www.visitbusan.net/index.do?menuCd=DOM_000000202002001000
+\&uc_seq=1329\&lang_cd=ko','12:00 AM','12:00 PM','유료주차장' );
 
 INSERT INTO PLACE(PLACE_ID,NAME,TYPE,ADDR,LAT,LON,THUMBNAIL)
 VALUES(seq_place_id.nextval,'봉산마을마실길','900','부산광역시 영도구 하나길 788','35.0929735557174','129.051247633423','thumbnail_url');
 INSERT INTO PLACE_DETAIL (PLACE_ID, TEL, DETAIL, PAY, IMG, HOMEPAGE, OPEN, CLOSE, FACILITY)
-VALUES (seq_place_id.currval,'070-4151-2775','봉산마을마실길','무료',NULL,'www.visitbusan.net/index.do?menuCd=DOM_000000201001001000&uc_seq=1179&lang_cd=ko','12:00 AM','12:00 PM','유료주차장');
+VALUES (seq_place_id.currval,'070-4151-2775','봉산마을마실길','무료',NULL,'www.visitbusan.net/index.do?menuCd=DOM_000000201001001000\&uc_seq=1179\&lang_cd=ko','12:00 AM','12:00 PM','유료주차장');
 
 INSERT INTO PLACE(PLACE_ID,NAME,TYPE,ADDR,LAT,LON,THUMBNAIL)
 VALUES(seq_place_id.nextval,'보수동 책방골목','900','부산광역시 중구 보수동1가','35.05265101080059','128.96078251932704 ','thumbnail_url');
@@ -113,7 +111,7 @@ VALUES (seq_place_id.currval,'051-244-9668','보수동 책방골목','무료',NU
 INSERT INTO PLACE(PLACE_ID,NAME,TYPE,ADDR,LAT,LON,THUMBNAIL)
 VALUES(seq_place_id.nextval,'40계단 문화관광테마거리','900','부산광역시 중구 대청로 135번길 11','35.10387472177739','129.034586841826','thumbnail_url');
 INSERT INTO PLACE_DETAIL (PLACE_ID, TEL, DETAIL, PAY, IMG, HOMEPAGE, OPEN, CLOSE, FACILITY)
-VALUES (seq_place_id.currval,'051-600-4046','40계단 문화관광테마거리','무료',NULL,'www.visitbusan.net/index.do?menuCd=DOM_000000201001001000&uc_seq=1179&lang_cd=ko','12:00 AM','12:00 PM','유료주차장');
+VALUES (seq_place_id.currval,'051-600-4046','40계단 문화관광테마거리','무료',NULL,'www.visitbusan.net/index.do?menuCd=DOM_000000201001001000\&uc_seq=1179\&lang_cd=ko','12:00 AM','12:00 PM','유료주차장');
 
 INSERT INTO PLACE(PLACE_ID,NAME,TYPE,ADDR,LAT,LON,THUMBNAIL)
 VALUES(seq_place_id.nextval,'유치환의 우체통','900','부산광역시 동구 망양로580번길7-2','35.10387472177739','129.034586841826 ','thumbnail_url');
@@ -171,3 +169,5 @@ INSERT INTO PLACE(PLACE_ID,NAME,TYPE,ADDR,LAT,LON,THUMBNAIL)
 VALUES(seq_place_id.nextval,'허브랑야생화','900','부산광역시 금정구 금성동 북문로 73','35.19262436821101','129.15751886919503  ','thumbnail_url');
 INSERT INTO PLACE_DETAIL (PLACE_ID, TEL, DETAIL, PAY, IMG, HOMEPAGE, OPEN, CLOSE, FACILITY)
 VALUES (seq_place_id.currval,'051-515-0130','허브랑야생화','무료',NULL,'https://www.herbrang.kr','11:00 AM','06:30 PM','주차장,화장실');
+
+SET ESCAPE OFF
