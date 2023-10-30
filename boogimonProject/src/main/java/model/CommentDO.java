@@ -1,5 +1,5 @@
 package model;
-
+//배건욱 push
 public class CommentDO {
 	private int commentId;
 	private String nickname;
