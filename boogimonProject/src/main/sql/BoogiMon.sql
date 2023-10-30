@@ -156,8 +156,8 @@ CREATE TABLE USER_STAMP_HISTORY (
     UPLOAD_IMG VARCHAR2(500) CONSTRAINT USH_UPLOAD_IMG_nn NOT NULL,
     STAMPED_DATE DATE DEFAULT SYSDATE CONSTRAINT USH_STAMPED_DATE_nn NOT NULL,
     CONSTRAINT USH_pk PRIMARY KEY (USER_ID, STAMPBOOK_ID, STAMPNO),
-    CONSTRAINT USH_USER_ID_fk FOREIGN KEY (USER_ID) REFERENCES BoogiTrainer(USER_ID),  
-    CONSTRAINT USH_BOOK_ID_fk FOREIGN KEY (STAMPBOOK_ID, STAMPNO) REFERENCES STAMP(STAMPBOOK_ID, STAMPNO)
+    CONSTRAINT USH_USER_PICK_fk FOREIGN KEY (USER_ID, STAMPBOOK_ID) REFERENCES USER_PICK(USER_ID, STAMPBOOK_ID),
+    CONSTRAINT USH_STAMP_fk FOREIGN KEY (STAMPBOOK_ID, STAMPNO) REFERENCES STAMP(STAMPBOOK_ID, STAMPNO)
 );
 
 -- 유저 좋아요 테이블 생성
@@ -830,6 +830,21 @@ VALUES ('red@google.com', 3, 4, '/ush/sample.png');
 INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
 VALUES ('red@google.com', 3, 5, '/ush/sample.png');
 
+-- 1번 스탬프북을 삭제처리함
+
+UPDATE stampbook set deleted = 1 where stampbook_id = 1;
+
+-- 레드가 3번 스탬프북에 찍은 스탬프 모두 조회
+-- select * from user_stamp_history where user_id = 'red@google.com' and stampbook_id = 3;
+
+-- 레드가 3번 스탬프북에 찍은 스탬프 모두 삭제
+-- DELETE FROM user_stamp_history WHERE user_id = 'red@google.com' AND stampbook_id = 3;
+
+-- 레드가 담은 3번 스탬프북 삭제 
+-- DELETE FROM user_pick WHERE user_id = 'red@google.com' AND stampbook_id = 3;
+
+-- select * from user_pick where user_id = 'red@google.com';
+
 COMMIT;
 
 SELECT * FROM USER_PICK;
@@ -852,6 +867,7 @@ WHERE stb.deleted = 0;
 
 -- 로그인한 유저의 내가 담은 스탬프북 조회
 SELECT stb.stampbook_id, stb.title, stb.description, bt.nickname, to_char(stb.stampbook_regdate, 'YYYY-MM-DD HH24:MI:SS') as stampbookRegdate, 
-stb.likeCount
+stb.likeCount, 
+nvl((SELECT 1 FROM user_like ul where ul.user_id = 'red@google.com' AND ul.stampbook_id = stb.stampbook_id), 0) AS isLike
 FROM user_pick up INNER JOIN stampbook stb ON up.stampbook_id = stb.stampbook_id INNER JOIN boogiTrainer bt ON stb.user_id = bt.user_id
 WHERE up.user_id = 'red@google.com';
