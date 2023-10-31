@@ -14,6 +14,7 @@ public class UserDAO {
 	private PreparedStatement pstmt;
 	private ResultSet rs;
 	private String sql;
+	private UserEncryption ue;
 	
 	public UserDAO() {
 		String jdbc_driver = "oracle.jdbc.driver.OracleDriver";
@@ -93,6 +94,44 @@ public class UserDAO {
 		return rowCount;
 	}
 	
+	public boolean loginCheck(UserDO userDO) {
+		boolean result = false;
+		
+		sql = "select PASSWD, SALT, NICKNAME from BoogiTrainer where USER_ID = ?";
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, userDO.getUserId().toLowerCase());
+			
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				String tempPw = rs.getString("PASSWD");
+				String tempSalt = rs.getString("SALT");
+				
+				if(tempPw.equals(ue.hashing(userDO.getPasswd(), tempSalt))) {
+					result = true;
+					userDO.setNickname(rs.getString("nickname"));
+				}
+			}
+			
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+		finally {
+			if(pstmt != null){
+				try{
+					pstmt.close();
+				}
+				catch(Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		
+		return result;
+	}
+	
 	//getAllUsers
 	public ArrayList<UserDO> getAllUsers() {
 		ArrayList<UserDO> userList = new ArrayList<UserDO>();
@@ -151,7 +190,7 @@ public class UserDAO {
 				BoogiTrainer.setUserId(this.rs.getString("user_id"));
 				BoogiTrainer.setPasswd(rs.getString("passwd"));
 				BoogiTrainer.setNickname(rs.getString("nickname"));
-				BoogiTrainer.setProfile_img(rs.getString("profile_img"));
+				BoogiTrainer.setProfileImg(rs.getString("profile_img"));
 				BoogiTrainer.setRegdate(rs.getString("regdate"));
 			}
 		}
