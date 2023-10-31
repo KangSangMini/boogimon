@@ -1,4 +1,7 @@
-package model;
+package test;
+
+import model.UserDAO;
+import model.UserJson;
 
 public class TestUserJson {
 
