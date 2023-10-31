@@ -202,6 +202,7 @@ public class StampbookDAO {
 		return stampbook;
 	}
 	
+	/** 스탬프북 담기 기능 */ 
 	public int pickStampbook(int stampbook_id, String user_id) throws Exception {
 		int rowCount = 0;
 		boolean idDeleted = false;
@@ -219,7 +220,7 @@ public class StampbookDAO {
 			if(rs.next()) {
 				// 삭제된 스탬프북이 아니라면 담기
 				this.sql = "INSERT INTO USER_PICK (USER_ID, STAMPBOOK_ID) "
-						 + "VALUES ('?', ?)";
+						 + "VALUES (?, ?)";
 				
 				this.pstmt = this.conn.prepareStatement(sql);
 				
@@ -227,6 +228,7 @@ public class StampbookDAO {
 				this.pstmt.setInt(2, stampbook_id);
 				rowCount = pstmt.executeUpdate();
 				
+				this.conn.commit();
 			}
 			else {
 				idDeleted = true;
@@ -316,6 +318,8 @@ public class StampbookDAO {
 			this.pstmt.setInt(2, stampbook_id);
 			rowCount = pstmt.executeUpdate();
 			
+			this.conn.commit();
+			
 		}
 		catch(Exception e) {
 			this.conn.rollback();
@@ -332,6 +336,175 @@ public class StampbookDAO {
 			catch(Exception e) {
 				e.printStackTrace();
 			}
+		}
+		
+		return rowCount;
+	}
+	
+	/** 스탬프북 좋아요 기능*/
+	public int likeStampbook(int stampbook_id, String user_id) throws Exception {
+		int rowCount = 0;
+		boolean isDuplicate = false;
+		boolean isDeleted = false;
+		boolean notExists = false;
+		boolean insertFailure = false;
+		boolean updateFailure = false;
+		
+		try {
+			this.conn.setAutoCommit(false);
+			
+			// 이미 좋아요 한 스탬프북인지 확인
+			this.sql = "SELECT stb.deleted, ul.user_id FROM stampbook stb "
+					 + "LEFT OUTER JOIN user_like ul ON ul.stampbook_id = stb.stampbook_id AND ul.user_id = ? "
+					 + "WHERE stb.stampbook_id = ?";
+			
+			this.pstmt = this.conn.prepareStatement(sql);
+			this.pstmt.setString(1, user_id);
+			this.pstmt.setInt(2, stampbook_id);
+			rs = pstmt.executeQuery();
+			
+			// rs.next() 가 있어야 stampbook에 존재하는 스탬프북
+			// rs.getInt("deleted") == 0 : 삭제된 스탬프북이 아니며 
+			// rs.getString("user_id") == null : 사용자가 좋아요를 하지 않은 상태여야만 (중복검사)
+			if(rs.next() && rs.getInt("deleted") == 0 && rs.getString("user_id") == null) {
+				// user_like 테이블에 삽입
+				this.sql = "INSERT INTO USER_LIKE (USER_ID, STAMPBOOK_ID) "
+						 + "VALUES (?, ?)";
+				this.pstmt = this.conn.prepareStatement(sql);
+				this.pstmt.setString(1, user_id);
+				this.pstmt.setInt(2, stampbook_id);
+				rowCount = pstmt.executeUpdate();
+				
+				// 삽입된 내용이 하나가 아니라면 오류 //?? 그런데 insert 는 1, 0 외에 있을 수가 있나 
+				if(!(rowCount == 1)) {
+					insertFailure = true;
+					this.conn.rollback();
+				}
+				else {
+					// 정상적으로 입력되었다면 stampbook의 likeCount 증가
+					this.sql = "UPDATE stampbook SET likeCount = likeCount + 1 WHERE stampbook_id = ?";
+					this.pstmt = this.conn.prepareStatement(sql);
+					this.pstmt.setInt(1, stampbook_id);
+					rowCount = pstmt.executeUpdate();
+					
+					//아무튼 잘못 삽입되면 롤백
+					if(rowCount != 1) {
+						updateFailure = true;
+						this.conn.rollback();
+					}
+					
+					this.conn.commit();
+				}
+			}
+			else if(rs.getString("user_id") != null){
+				isDuplicate = true;
+				this.conn.rollback();
+			}
+			else if(rs.getInt("deleted") == 1) {
+				isDeleted = true;
+				this.conn.rollback();
+			}
+			else {
+				notExists = true;
+				this.conn.rollback();
+			}
+		}
+		catch(Exception e) {
+			this.conn.rollback();
+			e.printStackTrace();
+		}
+		finally {
+			try {
+				this.conn.setAutoCommit(true);
+				
+				if(!pstmt.isClosed()) {
+					pstmt.close();
+				}
+			}
+			catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		if(isDuplicate) {
+			throw new Exception("중복된 요청입니다.");
+		}
+		if(isDeleted) {
+			throw new Exception("삭제된 스탬프북입니다.");
+		}
+		if(notExists) {
+			throw new Exception("존재하지 않는 스탬프북입니다.");
+		}
+		if(insertFailure) {
+			throw new Exception("좋아요 처리 실패");
+		}
+		if(updateFailure) {
+			throw new Exception("좋아요수 가산 실패");
+		}
+		
+		return rowCount;
+	}
+	
+	/** 스탬프북 좋아요 취소 기능*/
+	public int unlikeStampbook(int stampbook_id, String user_id) throws Exception {
+		int rowCount = 0;
+		boolean deleteFailure = false;
+		boolean updateFailure = false;
+		
+		try {
+			this.conn.setAutoCommit(false);
+			
+			// user_like 테이블에 삽입
+			this.sql = "DELETE FROM user_like WHERE user_id = ? AND stampbook_id = ?";
+			this.pstmt = this.conn.prepareStatement(sql);
+			this.pstmt.setString(1, user_id);
+			this.pstmt.setInt(2, stampbook_id);
+			rowCount = pstmt.executeUpdate();
+			
+			// 삭제된 내용이 하나가 아니라면 오류로 rollback
+			if(!(rowCount == 1)) {
+				deleteFailure = true;
+				this.conn.rollback();
+			}
+			else {
+				// 정상적으로 삭제되었다면 stampbook의 likeCount 감소
+				this.sql = "UPDATE stampbook SET likeCount = likeCount - 1 WHERE stampbook_id = ?";
+				this.pstmt = this.conn.prepareStatement(sql);
+				this.pstmt.setInt(1, stampbook_id);
+				rowCount = pstmt.executeUpdate();
+				
+				//아무튼 잘못 삽입되면 롤백
+				if(rowCount != 1) {
+					updateFailure = true;
+					this.conn.rollback();
+				}
+				
+				this.conn.commit();
+			}
+		
+		}
+		catch(Exception e) {
+			this.conn.rollback();
+			e.printStackTrace();
+		}
+		finally {
+			try {
+				this.conn.setAutoCommit(true);
+				
+				if(!pstmt.isClosed()) {
+					pstmt.close();
+				}
+			}
+			catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		if(deleteFailure) {
+			throw new Exception("좋아요 취소 처리 실패");
+		}
+		if(updateFailure) {
+			throw new Exception("좋아요수 감산 실패");
 		}
 		
 		return rowCount;
