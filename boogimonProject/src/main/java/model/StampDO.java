@@ -77,4 +77,9 @@ public class StampDO {
 	public void setTotalVisitCount(int totalVisitCount) {
 		this.totalVisitCount = totalVisitCount;
 	}
+	
+	public String toString() {
+		return String.format("stampNo: %d / placeId: %d / placeName: %s \nthumbnail: %s\nuploadImg: %s\nstampedDate: %s / lastVisitDate: %s / totalVisitCount: %d\n", 
+				this.stampNo, this.placeId, this.placeName, this.thumbnail, this.uploadImg, this.stampedDate, this.lastVisitDate, this.totalVisitCount);
+	}
 }
