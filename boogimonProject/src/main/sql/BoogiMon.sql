@@ -873,3 +873,23 @@ stb.likeCount,
 nvl((SELECT 1 FROM user_like ul where ul.user_id = 'red@google.com' AND ul.stampbook_id = stb.stampbook_id), 0) AS isLike
 FROM user_pick up INNER JOIN stampbook stb ON up.stampbook_id = stb.stampbook_id INNER JOIN boogiTrainer bt ON stb.user_id = bt.user_id
 WHERE up.user_id = 'red@google.com';
+
+-- 특정 스탬프북의 스탬프 목록 조회
+SELECT st.stampno, st.p회lace_id, p.name, p.thumbnail
+FROM STAMP st
+JOIN PLACE p ON st.place_id = p.place_id
+WHERE st.stampbook_id = 0
+ORDER BY st.stampno;
+
+-- 사용자가 담은 스탬프북의 스탬프 목록 조회
+SELECT st.stampno, st.place_id, p.name, p.thumbnail, ush.user_id, ush.upload_img, to_char(ush.stamped_date, 'YYYY-MM-DD HH24:MI:SS') as stamped_date
+FROM STAMP st
+JOIN PLACE p ON st.place_id = p.place_id
+LEFT OUTER JOIN USER_STAMP_HISTORY ush ON ush.stampbook_id = st.stampbook_id AND ush.stampno = st.stampno AND ush.user_id = 'red@google.com'
+WHERE st.stampbook_id = 3
+ORDER BY st.stampno;
+
+-- 좋아요 테이블 중복 및 삭제된 스탬프북인지 체크 
+SELECT stb.deleted, ul.user_id FROM stampbook stb
+LEFT OUTER JOIN user_like ul ON ul.stampbook_id = stb.stampbook_id AND ul.user_id = 'red@google.com'
+WHERE stb.stampbook_id = 3;
