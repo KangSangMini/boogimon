@@ -75,7 +75,7 @@ public class UserDO {
 		return profileImg;
 	}
 
-	public void setProfile_img(String profileImg) {
+	public void setProfileImg(String profileImg) {
 		this.profileImg = profileImg;
 	}
 	
