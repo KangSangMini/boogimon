@@ -40,7 +40,7 @@ public class UserDAO {
 			
 			this.sql = "select USER_ID from BoogiTrainer where USER_ID = ? union select NICKNAME from BoogiTrainer where NICKNAME = ?";
 			
-			System.out.println(boogiTrainer.getUserId());
+			System.out.println(boogiTrainer.getUserId()));
 			
 			pstmt = conn.prepareStatement(sql);			
 			pstmt.setString(1, boogiTrainer.getUserId());
@@ -48,13 +48,17 @@ public class UserDAO {
 			this.rs = pstmt.executeQuery();
 			
 			if(!rs.next()) {
-				this.sql = "insert into BoogiTrainer (USER_ID, PASSWD, NICKNAME, PROFILE_IMG)values (?, ?, ?,?)";
+				this.sql = "insert into BoogiTrainer (USER_ID, PASSWD,SALT, NICKNAME, PROFILE_IMG)values (?, ?, ?,?)";
+				
+				String salt = ue.getSalt();
+				String pw = boogiTrainer.getPasswd();
 				
 				pstmt = conn.prepareStatement(sql);			
 				pstmt.setString(1, boogiTrainer.getUserId());
-				pstmt.setString(2, boogiTrainer.getPasswd());
-				pstmt.setString(3, boogiTrainer.getNickname());
-				pstmt.setString(4, boogiTrainer.getProfileImg());
+				pstmt.setString(2, ue.hashing(pw, salt));
+				pstmt.setString(3, salt);;
+				pstmt.setString(4, boogiTrainer.getNickname());
+				pstmt.setString(5, boogiTrainer.getProfileImg());
 				
 				rowCount = pstmt.executeUpdate();
 				this.conn.commit();
@@ -94,23 +98,23 @@ public class UserDAO {
 		return rowCount;
 	}
 	
-	public boolean loginCheck(UserDO userDO) {
+	public boolean loginCheck(UserDO BoogiTrainer) {
 		boolean result = false;
 		
 		sql = "select PASSWD, SALT, NICKNAME from BoogiTrainer where USER_ID = ?";
 		
 		try {
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, userDO.getUserId().toLowerCase());
+			pstmt.setString(1, BoogiTrainer.getUserId().toLowerCase());
 			
 			rs = pstmt.executeQuery();
 			if(rs.next()) {
 				String tempPw = rs.getString("PASSWD");
 				String tempSalt = rs.getString("SALT");
 				
-				if(tempPw.equals(ue.hashing(userDO.getPasswd(), tempSalt))) {
+				if(tempPw.equals(ue.hashing(BoogiTrainer.getPasswd(), tempSalt))) {
 					result = true;
-					userDO.setNickname(rs.getString("nickname"));
+					BoogiTrainer.setNickname(rs.getString("nickname"));
 				}
 			}
 			
