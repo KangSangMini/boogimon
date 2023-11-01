@@ -1,4 +1,4 @@
-package model;
+package model.stampbook;
 
 import java.util.ArrayList;
 

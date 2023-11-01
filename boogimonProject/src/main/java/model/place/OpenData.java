@@ -1,4 +1,4 @@
-package model;
+package model.place;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
