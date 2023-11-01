@@ -1,4 +1,4 @@
-package stamp;
+package model;
 
 import java.util.ArrayList;
 
