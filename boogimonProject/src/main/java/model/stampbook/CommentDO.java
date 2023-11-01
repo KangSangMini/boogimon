@@ -1,4 +1,4 @@
-package model;
+package model.stampbook;
 //배건욱 push
 public class CommentDO {
 	private int commentId;

@@ -1,4 +1,4 @@
-package model;
+package model.stampbook;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -6,6 +6,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+
+import model.place.OpenData;
+import model.place.PlaceDetailDO;
 
 public class StampbookDetailDAO {
 	private Connection conn;
@@ -233,7 +236,7 @@ public class StampbookDetailDAO {
 		ArrayList<CommentDO> commentList = new ArrayList<CommentDO>();
 		CommentDO comment = null;
 		
-		this.sql = "SELECT c.comment_id, bt.nickname, c.\"COMMENT\", to_char(c.write_date, 'YYYY-MM-DD') as writeDate "
+		this.sql = "SELECT c.comment_id, bt.nickname, c.bComment, to_char(c.write_date, 'YYYY-MM-DD') as writeDate "
 				+ "FROM STB_CMT c JOIN boogiTrainer bt ON c.user_id = bt.user_id "
 				+ "WHERE c.stampbook_id = ? AND c.deleted = 0 "
 				+ "ORDER BY c.write_date DESC";
@@ -248,7 +251,7 @@ public class StampbookDetailDAO {
 				
 				comment.setCommentId(rs.getInt("comment_id"));
 				comment.setNickname(rs.getString("nickname"));
-				comment.setComment(rs.getString("comment"));
+				comment.setComment(rs.getString("bComment"));
 				comment.setWriteDate(rs.getString("writeDate"));
 				
 				commentList.add(comment);
@@ -276,7 +279,7 @@ public class StampbookDetailDAO {
 		int rowCount = 0;
 		
 		try {
-			this.sql = "INSERT INTO STB_CMT (COMMENT_ID, STAMPBOOK_ID, USER_ID, \"COMMENT\") "
+			this.sql = "INSERT INTO STB_CMT (COMMENT_ID, STAMPBOOK_ID, USER_ID, bComment) "
 					 + "VALUES (seq_comment_id.nextval, ?, ?, ?)";
 			
 			this.pstmt = this.conn.prepareStatement(sql);

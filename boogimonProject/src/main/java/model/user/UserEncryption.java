@@ -1,4 +1,4 @@
-package model;
+package model.user;
 
 import java.security.MessageDigest;
 import java.security.SecureRandom;
@@ -19,7 +19,7 @@ public class UserEncryption {
 			md = MessageDigest.getInstance("SHA-256");
 			
 			// key-stretching
-			for(int i = 0; i < 5; i++) {
+			for(int i = 0; i < 50000; i++) {
 				String temp = salt + passwd; 
 				md.update(temp.getBytes()); 
 				tempByte = md.digest();

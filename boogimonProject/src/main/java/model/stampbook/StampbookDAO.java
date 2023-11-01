@@ -1,4 +1,4 @@
-package model;
+package model.stampbook;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -74,7 +74,7 @@ public class StampbookDAO {
 		StampbookDO stampbook = null;
 		
 		this.sql = "SELECT stb.stampbook_id, stb.title, stb.description, bt.nickname, to_char(stb.stampbook_regdate, 'YYYY-MM-DD HH24:MI:SS') as stampbookRegdate, stb.likeCount, "
-				+ "nvl((SELECT 1 FROM user_like ul where ul.user_id = '?' AND ul.stampbook_id = stb.stampbook_id), 0) AS isLike "
+				+ "nvl((SELECT 1 FROM user_like ul where ul.user_id = ? AND ul.stampbook_id = stb.stampbook_id), 0) AS isLike "
 				+ "FROM stampbook stb INNER JOIN boogiTrainer bt ON stb.user_id = bt.user_id "
 				+ "WHERE stb.deleted = 0";
 		

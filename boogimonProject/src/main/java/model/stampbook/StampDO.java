@@ -1,4 +1,4 @@
-package model;
+package model.stampbook;
 
 public class StampDO {
 	private int stampNo;
