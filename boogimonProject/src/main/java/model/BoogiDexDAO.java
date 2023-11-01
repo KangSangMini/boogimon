@@ -85,7 +85,7 @@ public class BoogiDexDAO {
 	               "FROM USER_STAMP_HISTORY " +
 	               "JOIN STAMP ON USER_STAMP_HISTORY.STAMPBOOK_ID = STAMP.STAMPBOOK_ID AND USER_STAMP_HISTORY.STAMPNO = STAMP.STAMPNO " +
 	               "JOIN PLACE ON STAMP.PLACE_ID = PLACE.PLACE_ID " +
-	               "WHERE USER_STAMP_HISTORY.USER_ID = ? " +
+	               "WHERE USER_STAMP_HISTORY.USER_ID = ? AND PLACE.PLACE_ID = ?" +
 	               "GROUP BY PLACE.PLACE_ID, PLACE.NAME, PLACE.THUMBNAIL, USER_STAMP_HISTORY.STAMPED_DATE " +
 	               "ORDER BY USER_STAMP_HISTORY.STAMPED_DATE DESC ";
 
@@ -94,6 +94,7 @@ public class BoogiDexDAO {
 
 	        // Set the parameters
 	        pstmt.setString(1, name);
+	        pstmt.setInt(2, placeId);
 
 	        rs = pstmt.executeQuery();
 	        while (rs.next()) {
