@@ -64,7 +64,9 @@ public class StampbookJsonWriter {
 			
 			stObj.put("stampNo", stamp.getStampNo());
 			stObj.put("placeId", stamp.getPlaceId());
-			stObj.put("placeName", stamp.getPlaceName());
+			stObj.put("placeName", stamp.getName());
+			stObj.put("lat", stamp.getLat());
+			stObj.put("lon", stamp.getLon());
 			stObj.put("thumbnail", stamp.getThumbnail());
 			
 			if(stamp.getStampedDate() != null) {

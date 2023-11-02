@@ -35,7 +35,7 @@ public class StampbookDetailDAO {
 		ArrayList<StampDO> stampList = new ArrayList<StampDO>();
 		StampDO stamp = null;
 		
-		this.sql = "SELECT st.stampno, st.place_id, p.name, p.thumbnail "
+		this.sql = "SELECT st.stampno, st.place_id, p.name, p.lat, p.lon, p.thumbnail "
 				+ "FROM STAMP st "
 				+ "JOIN PLACE p ON st.place_id = p.place_id "
 				+ "WHERE st.stampbook_id = ? "
@@ -51,7 +51,9 @@ public class StampbookDetailDAO {
 				
 				stamp.setStampNo(rs.getInt("stampno"));
 				stamp.setPlaceId(rs.getInt("place_id"));
-				stamp.setPlaceName(rs.getString("name"));
+				stamp.setName(rs.getString("name"));
+				stamp.setLat(rs.getString("lat"));
+				stamp.setLon(rs.getString("lon"));
 				stamp.setThumbnail(rs.getString("thumbnail"));
 				
 				System.out.println(stamp);
@@ -81,7 +83,7 @@ public class StampbookDetailDAO {
 		ArrayList<StampDO> stampList = new ArrayList<StampDO>();
 		StampDO stamp = null;
 		
-		this.sql = "SELECT st.stampno, st.place_id, p.name, p.thumbnail, ush.user_id, ush.upload_img, to_char(ush.stamped_date, 'YYYY-MM-DD HH24:MI:SS') as stamped_date "
+		this.sql = "SELECT st.stampno, st.place_id, p.name, p.lat, p.lon, p.thumbnail, ush.user_id, ush.upload_img, to_char(ush.stamped_date, 'YYYY-MM-DD HH24:MI:SS') as stamped_date "
 				+ "FROM STAMP st JOIN PLACE p ON st.place_id = p.place_id "
 				+ "LEFT OUTER JOIN USER_STAMP_HISTORY ush ON ush.stampbook_id = st.stampbook_id AND ush.stampno = st.stampno AND ush.user_id = ? "
 				+ "WHERE st.stampbook_id = ? "
@@ -99,7 +101,9 @@ public class StampbookDetailDAO {
 				
 				stamp.setStampNo(rs.getInt("stampno"));
 				stamp.setPlaceId(rs.getInt("place_id"));
-				stamp.setPlaceName(rs.getString("name"));
+				stamp.setName(rs.getString("name"));
+				stamp.setLat(rs.getString("lat"));
+				stamp.setLon(rs.getString("lon"));
 				stamp.setThumbnail(rs.getString("thumbnail"));
 				stamp.setUploadImg(rs.getString("upload_img"));
 				stamp.setStampedDate(rs.getString("stamped_date"));

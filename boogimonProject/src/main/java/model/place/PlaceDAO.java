@@ -1,4 +1,4 @@
-package model;
+package model.place;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -7,7 +7,9 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-public class BoogiDexDAO {
+import model.stampbook.StampDO;
+
+public class PlaceDAO {
 
 	private Connection conn;
 	private Statement stmt;
@@ -15,7 +17,7 @@ public class BoogiDexDAO {
 	private ResultSet rs;
 	private String sql;
 	
-	public BoogiDexDAO() {
+	public PlaceDAO() {
 		String jdbc_driver = "oracle.jdbc.driver.OracleDriver";
 		String jdbc_url = "jdbc:oracle:thin:@localhost:1521:XE";
 		
@@ -53,7 +55,7 @@ public class BoogiDexDAO {
 				
 				boogiBook.setPlaceId(rs.getInt("PLACE_ID"));
 				boogiBook.setThumbnail(rs.getString("UPLOAD_IMG"));
-				boogiBook.setPlaceName(rs.getString("NAME"));
+				boogiBook.setName(rs.getString("NAME"));
 				boogiBook.setLastVisitDate(rs.getString("LAST_VISIT_DATE"));
 				boogiBook.setTotalVisitCount(rs.getInt("TOTAL_VISIT_COUNT"));
 				
@@ -78,7 +80,7 @@ public class BoogiDexDAO {
 		return boogiBookList;
 	}
 	
-//getBoogiDex
+	/** getBoogiBook */
 	public ArrayList<StampDO> getBoogiBook(int placeId, String name) {
 	    ArrayList<StampDO> boogiBookDetailList = new ArrayList<StampDO>();
 	    this.sql = "SELECT PLACE.PLACE_ID, PLACE.NAME, PLACE.THUMBNAIL, USER_STAMP_HISTORY.STAMPED_DATE " +
@@ -101,7 +103,7 @@ public class BoogiDexDAO {
 	            StampDO boogiBookDetail = new StampDO();
 
 	            boogiBookDetail.setPlaceId(rs.getInt("PLACE_ID"));
-	            boogiBookDetail.setPlaceName(rs.getString("NAME"));
+	            boogiBookDetail.setName(rs.getString("NAME"));
 	            boogiBookDetail.setThumbnail(rs.getString("THUMBNAIL"));
 	            boogiBookDetail.setStampedDate(rs.getString("STAMPED_DATE"));
 
@@ -122,5 +124,60 @@ public class BoogiDexDAO {
 	    return boogiBookDetailList;
 	}
 
+	public ArrayList<StampDO> searchPlace(String keyword){
+		ArrayList<StampDO> stampList = new ArrayList<StampDO>();
+		StampDO stamp = null;
+		
+		this.sql = "SELECT * FROM place "
+				+ "WHERE name LIKE ? OR addr LIKE ?";
+		
+		try {
+			this.pstmt = this.conn.prepareStatement(sql);
+			this.pstmt.setString(1, "%" + keyword + "%");
+			this.pstmt.setString(2, "%" + keyword + "%");
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				stamp = new StampDO();
+				
+				stamp.setPlaceId(rs.getInt("place_id"));
+				stamp.setName(rs.getString("name"));
+				stamp.setAddr(rs.getString("addr"));
+				stamp.setLat(rs.getString("lat"));
+				stamp.setLon(rs.getString("lon"));
+				stamp.setThumbnail(rs.getString("thumbnail"));
+				
+				System.out.println(stamp);
+				
+				stampList.add(stamp);
+			}
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		finally {
+			try {
+				if(!pstmt.isClosed()) {
+					pstmt.close();
+				}
+			}
+			catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return stampList;
+	}
 	
+	public void closeConn() {
+		if(conn != null) {
+			try {
+				conn.close();
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
 }
