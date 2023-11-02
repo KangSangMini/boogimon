@@ -12,6 +12,7 @@
 <jsp:setProperty name="userDO" property="*" />
 
 <%
+	out.clearBuffer();
 	StampbookJsonWriter stbJson = new StampbookJsonWriter(stbDAO, stbdDAO);
 	String command = request.getParameter("command");
 
