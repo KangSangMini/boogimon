@@ -1,4 +1,4 @@
-package model;
+package model.place;
 
 public class PlaceDetailDO {
 	private String name;
@@ -103,5 +103,10 @@ public class PlaceDetailDO {
 
 	public void setFacility(String facility) {
 		this.facility = facility;
+	}
+	
+	public String toString() {
+		return String.format("Name: %s / Addr: %s / Tel: %s \nDetail: %s \nPay: %s / Traffic: %s \nImg: %s \nHomepage: %s \nOpen: %s / Close: %s \nFacility: %s \n", 
+				this.name, this.addr, this.tel, this.detail, this.pay, this.traffic, this.img, this.homepage, this.open, this.close, this.facility);
 	}
 }

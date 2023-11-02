@@ -1,6 +1,7 @@
-package model;
+package test;
 
-
+import model.UserDAO;
+import model.UserDO;
 
 public class TestUser {
 
@@ -14,7 +15,7 @@ public class TestUser {
 		newTrainer.setUserId("hmson@naver.com");
 		newTrainer.setPasswd("1234");
 		newTrainer.setNickname("손흥민");
-	    newTrainer.setProfile_img(null);
+	    newTrainer.setProfileImg(null);
 		
 		try {
 				

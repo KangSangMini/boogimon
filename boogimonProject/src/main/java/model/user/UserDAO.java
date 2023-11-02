@@ -1,4 +1,4 @@
-package model;
+package model.user;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -19,6 +19,7 @@ public class UserDAO {
 	public UserDAO() {
 		String jdbc_driver = "oracle.jdbc.driver.OracleDriver";
 		String jdbc_url = "jdbc:oracle:thin:@localhost:1521:XE";
+		ue = new UserEncryption();
 		
 		try {
 			Class.forName(jdbc_driver);
@@ -29,7 +30,7 @@ public class UserDAO {
 		}
 	}
 	
-//joinUser
+	//joinUser
 	public int joinUser(UserDO boogiTrainer) throws Exception {
 		int rowCount = 0;
 		boolean isIdDuplicate = false;
@@ -48,7 +49,7 @@ public class UserDAO {
 			this.rs = pstmt.executeQuery();
 			
 			if(!rs.next()) {
-				this.sql = "insert into BoogiTrainer (USER_ID, PASSWD,SALT, NICKNAME, PROFILE_IMG)values (?, ?, ?,?)";
+				this.sql = "insert into BoogiTrainer (USER_ID, PASSWD, SALT, NICKNAME, PROFILE_IMG) values (?, ?, ?, ?, ?)";
 				
 				String salt = ue.getSalt();
 				String pw = boogiTrainer.getPasswd();
@@ -58,6 +59,7 @@ public class UserDAO {
 				pstmt.setString(2, ue.hashing(pw, salt));
 				pstmt.setString(3, salt);;
 				pstmt.setString(4, boogiTrainer.getNickname());
+//				boogiTrainer.setProfileImg("sample.png");
 				pstmt.setString(5, boogiTrainer.getProfileImg());
 				
 				rowCount = pstmt.executeUpdate();
@@ -88,7 +90,6 @@ public class UserDAO {
 		
 		if(isIdDuplicate) {
 			throw new Exception("아이디가 중복되었습니다.");
-			
 		}
 		
 		if(isNicknameDuplicate) {
@@ -98,23 +99,23 @@ public class UserDAO {
 		return rowCount;
 	}
 	
-	public boolean loginCheck(UserDO BoogiTrainer) {
+	public boolean loginCheck(UserDO user) {
 		boolean result = false;
 		
 		sql = "select PASSWD, SALT, NICKNAME from BoogiTrainer where USER_ID = ?";
 		
 		try {
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, BoogiTrainer.getUserId().toLowerCase());
+			pstmt.setString(1, user.getUserId().toLowerCase());
 			
 			rs = pstmt.executeQuery();
 			if(rs.next()) {
 				String tempPw = rs.getString("PASSWD");
 				String tempSalt = rs.getString("SALT");
 				
-				if(tempPw.equals(ue.hashing(BoogiTrainer.getPasswd(), tempSalt))) {
+				if(tempPw.equals(ue.hashing(user.getPasswd(), tempSalt))) {
 					result = true;
-					BoogiTrainer.setNickname(rs.getString("nickname"));
+					user.setNickname(rs.getString("nickname"));
 				}
 			}
 			
@@ -136,47 +137,7 @@ public class UserDAO {
 		return result;
 	}
 	
-	//getAllUsers
-	public ArrayList<UserDO> getAllUsers() {
-		ArrayList<UserDO> userList = new ArrayList<UserDO>();
-		this.sql = "select USER_ID, NICKNAME, to_char(regdate, 'YYYY-MM-DD HH24:MI:SS') as regdate " + 
-				   "from BoogiTrainer order by regdate";
-		
-		try {
-			stmt = conn.createStatement();
-			rs = stmt.executeQuery(sql);
-			UserDO user = null;
-			
-			while(rs.next()) {
-				user = new UserDO();
-				
-				user.setUserId(rs.getString("user_id"));
-				user.setNickname(rs.getString("nickname"));
-				user.setRegdate(rs.getString("regdate"));
-				
-				userList.add(user);
-			}
-		}
-		catch(Exception e) {
-			e.printStackTrace();
-		}
-		finally {			
-			try {
-				if(!stmt.isClosed()) {
-					stmt.close();
-				}
-			}
-			catch(Exception e) {
-				e.printStackTrace();
-			}
-		}
-		
-		
-		
-		return userList;
-	}
-	
-//getUser
+	//getUser
 	public UserDO getUser(String userId ) {
 		UserDO BoogiTrainer = null;
 		this.sql = "select USER_ID, PASSWD, NICKNAME, PROFILE_IMG, to_char(regdate, 'YYYY-MM-DD HH24:MI:SS') as regdate " + 
@@ -215,7 +176,7 @@ public class UserDAO {
 		return BoogiTrainer;
 	}
 	
-//changeNickname
+		//changeNickname
 		public int changeNickname(UserDO BoogiTrainer) {
 	    int rowCount = 0;
 	    this.sql = "update Boogie_Trainer set NICKNAME = ? WHERE USER_ID = ?"; 

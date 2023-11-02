@@ -1,8 +1,9 @@
-package model;
+package model.stampbook;
 //배건욱 push
 public class CommentDO {
 	private int commentId;
 	private String nickname;
+	private String userId;
 	private String comment;
 	private String writeDate;
 	
@@ -24,6 +25,14 @@ public class CommentDO {
 
 	public void setNickname(String nickname) {
 		this.nickname = nickname;
+	}
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
 
 	public String getComment() {
