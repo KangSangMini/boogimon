@@ -10,7 +10,7 @@ public class UserJsonWriter {
 	private HeaderJsonWriter headerWriter;
 	
 	public UserJsonWriter() {
-		this.headerWriter = new HeaderJsonWriter(); 
+		headerWriter = HeaderJsonWriter.getInstance();
 	}
 	
 	public UserJsonWriter(UserDAO userDAO) {

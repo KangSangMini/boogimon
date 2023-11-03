@@ -18,7 +18,7 @@ public class StampbookJsonWriter {
 	private HeaderJsonWriter headerWriter;
 	
 	public StampbookJsonWriter() {
-		this.headerWriter = new HeaderJsonWriter(); 
+		headerWriter = HeaderJsonWriter.getInstance();
 	}
 	
 	public StampbookJsonWriter(StampbookDAO stampbookDAO, StampbookDetailDAO stampbookDetailDAO) {

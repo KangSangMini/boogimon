@@ -15,7 +15,7 @@ public class PlaceJsonWriter {
 	private HeaderJsonWriter headerWriter;
 	
 	public PlaceJsonWriter() {
-		headerWriter = new HeaderJsonWriter();
+		headerWriter = HeaderJsonWriter.getInstance();
 	}
 	
 	public PlaceJsonWriter(PlaceDAO placeDAO) {
