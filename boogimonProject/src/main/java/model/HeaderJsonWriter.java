@@ -6,13 +6,38 @@ import org.json.simple.JSONObject;
 
 public class HeaderJsonWriter {
 	
+	private static HeaderJsonWriter headerJsonWriter;
 	private HashMap<Integer, String> codeMap;
 	
-	public HeaderJsonWriter() {
+	private HeaderJsonWriter() {
 		this.codeMap = new HashMap<Integer, String>();
 		
 		codeMap.put(0, "NORMAL_CODE");
+		codeMap.put(1, "DB_ERROR");
+		codeMap.put(10, "INVALID_REQUEST_ERROR");
+		codeMap.put(11, "INVALID_REQUEST_PARAMETER_ERROR");
+		codeMap.put(12, "NO_MANDATORY_REQUEST_PARAMETERS_ERROR");
+		codeMap.put(20, "NON_EXISTENT_USER_ERROR");
+		codeMap.put(21, "INVALID_USER_ERROR");
+		codeMap.put(22, "DUPLICATE_USERID_ERROR");
+		codeMap.put(23, "DUPLICATE_NICKNAME_ERROR");
+		codeMap.put(30, "NON_EXISTENT_STAMPBOOK_ERROR");
+		codeMap.put(31, "DELETED_STAMPBOOK_ERROR");
+		codeMap.put(32, "LIKE_PROCESSING_FAILED_ERROR");
+		codeMap.put(33, "UNLIKE_PROCESSING_FAILED_ERROR");
+		codeMap.put(34, "LIKE_COUNT_INCREMENT_FAILED_ERROR");
+		codeMap.put(35, "LIKE_COUNT_DECREMENT_FAILED_ERROR");
+		codeMap.put(50, "NON_EXISTENT_STAMP_ERROR");
+		codeMap.put(60, "NON_EXISTENT_PLACE_ERROR");
 		codeMap.put(99, "UNKNOWN_ERROR");
+	}
+	
+	// 싱글턴 패턴
+	static HeaderJsonWriter getInstance() {
+		if(HeaderJsonWriter.headerJsonWriter == null) {
+			HeaderJsonWriter.headerJsonWriter = new HeaderJsonWriter();
+		}
+		return HeaderJsonWriter.headerJsonWriter;
 	}
 	
 	@SuppressWarnings("unchecked")
