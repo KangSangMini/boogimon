@@ -8,13 +8,14 @@
 <jsp:setProperty name="userDO" property="*" />
 
 <%
+	response.setHeader("Access-Control-Allow-Origin","*");
 	out.clearBuffer();
 	UserJsonWriter userJson = new UserJsonWriter(userDAO);
 	String command = request.getParameter("command");
 	int resultCode = 0;
 
 	if(request.getMethod().equals("GET")){
-		if(command != null && command.equals("info")){
+		if(command == null && userDO.getUserId() != null){
 			out.println(userJson.getUserInfo(userDO));
 			out.flush();
 		}

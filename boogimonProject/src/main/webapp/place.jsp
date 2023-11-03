@@ -7,6 +7,7 @@
 <jsp:setProperty name="userDO" property="*" />
 
 <%
+	response.setHeader("Access-Control-Allow-Origin","*");
 	out.clearBuffer();
 	PlaceJsonWriter placeJson = new PlaceJsonWriter(placeDAO);
 	String command = request.getParameter("command");
