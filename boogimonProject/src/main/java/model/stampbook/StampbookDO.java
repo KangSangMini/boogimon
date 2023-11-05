@@ -14,7 +14,6 @@ public class StampbookDO {
 	private ArrayList<CommentDO> commentList;
 	
 	public StampbookDO() {
-		
 	}
 
 	public int getStampbookId() {

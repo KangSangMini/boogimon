@@ -1,9 +1,9 @@
 package model.stampbook;
-//배건욱 push
+
 public class CommentDO {
 	private int commentId;
 	private String nickname;
-	private String userId;
+	private String userId;	// insert용
 	private String comment;
 	private String writeDate;
 	
@@ -50,5 +50,4 @@ public class CommentDO {
 	public void setWriteDate(String writeDate) {
 		this.writeDate = writeDate;
 	}
-	
 }
