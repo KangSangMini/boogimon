@@ -39,63 +39,17 @@ public class StampbookJsonWriter extends JsonWriter{
 	public String getStampbookDetailJson(StampbookDO stampbook) {
 		
 		JSONObject stbObj = new JSONObject();
-		JSONArray jsonArr = new JSONArray();
-		JSONObject stObj = null;
-		JSONObject cmtObj = null;
 		
 		// 헤더 탑재
 		JSONObject jsonObj = getResponseGenerator().getResponseJsonObj(0);
 		
 		// stampbook 객체 생성
-		stbObj.put("stampbookId", stampbook.getStampbookId());
-		stbObj.put("title", stampbook.getTitle());
-		stbObj.put("description", stampbook.getDescription());
-		stbObj.put("nickname", stampbook.getNickname());
-		stbObj.put("stampbookRegdate", stampbook.getStampbookRegdate());
-		stbObj.put("likeCount", stampbook.getLikeCount());
-		stbObj.put("isLike", stampbook.getLiked());
-		
-		// stampList 객체 생성
-		for(StampDO stamp : stampbook.getStampList()) {
-			stObj = new JSONObject();
-			
-			stObj.put("stampNo", stamp.getStampNo());
-			stObj.put("placeId", stamp.getPlaceId());
-			stObj.put("placeName", stamp.getName());
-			stObj.put("lat", stamp.getLat());
-			stObj.put("lon", stamp.getLon());
-			stObj.put("thumbnail", stamp.getThumbnail());
-			
-			if(stamp.getStampedDate() != null) {
-				stObj.put("isStamped", true);
-				stObj.put("uploadImg", stamp.getUploadImg());
-				stObj.put("stampedDate", stamp.getStampedDate());
-			}
-			else {
-				stObj.put("isStamped", false);
-			}
-			
-			jsonArr.add(stObj);
-		}
+		stbObj = getStampbookJsonObj(stampbook);
 		
 		// stampbook 객체에 stampList 객체 탑재
-		stbObj.put("stampList", jsonArr);
-		
-		jsonArr = new JSONArray();
-		
-		// commentList 객체 생성
-		for(CommentDO comment : stampbook.getCommentList()) {
-			cmtObj = new JSONObject();
-			cmtObj.put("commentId", comment.getCommentId());
-			cmtObj.put("nickname", comment.getNickname());
-			cmtObj.put("comment", comment.getComment());
-			cmtObj.put("writeDate", comment.getWriteDate());
-			
-			jsonArr.add(cmtObj);
-		}
-		
+		stbObj.put("stampList", stampListJsonBuilder(stampbook.getStampList()));
 		// stampbook 객체에 commentList 객체 탑재
-		stbObj.put("commentList", jsonArr);
+		stbObj.put("commentList", commentListJsonBuilder(stampbook.getCommentList()));
 		
 		// 완성된 stampbook 객체를 jsonObj에 탑재
 		jsonObj.put("stampbook", stbObj);
@@ -146,16 +100,7 @@ public class StampbookJsonWriter extends JsonWriter{
 		try {
 			commentList = stbdDAO.getComments(stampbookId);
 			
-			for(CommentDO comment : commentList) {
-				cmtObj = new JSONObject();
-				
-				cmtObj.put("commentId", comment.getCommentId());
-				cmtObj.put("nickname", comment.getNickname());
-				cmtObj.put("comment", comment.getComment());
-				cmtObj.put("writeDate", comment.getWriteDate());
-				
-				jsonArr.add(cmtObj);
-			}
+			jsonArr = commentListJsonBuilder(commentList);
 		}
 		catch (Exception e) {
 			resultCode = BoogiException.getErrCode(e);
@@ -169,5 +114,89 @@ public class StampbookJsonWriter extends JsonWriter{
 		}
 		
 		return jsonObj.toJSONString();
+	}
+	
+	/** commentList JSONArray 객체 생성 */
+	@SuppressWarnings("unchecked")
+	public JSONArray commentListJsonBuilder(ArrayList<CommentDO> commentList) {
+		
+		JSONObject cmtObj = null;
+		JSONArray jsonArr = new JSONArray();
+
+		for(CommentDO comment : commentList) {
+			cmtObj = new JSONObject();
+			
+			cmtObj.put("commentId", comment.getCommentId());
+			cmtObj.put("nickname", comment.getNickname());
+			cmtObj.put("comment", comment.getComment());
+			cmtObj.put("writeDate", comment.getWriteDate());
+			
+			jsonArr.add(cmtObj);
+		}
+
+		return jsonArr;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public String getStampListJson(int stampbookId, String userId) {
+		ArrayList<StampDO> stampList = new ArrayList<StampDO>();
+		
+		JSONObject jsonObj = null;
+		JSONArray jsonArr = null;
+		int resultCode = 0;
+		
+		try {
+			if(userId != null) { 
+				stampList = stbdDAO.getStamp(stampbookId, userId);
+			}
+			else {
+				stampList = stbdDAO.getStamp(stampbookId);
+			}	
+			jsonArr = stampListJsonBuilder(stampList);
+		}
+		catch (Exception e) {
+			resultCode = BoogiException.getErrCode(e);
+		}
+		finally {
+			jsonObj = getResponseGenerator().getResponseJsonObj(resultCode);
+		}
+		
+		if(resultCode == 0) {
+			jsonObj.put("stampList", jsonArr);
+		}
+		
+		return jsonObj.toJSONString();
+	}
+	
+	/** stampList JSONArray 객체 생성 */
+	@SuppressWarnings("unchecked")
+	public JSONArray stampListJsonBuilder(ArrayList<StampDO> stampList) {
+		
+		JSONObject stObj = null;
+		JSONArray jsonArr = new JSONArray();
+		
+		for(StampDO stamp : stampList) {
+			stObj = new JSONObject();
+			
+			stObj.put("stampNo", stamp.getStampNo());
+			stObj.put("placeId", stamp.getPlaceId());
+			stObj.put("placeName", stamp.getName());
+			stObj.put("lat", stamp.getLat());
+			stObj.put("lon", stamp.getLon());
+			stObj.put("thumbnail", stamp.getThumbnail());
+			
+			if(stamp.getStampedDate() != null) {
+				stObj.put("isStamped", true);
+				stObj.put("uploadImg", stamp.getUploadImg());
+				stObj.put("stampedDate", stamp.getStampedDate());
+			}
+			else {
+				stObj.put("isStamped", false);
+			}
+			
+			jsonArr.add(stObj);
+		}
+		
+		return jsonArr;
 	}
 }

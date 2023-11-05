@@ -2,6 +2,8 @@
 		 import="java.util.*, boogimon.*, model.*, model.stampbook.*"
 %>
 
+<% request.setCharacterEncoding("UTF-8"); %>
+
 <jsp:useBean id="stbdDAO" class="model.stampbook.StampbookDetailDAO" scope="session"/>
 
 <jsp:useBean id="commentDO" class="model.stampbook.CommentDO" />
