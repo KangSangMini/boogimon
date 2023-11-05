@@ -7,6 +7,8 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import boogimon.BoogiException;
+
 public class StampbookDAO {
 	
 	private Connection conn;
@@ -254,7 +256,7 @@ public class StampbookDAO {
 		}
 		
 		if(idDeleted) {
-			throw new Exception("삭제된 스탬프북 입니다.");
+			throw new BoogiException(31, "삭제된 스탬프북 입니다.");
 		}
 		
 		return rowCount;
@@ -427,19 +429,19 @@ public class StampbookDAO {
 		}
 		
 		if(isDuplicate) {
-			throw new Exception("중복된 요청입니다.");
+			throw new BoogiException(13, "중복된 요청입니다.");
 		}
 		if(isDeleted) {
-			throw new Exception("삭제된 스탬프북입니다.");
+			throw new BoogiException(31, "삭제된 스탬프북입니다.");
 		}
 		if(notExists) {
-			throw new Exception("존재하지 않는 스탬프북입니다.");
+			throw new BoogiException(30, "존재하지 않는 스탬프북입니다.");
 		}
 		if(insertFailure) {
-			throw new Exception("좋아요 처리 실패");
+			throw new BoogiException(32, "좋아요 처리 실패");
 		}
 		if(updateFailure) {
-			throw new Exception("좋아요수 가산 실패");
+			throw new BoogiException(34, "좋아요수 가산 실패");
 		}
 		
 		return rowCount;
@@ -501,10 +503,10 @@ public class StampbookDAO {
 		}
 		
 		if(deleteFailure) {
-			throw new Exception("좋아요 취소 처리 실패");
+			throw new BoogiException(33, "좋아요 취소 처리 실패");
 		}
 		if(updateFailure) {
-			throw new Exception("좋아요수 감산 실패");
+			throw new BoogiException(35, "좋아요수 감산 실패");
 		}
 		
 		return rowCount;

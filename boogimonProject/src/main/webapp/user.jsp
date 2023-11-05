@@ -1,5 +1,5 @@
 <%@ page contentType="application/json; charset=UTF-8" 
-		 import="java.util.*, model.*"
+		 import="java.util.*, boogimon.*, model.*"
 %>
 
 <jsp:useBean id="userDAO" class="model.user.UserDAO" />
@@ -13,31 +13,37 @@
 	UserJsonWriter userJson = new UserJsonWriter(userDAO);
 	String command = request.getParameter("command");
 	int resultCode = 0;
+	String jsonStr = "";
 
 	if(request.getMethod().equals("GET")){
-		if(command == null && userDO.getUserId() != null){
-			out.println(userJson.getUserInfo(userDO));
-			out.flush();
+		if(command == null){
+			if(userDO.getUserId() != null){
+				jsonStr = userJson.getUserInfo(userDO);	
+			}
+			else {
+				// 필수 파라미터 누락
+				jsonStr = userJson.getGeneralResponse(12);
+			}
 		}
 	}
 	
 	if(request.getMethod().equals("POST")){
 		if(command != null && command.equals("login")){
-			out.println(userJson.authLogin(userDO));
-			out.flush();
+			jsonStr = userJson.authLogin(userDO);
 		}
 		else if(command != null && command.equals("join")){
 			try {
 				userDAO.joinUser(userDO);
 			}
 			catch (Exception e){
-				resultCode = 99;
+				resultCode = BoogiException.getErrCode(e);
 			}
 			finally {
-				out.println(userJson.getResult(resultCode));
+				jsonStr = userJson.getGeneralResponse(resultCode);
 			}
-			
-			out.flush();
 		}
 	}
+	
+	out.println(jsonStr);
+	out.flush();
 %>
