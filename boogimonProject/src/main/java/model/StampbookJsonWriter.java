@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import boogimon.BoogiException;
 import model.stampbook.CommentDO;
 import model.stampbook.StampDO;
 import model.stampbook.StampbookDAO;
@@ -130,6 +131,42 @@ public class StampbookJsonWriter extends JsonWriter{
 		
 		JSONObject jsonObj = getResponseGenerator().getResponseJsonObj(0);
 		jsonObj.put("stampbookList", jsonArr);
+		
+		return jsonObj.toJSONString();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public String getCommentListJson(int stampbookId) {
+		ArrayList<CommentDO> commentList = new ArrayList<CommentDO>();
+		JSONObject jsonObj = null;
+		JSONObject cmtObj = null;
+		JSONArray jsonArr = new JSONArray();
+		int resultCode = 0;
+		
+		try {
+			commentList = stbdDAO.getComments(stampbookId);
+			
+			for(CommentDO comment : commentList) {
+				cmtObj = new JSONObject();
+				
+				cmtObj.put("commentId", comment.getCommentId());
+				cmtObj.put("nickname", comment.getNickname());
+				cmtObj.put("comment", comment.getComment());
+				cmtObj.put("writeDate", comment.getWriteDate());
+				
+				jsonArr.add(cmtObj);
+			}
+		}
+		catch (Exception e) {
+			resultCode = BoogiException.getErrCode(e);
+		}
+		finally {
+			jsonObj = getResponseGenerator().getResponseJsonObj(resultCode);
+		}
+		
+		if(resultCode == 0) {
+			jsonObj.put("commentList", jsonArr);
+		}
 		
 		return jsonObj.toJSONString();
 	}
