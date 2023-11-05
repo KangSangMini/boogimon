@@ -5,7 +5,8 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.util.ArrayList;
+
+import boogimon.BoogiException;
 
 public class UserDAO {
 
@@ -89,11 +90,11 @@ public class UserDAO {
 		}
 		
 		if(isIdDuplicate) {
-			throw new Exception("아이디가 중복되었습니다.");
+			throw new BoogiException(22, "아이디가 중복되었습니다.");
 		}
 		
 		if(isNicknameDuplicate) {
-			throw new Exception("닉네임이 중복되었습니다.");
+			throw new BoogiException(23, "닉네임이 중복되었습니다.");
 		}
 
 		return rowCount;

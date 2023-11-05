@@ -7,8 +7,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-import model.place.OpenData;
-import model.place.PlaceDetailDO;
+import boogimon.BoogiException;
 
 public class StampbookDetailDAO {
 	private Connection conn;
@@ -287,7 +286,7 @@ public class StampbookDetailDAO {
 		}
 		
 		if(isWrongUser) {
-			throw new Exception("잘못된 사용자 입니다.");
+			throw new BoogiException(21, "잘못된 사용자 입니다.");
 		}
 		
 		return rowCount;
