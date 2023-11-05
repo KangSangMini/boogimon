@@ -1,15 +1,14 @@
 package model;
 
 import java.util.HashMap;
-
 import org.json.simple.JSONObject;
 
-public class HeaderJsonWriter {
+public class ResponseGenerator {
 	
-	private static HeaderJsonWriter headerJsonWriter;
+	private static ResponseGenerator responseGenerator;
 	private HashMap<Integer, String> codeMap;
 	
-	private HeaderJsonWriter() {
+	private ResponseGenerator() {
 		this.codeMap = new HashMap<Integer, String>();
 		
 		codeMap.put(0, "NORMAL_CODE");
@@ -17,6 +16,7 @@ public class HeaderJsonWriter {
 		codeMap.put(10, "INVALID_REQUEST_ERROR");
 		codeMap.put(11, "INVALID_REQUEST_PARAMETER_ERROR");
 		codeMap.put(12, "NO_MANDATORY_REQUEST_PARAMETERS_ERROR");
+		codeMap.put(13, "DUPLICATE_REQUEST_ERROR");
 		codeMap.put(20, "NON_EXISTENT_USER_ERROR");
 		codeMap.put(21, "INVALID_USER_ERROR");
 		codeMap.put(22, "DUPLICATE_USERID_ERROR");
@@ -33,15 +33,15 @@ public class HeaderJsonWriter {
 	}
 	
 	// 싱글턴 패턴
-	static HeaderJsonWriter getInstance() {
-		if(HeaderJsonWriter.headerJsonWriter == null) {
-			HeaderJsonWriter.headerJsonWriter = new HeaderJsonWriter();
+	static ResponseGenerator getInstance() {
+		if(ResponseGenerator.responseGenerator == null) {
+			ResponseGenerator.responseGenerator = new ResponseGenerator();
 		}
-		return HeaderJsonWriter.headerJsonWriter;
+		return ResponseGenerator.responseGenerator;
 	}
 	
 	@SuppressWarnings("unchecked")
-	public JSONObject getHeaderJsonObj(int resultCode) {
+	public JSONObject getResponseJsonObj(int resultCode) {
 		JSONObject headerObj = new JSONObject();
 		
 		// resultCode에 맞는 헤더 생성
@@ -52,14 +52,14 @@ public class HeaderJsonWriter {
 	}
 	
 	/** 임의 코드와 메시지 생성 */
-	@SuppressWarnings("unchecked")
-	public JSONObject getHeaderJsonObj(int resultCode, String msg) {
-		JSONObject headerObj = new JSONObject();
-		
-		// resultCode에 맞는 헤더 생성
-		headerObj.put("resultCode", String.format("%02d", resultCode));
-		headerObj.put("resultMsg", msg);
-		
-		return headerObj;
-	}
+//	@SuppressWarnings("unchecked")
+//	public JSONObject getHeaderJsonObj(int resultCode, String msg) {
+//		JSONObject headerObj = new JSONObject();
+//		
+//		// resultCode에 맞는 헤더 생성
+//		headerObj.put("resultCode", String.format("%02d", resultCode));
+//		headerObj.put("resultMsg", msg);
+//		
+//		return headerObj;
+//	}
 }

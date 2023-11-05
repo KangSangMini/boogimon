@@ -12,17 +12,15 @@ import model.stampbook.StampbookDO;
 import model.stampbook.StampbookDetailDAO;
 import model.stampbook.StampbookListDO;
 
-public class StampbookJsonWriter {
+public class StampbookJsonWriter extends JsonWriter{
 	private StampbookDAO stbDAO;
 	private StampbookDetailDAO stbdDAO;
-	private HeaderJsonWriter headerWriter;
 	
 	public StampbookJsonWriter() {
-		headerWriter = HeaderJsonWriter.getInstance();
+		
 	}
 	
 	public StampbookJsonWriter(StampbookDAO stampbookDAO, StampbookDetailDAO stampbookDetailDAO) {
-		this();
 		this.stbDAO = stampbookDAO;
 		this.stbdDAO = stampbookDetailDAO;
 	}
@@ -39,15 +37,13 @@ public class StampbookJsonWriter {
 	@SuppressWarnings("unchecked")
 	public String getStampbookDetailJson(StampbookDO stampbook) {
 		
-		JSONObject jsonObj = new JSONObject();
-		JSONObject headerObj = new JSONObject();
 		JSONObject stbObj = new JSONObject();
 		JSONArray jsonArr = new JSONArray();
 		JSONObject stObj = null;
 		JSONObject cmtObj = null;
 		
 		// 헤더 탑재
-		jsonObj.put("header", headerWriter.getHeaderJsonObj(0));
+		JSONObject jsonObj = getResponseGenerator().getResponseJsonObj(0);
 		
 		// stampbook 객체 생성
 		stbObj.put("stampbookId", stampbook.getStampbookId());
@@ -103,8 +99,6 @@ public class StampbookJsonWriter {
 		// 완성된 stampbook 객체를 jsonObj에 탑재
 		jsonObj.put("stampbook", stbObj);
 		
-		System.out.println(jsonObj.toJSONString());
-		
 		return jsonObj.toJSONString();
 	}
 
@@ -127,14 +121,14 @@ public class StampbookJsonWriter {
 	/** 받은 StampbookListDO의 json 스트링 반환 */
 	@SuppressWarnings("unchecked")
 	public String getStampbookListJson(StampbookListDO stampbookList) {
-		JSONObject jsonObj = new JSONObject();
-		JSONArray jsonArr = new JSONArray();
 		
+		// StampbookList jsonArray에 탑재
+		JSONArray jsonArr = new JSONArray();
 		for(StampbookDO stampbook : stampbookList.getStampbookList()) {
 			jsonArr.add(this.getStampbookJsonObj(stampbook));
 		}
 		
-		jsonObj.put("header", headerWriter.getHeaderJsonObj(0));
+		JSONObject jsonObj = getResponseGenerator().getResponseJsonObj(0);
 		jsonObj.put("stampbookList", jsonArr);
 		
 		return jsonObj.toJSONString();

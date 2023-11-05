@@ -9,17 +9,14 @@ import model.place.PlaceDAO;
 import model.place.PlaceDetailDO;
 import model.stampbook.StampDO;
 
-public class PlaceJsonWriter {
+public class PlaceJsonWriter extends JsonWriter{
 
 	private PlaceDAO placeDAO;
-	private HeaderJsonWriter headerWriter;
 	
 	public PlaceJsonWriter() {
-		headerWriter = HeaderJsonWriter.getInstance();
 	}
 	
 	public PlaceJsonWriter(PlaceDAO placeDAO) {
-		this();
 		this.placeDAO = placeDAO;
 	}
 	
@@ -27,7 +24,6 @@ public class PlaceJsonWriter {
 	public String getBoogiBookJson(String userId) {
 		ArrayList<StampDO> boogiBookList = this.placeDAO.getAllBoogiBook(userId);
 		
-		JSONObject jsonObj = new JSONObject();
 		JSONArray boogiArray = new JSONArray();
 		JSONObject boogi = null;
 		
@@ -42,20 +38,18 @@ public class PlaceJsonWriter {
 			boogiArray.add(boogi);
 		}
 		
-		jsonObj.put("header", headerWriter.getHeaderJsonObj(0));
+		JSONObject jsonObj = getResponseGenerator().getResponseJsonObj(0);
 		jsonObj.put("boogiBook", boogiArray);
 		
 		return jsonObj.toJSONString();
 	}
 	
 
-//getBoogiDex	
-
+	//getBoogiDex	
 	@SuppressWarnings("unchecked")
 	public String getBoogiBookDetailJson(int placeId, String userId) {
 	    ArrayList<StampDO> boogiBookDetailList = this.placeDAO.getBoogiBook(placeId, userId);
 	    
-	    JSONObject jsonObj = new JSONObject();
 	    JSONArray boogiArray = new JSONArray();
 	    JSONObject boogi = null;
 
@@ -69,7 +63,7 @@ public class PlaceJsonWriter {
 	        boogiArray.add(boogi);
 	    }
 	    
-	    jsonObj.put("header", headerWriter.getHeaderJsonObj(0));
+	    JSONObject jsonObj = getResponseGenerator().getResponseJsonObj(0);
 		jsonObj.put("boogiBookDetail", boogiArray);
 
 	    return jsonObj.toJSONString();
@@ -79,7 +73,6 @@ public class PlaceJsonWriter {
 	public String searchPlaceJson(String keyword) {
 	    ArrayList<StampDO> searchList = this.placeDAO.searchPlace(keyword);
 	    
-	    JSONObject jsonObj = new JSONObject();
 	    JSONArray jsonArr = new JSONArray();
 	    JSONObject stObj = null;
 
@@ -96,7 +89,7 @@ public class PlaceJsonWriter {
 	    	jsonArr.add(stObj);
 	    }
 	    
-	    jsonObj.put("header", headerWriter.getHeaderJsonObj(0));
+	    JSONObject jsonObj = getResponseGenerator().getResponseJsonObj(0);
 		jsonObj.put("searchList", jsonArr);
 
 	    return jsonObj.toJSONString();
@@ -104,7 +97,7 @@ public class PlaceJsonWriter {
 	
 	@SuppressWarnings("unchecked")
 	public String getPlaceDetailJson(int placeId) {
-		JSONObject jsonObj = new JSONObject();
+		JSONObject jsonObj = null;
 	    JSONObject pdObj = null;
 		
 	    try {
@@ -113,11 +106,11 @@ public class PlaceJsonWriter {
 			pdObj = new JSONObject();
 			pdObj = placeDetail.getJSONObject();
 		    
-		    jsonObj.put("header", headerWriter.getHeaderJsonObj(0));
+		    jsonObj = getResponseGenerator().getResponseJsonObj(0);
 			jsonObj.put("placeDetail", pdObj);
 		} 
 	    catch (Exception e) {
-	    	jsonObj.put("header", headerWriter.getHeaderJsonObj(99));
+	    	jsonObj = getResponseGenerator().getResponseJsonObj(99);
 		}
 	    
 	    return jsonObj.toJSONString();
