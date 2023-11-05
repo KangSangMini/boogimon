@@ -171,3 +171,5 @@ INSERT INTO PLACE_DETAIL (PLACE_ID, TEL, DETAIL, PAY, IMG, HOMEPAGE, OPEN, CLOSE
 VALUES (seq_place_id.currval,'051-515-0130','허브랑야생화','무료',NULL,'https://www.herbrang.kr','11:00 AM','06:30 PM','주차장,화장실');
 
 SET ESCAPE OFF
+
+COMMIT;
