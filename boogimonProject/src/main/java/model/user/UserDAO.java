@@ -42,8 +42,6 @@ public class UserDAO {
 			
 			this.sql = "select USER_ID from BoogiTrainer where USER_ID = ? union select NICKNAME from BoogiTrainer where NICKNAME = ?";
 			
-			System.out.println(boogiTrainer.getUserId());
-			
 			pstmt = conn.prepareStatement(sql);			
 			pstmt.setString(1, boogiTrainer.getUserId());
 			pstmt.setString(2, boogiTrainer.getNickname());
