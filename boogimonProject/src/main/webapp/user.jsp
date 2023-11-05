@@ -2,7 +2,7 @@
 		 import="java.util.*, boogimon.*, model.*"
 %>
 
-<jsp:useBean id="userDAO" class="model.user.UserDAO" />
+<jsp:useBean id="userDAO" class="model.user.UserDAO" scope="session"/>
 
 <jsp:useBean id="userDO" class="model.user.UserDO" />
 <jsp:setProperty name="userDO" property="*" />

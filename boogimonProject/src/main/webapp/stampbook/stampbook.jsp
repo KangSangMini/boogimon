@@ -2,8 +2,8 @@
 		 import="java.util.*, boogimon.*, model.*"
 %>
 
-<jsp:useBean id="stbDAO" class="model.stampbook.StampbookDAO" />
-<jsp:useBean id="stbdDAO" class="model.stampbook.StampbookDetailDAO" />
+<jsp:useBean id="stbDAO" class="model.stampbook.StampbookDAO" scope="session"/>
+<jsp:useBean id="stbdDAO" class="model.stampbook.StampbookDetailDAO" scope="session"/>
 
 <jsp:useBean id="stampbookListDO" class="model.stampbook.StampbookListDO" />
 <jsp:useBean id="stampbookDO" class="model.stampbook.StampbookDO" />
