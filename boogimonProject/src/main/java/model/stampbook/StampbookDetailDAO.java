@@ -39,8 +39,6 @@ public class StampbookDetailDAO {
 		boolean notExists = false;
 		
 		try {
-			this.conn.setAutoCommit(false);
-			
 			// 받은 stampbookId의 스탬프북 상태 확인
 			this.sql = "SELECT deleted FROM stampbook WHERE stampbook_id = ?";
 			
@@ -50,54 +48,51 @@ public class StampbookDetailDAO {
 			
 			// rs.next() 가 있어야 stampbook에 존재하는 스탬프북
 			// rs.getInt("deleted") == 0 : 삭제된 스탬프북이 아니며 
-			if(rs.next() && rs.getInt("deleted") == 0) {
-
-				this.sql = "SELECT st.stampno, st.place_id, p.name, p.lat, p.lon, p.thumbnail "
-						+ "FROM STAMP st "
-						+ "JOIN PLACE p ON st.place_id = p.place_id "
-						+ "WHERE st.stampbook_id = ? "
-						+ "ORDER BY st.stampno";
-				
-				this.pstmt = this.conn.prepareStatement(sql);
-				this.pstmt.setInt(1, stampbook_id);
-				rs = pstmt.executeQuery();
-				
-				while(rs.next()) {
-					stamp = new StampDO();
+			if(rs.next()) {
+				if(rs.getInt("deleted") == 0) {
 					
-					stamp.setStampNo(rs.getInt("stampno"));
-					stamp.setPlaceId(rs.getInt("place_id"));
-					stamp.setName(rs.getString("name"));
-					stamp.setLat(rs.getString("lat"));
-					stamp.setLon(rs.getString("lon"));
-					stamp.setThumbnail(rs.getString("thumbnail"));
+					this.sql = "SELECT st.stampno, st.place_id, p.name, p.lat, p.lon, p.thumbnail "
+							+ "FROM STAMP st "
+							+ "JOIN PLACE p ON st.place_id = p.place_id "
+							+ "WHERE st.stampbook_id = ? "
+							+ "ORDER BY st.stampno";
 					
-					stampList.add(stamp);
+					this.pstmt = this.conn.prepareStatement(sql);
+					this.pstmt.setInt(1, stampbook_id);
+					rs = pstmt.executeQuery();
+					
+					while(rs.next()) {
+						stamp = new StampDO();
+						
+						stamp.setStampNo(rs.getInt("stampno"));
+						stamp.setPlaceId(rs.getInt("place_id"));
+						stamp.setName(rs.getString("name"));
+						stamp.setLat(rs.getString("lat"));
+						stamp.setLon(rs.getString("lon"));
+						stamp.setThumbnail(rs.getString("thumbnail"));
+						
+						stampList.add(stamp);
+					}
 				}
-			}
-			else if(rs.getInt("deleted") == 1){
-				isDeleted = true;
-				this.conn.rollback();
+				else {
+					isDeleted = true;
+				}
 			}
 			else {
 				notExists = true;
-				this.conn.rollback();
 			}
 			
 		}
 		catch(Exception e){
-			this.conn.rollback();
 			e.printStackTrace();
 		}
 		finally {
 			try {
-				this.conn.setAutoCommit(true);
 				if(!pstmt.isClosed()) {
 					pstmt.close();
 				}
 			}
 			catch(Exception e) {
-				this.conn.rollback();
 				e.printStackTrace();
 			}
 		}
@@ -112,39 +107,57 @@ public class StampbookDetailDAO {
 		return stampList;
 	}
 	
-	/** 사용자가 담은 스탬프북의 모든 StampDO를 리스트로 반환 */
-	public ArrayList<StampDO> getStamp(int stampbook_id, String user_id) {
+	/** 사용자가 담은 스탬프북의 모든 StampDO를 리스트로 반환 
+	 * @throws Exception */
+	public ArrayList<StampDO> getStamp(int stampbook_id, String user_id) throws Exception {
 		ArrayList<StampDO> stampList = new ArrayList<StampDO>();
 		StampDO stamp = null;
 		
-		this.sql = "SELECT st.stampno, st.place_id, p.name, p.lat, p.lon, p.thumbnail, ush.user_id, ush.upload_img, to_char(ush.stamped_date, 'YYYY-MM-DD HH24:MI:SS') as stamped_date "
-				+ "FROM STAMP st JOIN PLACE p ON st.place_id = p.place_id "
-				+ "LEFT OUTER JOIN USER_STAMP_HISTORY ush ON ush.stampbook_id = st.stampbook_id AND ush.stampno = st.stampno AND ush.user_id = ? "
-				+ "WHERE st.stampbook_id = ? "
-				+ "ORDER BY st.stampno";
-		
+		// 사용자가 담은 스탬프북은 삭제되어도 접근 가능하기 때문에 스탬프북 삭제여부검사 불필요
+		// boolean isDeleted = false;
+		boolean notExists = false;
+
 		try {
-			this.pstmt = this.conn.prepareStatement(sql);
-			this.pstmt.setString(1, user_id);
-			this.pstmt.setInt(2, stampbook_id);
+			// 받은 stampbookId의 스탬프북 상태 확인
+			this.sql = "SELECT deleted FROM stampbook WHERE stampbook_id = ?";
 			
+			this.pstmt = this.conn.prepareStatement(sql);
+			this.pstmt.setInt(1, stampbook_id);
 			rs = pstmt.executeQuery();
 			
-			while(rs.next()) {
-				stamp = new StampDO();
+			// rs.next() 가 있어야 stampbook에 존재하는 스탬프북
+			// rs.getInt("deleted") == 0 : 삭제된 스탬프북이 아니며
+			if(rs.next()) {
+					
+				this.sql = "SELECT st.stampno, st.place_id, p.name, p.lat, p.lon, p.thumbnail, ush.user_id, ush.upload_img, to_char(ush.stamped_date, 'YYYY-MM-DD HH24:MI:SS') as stamped_date "
+						+ "FROM STAMP st JOIN PLACE p ON st.place_id = p.place_id "
+						+ "LEFT OUTER JOIN USER_STAMP_HISTORY ush ON ush.stampbook_id = st.stampbook_id AND ush.stampno = st.stampno AND ush.user_id = ? "
+						+ "WHERE st.stampbook_id = ? "
+						+ "ORDER BY st.stampno";
 				
-				stamp.setStampNo(rs.getInt("stampno"));
-				stamp.setPlaceId(rs.getInt("place_id"));
-				stamp.setName(rs.getString("name"));
-				stamp.setLat(rs.getString("lat"));
-				stamp.setLon(rs.getString("lon"));
-				stamp.setThumbnail(rs.getString("thumbnail"));
-				stamp.setUploadImg(rs.getString("upload_img"));
-				stamp.setStampedDate(rs.getString("stamped_date"));
+				this.pstmt = this.conn.prepareStatement(sql);
+				this.pstmt.setString(1, user_id);
+				this.pstmt.setInt(2, stampbook_id);
 				
-				System.out.println(stamp);
+				rs = pstmt.executeQuery();
 				
-				stampList.add(stamp);
+				while(rs.next()) {
+					stamp = new StampDO();
+					
+					stamp.setStampNo(rs.getInt("stampno"));
+					stamp.setPlaceId(rs.getInt("place_id"));
+					stamp.setName(rs.getString("name"));
+					stamp.setLat(rs.getString("lat"));
+					stamp.setLon(rs.getString("lon"));
+					stamp.setThumbnail(rs.getString("thumbnail"));
+					stamp.setUploadImg(rs.getString("upload_img"));
+					stamp.setStampedDate(rs.getString("stamped_date"));
+					
+					stampList.add(stamp);
+				}
+			}
+			else {
+				notExists = true;
 			}
 		}
 		catch(Exception e){
@@ -159,6 +172,13 @@ public class StampbookDetailDAO {
 			catch(Exception e) {
 				e.printStackTrace();
 			}
+		}
+		
+//		if(isDeleted) {
+//			throw new BoogiException(31, "삭제된 스탬프북입니다.");
+//		}
+		if(notExists) {
+			throw new BoogiException(30, "존재하지 않는 스탬프북입니다.");
 		}
 		
 		return stampList;
@@ -208,7 +228,6 @@ public class StampbookDetailDAO {
 		boolean notExists = false;
 		
 		try {
-			this.conn.setAutoCommit(false);
 			
 			// 받은 stampbookId의 스탬프북 상태 확인
 			this.sql = "SELECT deleted FROM stampbook WHERE stampbook_id = ?";
