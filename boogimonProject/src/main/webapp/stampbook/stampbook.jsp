@@ -13,7 +13,6 @@
 
 <%
 	response.setHeader("Access-Control-Allow-Origin","*");
-	// System.out.println(System.currentTimeMillis());
 	out.clearBuffer();
 	StampbookJsonWriter stbJson = new StampbookJsonWriter(stbDAO, stbdDAO);
 	String command = request.getParameter("command");
