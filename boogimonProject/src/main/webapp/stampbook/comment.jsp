@@ -36,7 +36,7 @@
 		if(command != null && command.equals("delete")){
 			if(commentDO.getUserId() != null && request.getParameter("commentId") != null){
 				try {
-					resultCode = stbdDAO.deleteComment(commentDO) == 1 ? 0 : 99;
+					resultCode = stbdDAO.deleteComment(commentDO) == 1 ? 0 : 2;
 				}
 				catch(Exception e){
 					resultCode = BoogiException.getErrCode(e);
@@ -55,7 +55,7 @@
 		// 공백 불가 검사를 프론트에서..
 		if(commentDO.getUserId() != null && commentDO.getComment() != null && commentDO.getComment().length() <= 250) {
 			try {
-				stbdDAO.insertComment(commentDO, stampbookDO.getStampbookId());
+				resultCode = stbdDAO.insertComment(commentDO, stampbookDO.getStampbookId()) == 1 ? 0 : 2;
 			}
 			catch(Exception e){
 				resultCode = BoogiException.getErrCode(e);
@@ -68,6 +68,10 @@
 			resultCode = 11;
 		}
 		jsonStr = stbJson.getGeneralResponse(resultCode);
+	}
+	
+	if(jsonStr.isEmpty()){
+		jsonStr = stbJson.getGeneralResponse(10);
 	}
 	
 	out.println(jsonStr);
