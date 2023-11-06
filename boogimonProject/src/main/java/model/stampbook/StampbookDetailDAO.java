@@ -184,22 +184,39 @@ public class StampbookDetailDAO {
 		return stampList;
 	}
 	
-	/** 스탬프 찍기 (스탬프 이미지 업로드 기능) 미구현 */
-	public int setStampImg(String user_id, int stampbook_id, int stampNo, String imgURL) {
+	/** 스탬프 찍기 (스탬프 이미지 업로드 기능) 
+	 * @throws Exception */
+	public int setStampImg(String user_id, int stampbook_id, StampDO stamp) throws Exception {
 		int rowCount = 0;
 		
-		// 이미지 업로드 기능 미구현으로 미완성
+		boolean notExists = false;
+		boolean isStampedDuplicate = false;
+		
 		try {
-			this.sql = "INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG) "
-					+ "VALUES (?, ?, ?, ?);";
+			// 사용자가 담은 스탬프북인지 검사
+			this.sql = "SELECT pick_date FROM user_pick WHERE user_id = ? AND stampbook_id = ?";
 			
 			this.pstmt = this.conn.prepareStatement(sql);
 			
 			this.pstmt.setString(1, user_id);
 			this.pstmt.setInt(2, stampbook_id);
-			this.pstmt.setInt(3, stampNo);
-			this.pstmt.setString(4, imgURL);
-			rowCount = pstmt.executeUpdate();
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				this.sql = "INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG) "
+						+ "VALUES (?, ?, ?, ?)";
+				
+				this.pstmt = this.conn.prepareStatement(sql);
+				
+				this.pstmt.setString(1, user_id);
+				this.pstmt.setInt(2, stampbook_id);
+				this.pstmt.setInt(3, stamp.getStampNo());
+				this.pstmt.setString(4, stamp.getUploadImg());
+				rowCount = pstmt.executeUpdate();
+			}
+			else {
+				notExists = true;
+			}
 		}
 		catch(Exception e) {
 			e.printStackTrace();
@@ -213,6 +230,10 @@ public class StampbookDetailDAO {
 			catch(Exception e) {
 				e.printStackTrace();
 			}
+		}
+		
+		if(notExists) {
+			throw new BoogiException(37, "사용자가 담지 않은 스탬프북입니다.");
 		}
 		
 		return rowCount;

@@ -155,7 +155,7 @@ CREATE TABLE USER_STAMP_HISTORY (
     USER_ID VARCHAR2(30),
     STAMPBOOK_ID NUMBER(6),
     STAMPNO NUMBER(3),
-    UPLOAD_IMG VARCHAR2(500) CONSTRAINT USH_UPLOAD_IMG_nn NOT NULL,
+    UPLOAD_IMG VARCHAR2(100) CONSTRAINT USH_UPLOAD_IMG_nn NOT NULL,
     STAMPED_DATE DATE DEFAULT SYSDATE CONSTRAINT USH_STAMPED_DATE_nn NOT NULL,
     CONSTRAINT USH_pk PRIMARY KEY (USER_ID, STAMPBOOK_ID, STAMPNO),
     CONSTRAINT USH_USER_PICK_fk FOREIGN KEY (USER_ID, STAMPBOOK_ID) REFERENCES USER_PICK(USER_ID, STAMPBOOK_ID),
@@ -243,45 +243,45 @@ SET TERMOUT OFF
 --관리자 더미 데이터
 -- boogi@boogi.com / boogi123
 INSERT INTO BoogiTrainer(USER_ID, PASSWD, SALT, NICKNAME, EXP, PROFILE_IMG)
-VALUES ('boogi@boogi.com', '330cf0b83e30a9e8ac61211d3a777628ff80a9a12e0659d9a238842230f69320', 'a498b3c99a378d9c11fa8d60cc66b9d5', 'BIJUGI', 100000, 'profile1.jpg');
+VALUES ('boogi@boogi.com', '330cf0b83e30a9e8ac61211d3a777628ff80a9a12e0659d9a238842230f69320', 'a498b3c99a378d9c11fa8d60cc66b9d5', 'BIJUGI', 100000, '/boogimon/upload/user/profile/sakaki.png');
 -- admin / admin123
 INSERT INTO BoogiTrainer(USER_ID, PASSWD, SALT, NICKNAME, EXP, PROFILE_IMG)
-VALUES ('admin', 'a092a0acff62151cc750c450dd3311288497f9dd6ea1579a44ab5d26a51aeb9e', '7b28b8cd2c5723bf414c00e9b0b6f1e3', '운영자', 100000, 'profile1.jpg');
+VALUES ('admin@boogimon.com', 'a092a0acff62151cc750c450dd3311288497f9dd6ea1579a44ab5d26a51aeb9e', '7b28b8cd2c5723bf414c00e9b0b6f1e3', '운영자', 100000, '/boogimon/upload/user/profile/admin.png');
 -- boogi / boogi123
 INSERT INTO BoogiTrainer(USER_ID, PASSWD, SALT, NICKNAME, EXP, PROFILE_IMG)
-VALUES ('boogi', 'b5b522134aa9c7b14519c3df70134e699ae5130f4ad8b88e8788237761da6f65', '6bbf70841c6fbdd6594f993cfd31ea03', '부기몬', 100000, 'profile1.jpg');
+VALUES ('boogi@boogimon.com', 'b5b522134aa9c7b14519c3df70134e699ae5130f4ad8b88e8788237761da6f65', '6bbf70841c6fbdd6594f993cfd31ea03', '부기몬', 100000, '/boogimon/upload/user/profile/boogi.png');
 
 --일반 회원 더미 데이터
 -- red@google.com / red456
 INSERT INTO BoogiTrainer(USER_ID, PASSWD, SALT, NICKNAME, EXP, PROFILE_IMG)
-VALUES ('red@google.com', 'beafc8f778046a24875bde54dd2bcb69bcf0cb64939ad8b507f767a0118dde76', '9c5b5181058248112c853b143ced7c8a', 'RED',0, 'profile2.jpg');
+VALUES ('red@google.com', 'beafc8f778046a24875bde54dd2bcb69bcf0cb64939ad8b507f767a0118dde76', '9c5b5181058248112c853b143ced7c8a', 'RED',0, '/boogimon/upload/user/profile/red.png');
 -- green@google.com / green456
 INSERT INTO BoogiTrainer(USER_ID, PASSWD, SALT, NICKNAME, EXP, PROFILE_IMG)
-VALUES ('green@google.com', '58e13f9b98d980900c180abed0d825fd14ed84d94ce169bcc930d51927ac94a4', '1e738ed5bcd340b67001dbc1bcd54464', 'Green',0, 'profile2.jpg');
+VALUES ('green@google.com', '58e13f9b98d980900c180abed0d825fd14ed84d94ce169bcc930d51927ac94a4', '1e738ed5bcd340b67001dbc1bcd54464', 'Green',0, '/boogimon/upload/user/profile/green.png');
 -- gold@google.com / gold456
 INSERT INTO BoogiTrainer(USER_ID, PASSWD, SALT, NICKNAME, EXP, PROFILE_IMG)
-VALUES ('gold@google.com', '61944619678db869b5a11af3811dd53142b8ba5efc9177fdfdf29ece5904dc43', 'e140b8a5cd8f6111b4ea27d2b8ea42cc', '목호',0, 'profile2.jpg');
+VALUES ('gold@google.com', '61944619678db869b5a11af3811dd53142b8ba5efc9177fdfdf29ece5904dc43', 'e140b8a5cd8f6111b4ea27d2b8ea42cc', '목호',0, '/boogimon/upload/user/profile/wataru.png');
 -- silver@google.com / silver456
 INSERT INTO BoogiTrainer(USER_ID, PASSWD, SALT, NICKNAME, EXP, PROFILE_IMG)
-VALUES ('silver@google.com', '8fcb1de0bdae31d664ed4bd2700c6189b942d476cdeff49533320600d3b980da', '6e4da0173a794d37716b34d2fc2f298c', '성호', 0, 'profile2.jpg');
+VALUES ('silver@google.com', '8fcb1de0bdae31d664ed4bd2700c6189b942d476cdeff49533320600d3b980da', '6e4da0173a794d37716b34d2fc2f298c', '성호', 0, '/boogimon/upload/user/profile/daigo.png');
 -- ruby@google.com / ruby456
 INSERT INTO BoogiTrainer(USER_ID, PASSWD, SALT, NICKNAME, EXP, PROFILE_IMG)
-VALUES ('ruby@google.com', '0c92634d6969b19b7a00027c98f9569869c19689127004027880aab92ffda238', '1dcf5200ad94ca5a8655a25987690035', '윤진', 0, 'profile2.jpg');
+VALUES ('ruby@google.com', '0c92634d6969b19b7a00027c98f9569869c19689127004027880aab92ffda238', '1dcf5200ad94ca5a8655a25987690035', '윤진', 0, '/boogimon/upload/user/profile/mikuri.png');
 -- sapphire@google.com / sapphire456
 INSERT INTO BoogiTrainer(USER_ID, PASSWD, SALT, NICKNAME, EXP, PROFILE_IMG)
-VALUES ('sapphire@google.com', '3813e1d1b7440bf0839e9a013991b39ecf9ebd1c3e778976fdd441374626c5b7', '811f725bd604fea4b29ea68ed80dbd68', 'Bomi', 0, 'profile2.jpg');
+VALUES ('sapphire@google.com', '3813e1d1b7440bf0839e9a013991b39ecf9ebd1c3e778976fdd441374626c5b7', '811f725bd604fea4b29ea68ed80dbd68', 'Bomi', 0, '/boogimon/upload/user/profile/haruka.png');
 -- diamond@google.com / diamond456
 INSERT INTO BoogiTrainer(USER_ID, PASSWD, SALT, NICKNAME, EXP, PROFILE_IMG)
-VALUES ('diamond@google.com', '5c5c418e16d1478195c051714d47121776e257a8a163e489013d0f5535f2162a', '442cb9b9510f8a1f4186fc91bb9f3968', 'Nancheon', 0, 'profile2.jpg');
+VALUES ('diamond@google.com', '5c5c418e16d1478195c051714d47121776e257a8a163e489013d0f5535f2162a', '442cb9b9510f8a1f4186fc91bb9f3968', 'Nancheon', 0, '/boogimon/upload/user/profile/shirona.png');
 -- pearl@google.com / pearl456
 INSERT INTO BoogiTrainer(USER_ID, PASSWD, SALT, NICKNAME, EXP, PROFILE_IMG)
-VALUES ('pearl@google.com', '4c09232d1d731135b999ab9b4d6301a0b0ff8da594f75e97d1ebb727d58deaa6', '9b37a4bbcc7b5b44ee4a9a4c282bab9c', 'Bichna', 0, 'profile2.jpg');
+VALUES ('pearl@google.com', '4c09232d1d731135b999ab9b4d6301a0b0ff8da594f75e97d1ebb727d58deaa6', '9b37a4bbcc7b5b44ee4a9a4c282bab9c', 'Bichna', 0, '/boogimon/upload/user/profile/hikari.png');
 -- black@google.com / black456
 INSERT INTO BoogiTrainer(USER_ID, PASSWD, SALT, NICKNAME, EXP, PROFILE_IMG)
-VALUES ('black@google.com', '9437a79f30be98e795bfd9fd9f4d3bf616eecdd843a8be9212f1058721b20561', 'f205370ea7511812657c6995645132bd', '노간주', 0, 'profile2.jpg');
+VALUES ('black@google.com', '9437a79f30be98e795bfd9fd9f4d3bf616eecdd843a8be9212f1058721b20561', 'f205370ea7511812657c6995645132bd', '노간주', 0, '/boogimon/upload/user/profile/adeku.png');
 -- white@google.com / white456
 INSERT INTO BoogiTrainer(USER_ID, PASSWD, SALT, NICKNAME, EXP, PROFILE_IMG)
-VALUES ('white@google.com', 'a7c55f1b971dbf09460063f827f251fd2e8f420a405ea1e707d67c3369e09b64', '863d8136fee38f2b86e514616c25bec8', 'Iris', 0, 'profile2.jpg');
+VALUES ('white@google.com', 'a7c55f1b971dbf09460063f827f251fd2e8f420a405ea1e707d67c3369e09b64', '863d8136fee38f2b86e514616c25bec8', 'Iris', 0, '/boogimon/upload/user/profile/iris.png');
 
 ----------------------------------------------------------------------------
 

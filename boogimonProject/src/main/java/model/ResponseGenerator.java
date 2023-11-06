@@ -27,6 +27,8 @@ public class ResponseGenerator {
 		codeMap.put(33, "UNLIKE_PROCESSING_FAILED_ERROR");
 		codeMap.put(34, "LIKE_COUNT_INCREMENT_FAILED_ERROR");
 		codeMap.put(35, "LIKE_COUNT_DECREMENT_FAILED_ERROR");
+		codeMap.put(36, "ALREADY_PICKED_STAMPBOOK_ERROR");
+		codeMap.put(37, "UNPICKED_STAMPBOOK_ERROR");
 		codeMap.put(50, "NON_EXISTENT_STAMP_ERROR");
 		codeMap.put(60, "NON_EXISTENT_PLACE_ERROR");
 		codeMap.put(99, "UNKNOWN_ERROR");

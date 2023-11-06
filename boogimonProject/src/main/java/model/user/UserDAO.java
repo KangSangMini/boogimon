@@ -58,7 +58,6 @@ public class UserDAO {
 				pstmt.setString(2, ue.hashing(pw, salt));
 				pstmt.setString(3, salt);;
 				pstmt.setString(4, boogiTrainer.getNickname());
-//				boogiTrainer.setProfileImg("sample.png");
 				pstmt.setString(5, boogiTrainer.getProfileImg());
 				
 				rowCount = pstmt.executeUpdate();
@@ -175,8 +174,8 @@ public class UserDAO {
 		return BoogiTrainer;
 	}
 	
-		//changeNickname
-		public int changeNickname(UserDO BoogiTrainer) {
+	//changeNickname
+	public int changeNickname(UserDO BoogiTrainer) {
 	    int rowCount = 0;
 	    this.sql = "update Boogie_Trainer set NICKNAME = ? WHERE USER_ID = ?"; 
 
@@ -201,7 +200,7 @@ public class UserDAO {
 	    return rowCount;
 	}
 	
-//changePasswd		
+	//changePasswd		
 	public int changePasswd(UserDO BoogiTrainer) {
 		int rowCount = 0;
 		this.sql = "update BoogiTrainer set PASSWD = ? where USER_ID = ?";
@@ -229,7 +228,7 @@ public class UserDAO {
 		return rowCount;
 	}
 
-//deleteUser
+	//deleteUser
 	public int deleteUser(String userId) {
 		int rowCount = 0;
 		this.sql = "update BoogiTrainer set DELETED = ? where USER_ID = ?";
@@ -245,16 +244,72 @@ public class UserDAO {
 		finally {
 			try {
 				if(!pstmt.isClosed()) {
-				pstmt.close();
+					pstmt.close();
+				}
 			}
+			catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return rowCount;
+	}
+	
+	/** 사용자 프로필 사진 교체 
+	 * @throws Exception */
+	public int changeImg(UserDO user) throws Exception {
+		int rowCount = 0;
+		
+		boolean notExists = false;
+		
+		try {
+			this.conn.setAutoCommit(false);
+			
+			this.sql = "SELECT user_id FROM boogiTrainer WHERE user_id = ?";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, user.getUserId());
+			this.rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				this.sql = "UPDATE boogiTrainer SET profile_img = ? WHERE user_id = ?";
+				
+				pstmt = conn.prepareStatement(sql);			
+				pstmt.setString(1, user.getProfileImg());
+				pstmt.setString(2, user.getUserId());
+				
+				rowCount = pstmt.executeUpdate();
+				this.conn.commit();
+			}
+			else {
+				notExists = true;
+				this.conn.rollback();
+			}
+			
 		}
 		catch(Exception e) {
 			e.printStackTrace();
+			this.conn.rollback();
 		}
+		finally {			
+			try {
+				this.conn.setAutoCommit(true);
+				
+				if(!pstmt.isClosed()) {
+					pstmt.close();
+				}
+			}
+			catch(Exception e) {
+				e.printStackTrace();
+				this.conn.rollback();
+			}
+		}
+		
+		if(notExists) {
+			throw new BoogiException(20, "존재하지 않는 사용자입니다.");
+		}
+
+		return rowCount;
 	}
-	
-	return rowCount;
-}
 	
 	public void closeConn() {
 		try {
