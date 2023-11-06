@@ -19,7 +19,6 @@
 	StampbookJsonWriter stbJson = new StampbookJsonWriter();
 	stbJson.setStampbookDetailDAO(stbdDAO);
 	String command = (String)multi.getParameter("command");
-	System.out.println(command);
 	int resultCode = 0;
 	String jsonStr = "";
 	
