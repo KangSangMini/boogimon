@@ -243,8 +243,8 @@ SET TERMOUT OFF
 --관리자 더미 데이터
 -- boogi@boogi.com / boogi123
 INSERT INTO BoogiTrainer(USER_ID, PASSWD, SALT, NICKNAME, EXP, PROFILE_IMG)
-VALUES ('boogi@boogimon.com', '330cf0b83e30a9e8ac61211d3a777628ff80a9a12e0659d9a238842230f69320', 'a498b3c99a378d9c11fa8d60cc66b9d5', 'BIJUGI', 100000, '/boogimon/upload/user/profile/sakaki.png');
--- admin@boogimon / admin123
+VALUES ('bijugi@boogimon.com', '330cf0b83e30a9e8ac61211d3a777628ff80a9a12e0659d9a238842230f69320', 'a498b3c99a378d9c11fa8d60cc66b9d5', 'BIJUGI', 100000, '/boogimon/upload/user/profile/sakaki.png');
+-- admin@boogimon.com / admin123
 INSERT INTO BoogiTrainer(USER_ID, PASSWD, SALT, NICKNAME, EXP, PROFILE_IMG)
 VALUES ('admin@boogimon.com', 'a092a0acff62151cc750c450dd3311288497f9dd6ea1579a44ab5d26a51aeb9e', '7b28b8cd2c5723bf414c00e9b0b6f1e3', '운영자', 100000, '/boogimon/upload/user/profile/admin.png');
 -- boogi / boogi123
@@ -681,7 +681,7 @@ PROMPT 스탬프북 더미 데이터 입력
 SET TERMOUT OFF
 
 INSERT INTO STAMPBOOK (STAMPBOOK_ID, TITLE, DESCRIPTION, USER_ID)
-VALUES (seq_stampbook_id.nextval, '부산 세븐비치 여행 총정리', '세븐비치이지만 스탬프는 9개임', 'admin@boogimon');
+VALUES (seq_stampbook_id.nextval, '부산 세븐비치 여행 총정리', '세븐비치이지만 스탬프는 9개임', 'admin@boogimon.com');
 
 INSERT INTO STAMP (STAMPBOOK_ID, STAMPNO, PLACE_ID)
 VALUES (seq_stampbook_id.currval, 1, 71);
@@ -704,12 +704,12 @@ VALUES (seq_stampbook_id.currval, 9, 7);
 
 -- 스탬프북 작성과 함께 작성자에게 스탬프북을 pick해야함
 INSERT INTO USER_PICK (USER_ID, STAMPBOOK_ID)
-VALUES ('admin@boogimon', seq_stampbook_id.currval);
+VALUES ('admin@boogimon.com', seq_stampbook_id.currval);
 
 
 -- 1번 무작위 스탬프북 
 INSERT INTO STAMPBOOK (STAMPBOOK_ID, TITLE, DESCRIPTION, USER_ID)
-VALUES (seq_stampbook_id.nextval, '무작위 더미 스탬프북1', '무작위 번호 부여한 스탬프북 차후에 수정해야함', 'admin@boogimon');
+VALUES (seq_stampbook_id.nextval, '무작위 더미 스탬프북1', '무작위 번호 부여한 스탬프북 차후에 수정해야함', 'admin@boogimon.com');
 
 INSERT INTO STAMP (STAMPBOOK_ID, STAMPNO, PLACE_ID)
 VALUES (seq_stampbook_id.currval, 1, 23);
@@ -732,11 +732,11 @@ VALUES (seq_stampbook_id.currval, 9, 1);
 
 -- 스탬프북 작성과 함께 작성자에게 스탬프북을 pick해야함
 INSERT INTO USER_PICK (USER_ID, STAMPBOOK_ID)
-VALUES ('admin@boogimon', seq_stampbook_id.currval);
+VALUES ('admin@boogimon.com', seq_stampbook_id.currval);
 
 -- 2번 무작위 스탬프북 
 INSERT INTO STAMPBOOK (STAMPBOOK_ID, TITLE, DESCRIPTION, USER_ID)
-VALUES (seq_stampbook_id.nextval, '무작위 더미 스탬프북2', '무작위 번호 부여한 스탬프북 차후에 수정해야함', 'admin@boogimon');
+VALUES (seq_stampbook_id.nextval, '무작위 더미 스탬프북2', '무작위 번호 부여한 스탬프북 차후에 수정해야함', 'admin@boogimon.com');
 
 INSERT INTO STAMP (STAMPBOOK_ID, STAMPNO, PLACE_ID)
 VALUES (seq_stampbook_id.currval, 1, 3);
@@ -759,7 +759,7 @@ VALUES (seq_stampbook_id.currval, 9, 42);
 
 -- 스탬프북 작성과 함께 작성자에게 스탬프북을 pick해야함
 INSERT INTO USER_PICK (USER_ID, STAMPBOOK_ID)
-VALUES ('admin@boogimon', seq_stampbook_id.currval);
+VALUES ('admin@boogimon.com', seq_stampbook_id.currval);
 
 
 -- 그린이 운영자가 만든 스탬프북을 긴빠이해서 만듬
@@ -891,7 +891,7 @@ VALUES ('red@google.com', 3, 5, '/ush/sample.png');
 -- 1번 스탬프북을 삭제처리함
 UPDATE stampbook set deleted = 1 where stampbook_id = 1;
 -- 작성자가 삭제했으므로 작성자의 user_pick에서 삭제 
-DELETE FROM user_pick WHERE user_id = 'admin@boogimon' AND stampbook_id = 1;
+DELETE FROM user_pick WHERE user_id = 'admin@boogimon.com' AND stampbook_id = 1;
 
 -- 레드가 3번 스탬프북에 찍은 스탬프 모두 조회
 -- select * from user_stamp_history where user_id = 'red@google.com' and stampbook_id = 3;
