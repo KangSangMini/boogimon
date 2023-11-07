@@ -246,7 +246,7 @@ INSERT INTO BoogiTrainer(USER_ID, PASSWD, SALT, NICKNAME, EXP, PROFILE_IMG)
 VALUES ('bijugi@boogimon.com', '330cf0b83e30a9e8ac61211d3a777628ff80a9a12e0659d9a238842230f69320', 'a498b3c99a378d9c11fa8d60cc66b9d5', 'BIJUGI', 100000, '/boogimon/upload/user/profile/sakaki.png');
 -- admin@boogimon.com / admin123
 INSERT INTO BoogiTrainer(USER_ID, PASSWD, SALT, NICKNAME, EXP, PROFILE_IMG)
-VALUES ('admin@boogimon.com.com', 'a092a0acff62151cc750c450dd3311288497f9dd6ea1579a44ab5d26a51aeb9e', '7b28b8cd2c5723bf414c00e9b0b6f1e3', '운영자', 100000, '/boogimon/upload/user/profile/admin.png');
+VALUES ('admin@boogimon.com', 'a092a0acff62151cc750c450dd3311288497f9dd6ea1579a44ab5d26a51aeb9e', '7b28b8cd2c5723bf414c00e9b0b6f1e3', '운영자', 100000, '/boogimon/upload/user/profile/admin.png');
 -- boogi / boogi123
 INSERT INTO BoogiTrainer(USER_ID, PASSWD, SALT, NICKNAME, EXP, PROFILE_IMG)
 VALUES ('boogi@boogimon.com', 'b5b522134aa9c7b14519c3df70134e699ae5130f4ad8b88e8788237761da6f65', '6bbf70841c6fbdd6594f993cfd31ea03', '부기몬', 100000, '/boogimon/upload/user/profile/boogi.png');
