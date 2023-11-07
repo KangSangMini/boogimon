@@ -6,6 +6,7 @@ public class CommentDO {
 	private String userId;	// insert용
 	private String comment;
 	private String writeDate;
+	private String profileImg;
 	
 	public CommentDO() {
 		
@@ -49,5 +50,13 @@ public class CommentDO {
 
 	public void setWriteDate(String writeDate) {
 		this.writeDate = writeDate;
+	}
+
+	public String getProfileImg() {
+		return profileImg;
+	}
+
+	public void setProfileImg(String profileImg) {
+		this.profileImg = profileImg;
 	}
 }

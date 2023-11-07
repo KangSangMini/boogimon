@@ -130,6 +130,7 @@ public class StampbookJsonWriter extends JsonWriter{
 			cmtObj.put("nickname", comment.getNickname());
 			cmtObj.put("comment", comment.getComment());
 			cmtObj.put("writeDate", comment.getWriteDate());
+			cmtObj.put("profileImg", comment.getProfileImg());
 			
 			jsonArr.add(cmtObj);
 		}

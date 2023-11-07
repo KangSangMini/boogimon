@@ -47,6 +47,11 @@
 		}
 	}
 	
+	// 잘못된 요청
+	if(jsonStr.isEmpty()){
+		jsonStr = placeJson.getGeneralResponse(10);
+	}
+	
 	out.println(jsonStr);
 	out.flush();
 %>

@@ -261,7 +261,7 @@ public class StampbookDetailDAO {
 			// rs.getInt("deleted") == 0 : 삭제된 스탬프북이 아니며
 			if(rs.next()) {
 				if(rs.getInt("deleted") == 0) {
-					this.sql = "SELECT c.comment_id, bt.nickname, c.bComment, to_char(c.write_date, 'YYYY-MM-DD') as writeDate "
+					this.sql = "SELECT c.comment_id, bt.nickname, c.bComment, to_char(c.write_date, 'YYYY-MM-DD HH24:MI:SS') as writeDate, bt.profile_img "
 							+ "FROM STB_CMT c JOIN boogiTrainer bt ON c.user_id = bt.user_id "
 							+ "WHERE c.stampbook_id = ? AND c.deleted = 0 "
 							+ "ORDER BY c.write_date DESC";
@@ -277,6 +277,7 @@ public class StampbookDetailDAO {
 						comment.setNickname(rs.getString("nickname"));
 						comment.setComment(rs.getString("bComment"));
 						comment.setWriteDate(rs.getString("writeDate"));
+						comment.setProfileImg(rs.getString("profile_img"));
 						
 						commentList.add(comment);
 					}
