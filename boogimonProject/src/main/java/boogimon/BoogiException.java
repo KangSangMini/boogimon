@@ -1,5 +1,7 @@
 package boogimon;
 
+import java.sql.SQLException;
+
 @SuppressWarnings("serial")
 public class BoogiException extends Exception {
 	private final int ERROR_CODE;
@@ -18,6 +20,6 @@ public class BoogiException extends Exception {
 	}
 	
 	static public int getErrCode(Exception e) {
-		return (e instanceof BoogiException) ? ((BoogiException) e).getErrCode() : 99; 
+		return (e instanceof BoogiException) ? ((BoogiException) e).getErrCode() : (e instanceof SQLException) ? 1 : 99;
 	}
 }
