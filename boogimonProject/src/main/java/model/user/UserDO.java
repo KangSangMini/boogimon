@@ -10,6 +10,8 @@ public class UserDO {
 	private String regdate;
 	private int exp;
 	private String profileImg;
+	private int userTotalVisit;
+	private int userLikeCount;
 	
 	public UserDO(){
 		
@@ -78,6 +80,20 @@ public class UserDO {
 	public void setProfileImg(String profileImg) {
 		this.profileImg = profileImg;
 	}
-	
-	
+
+	public int getUserTotalVisit() {
+		return userTotalVisit;
+	}
+
+	public void setUserTotalVisit(int userTotalVisit) {
+		this.userTotalVisit = userTotalVisit;
+	}
+
+	public int getUserLikeCount() {
+		return userLikeCount;
+	}
+
+	public void setUserLikeCount(int userLikeCount) {
+		this.userLikeCount = userLikeCount;
+	}
 }
