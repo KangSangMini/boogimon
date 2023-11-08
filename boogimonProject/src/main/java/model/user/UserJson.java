@@ -17,25 +17,25 @@ public class UserJson {
 		this.UserDAO = UserDAO;
 	}
 	
-	@SuppressWarnings("unchecked") 
-	public String getAllUserJson() {
-		ArrayList<UserDO> userList = this.UserDAO.getAllUsers();
-		
-		JSONArray userArray = new JSONArray();
-		JSONObject UserJson = null;
-		
-		for(UserDO user : userList) {
-			UserJson = new JSONObject();
-			
-			UserJson.put("id", user.getUserId());
-			UserJson.put("nickname", user.getNickname());
-			UserJson.put("regdate", user.getRegdate());
-			
-			userArray.add(UserJson);
-		}
-		
-		return userArray.toJSONString();
-	}
+//	@SuppressWarnings("unchecked") 
+//	public String getAllUserJson() {
+//		ArrayList<UserDO> userList = this.UserDAO.getAllUsers();
+//		
+//		JSONArray userArray = new JSONArray();
+//		JSONObject UserJson = null;
+//		
+//		for(UserDO user : userList) {
+//			UserJson = new JSONObject();
+//			
+//			UserJson.put("id", user.getUserId());
+//			UserJson.put("nickname", user.getNickname());
+//			UserJson.put("regdate", user.getRegdate());
+//			
+//			userArray.add(UserJson);
+//		}
+//		
+//		return userArray.toJSONString();
+//	}
 	
 	@SuppressWarnings("unchecked")
 	public String getUserJson(String id) {
