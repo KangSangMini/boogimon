@@ -102,31 +102,42 @@ public class UserDAO {
 		return rowCount;
 	}
 	
-	public boolean isNicknameDuplicate(NicknameAPI getNicknameAPI) {
-	    
-		boolean isNicknameDuplicate = false;
+	public boolean loginCheck(UserDO user) {
+		boolean result = false;
 		
-		sql = "select NICKNAME from BoogiTrainer where NICKNAME = ?";
-
-	    try {
-	    	 
-	    	  pstmt = conn.prepareStatement(sql);
-	          pstmt.setString(1, getNicknameAPI.getNicknameAPI("json",1));
-			  
-	          rs = pstmt.executeQuery();
-	          if(rs.next()) {
-	        	  String checkNickname = rs.getString("NICKNAME"); 
-	        	  
-	        	  if(checkNickname.equals(getNicknameAPI)) {
-	        		  isNicknameDuplicate = true;
-	        	  }
-	          } 
-	         
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    }
-
-	    return isNicknameDuplicate;
+		sql = "select PASSWD, SALT, NICKNAME from BoogiTrainer where USER_ID = ?";
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, user.getUserId().toLowerCase());
+			
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				String tempPw = rs.getString("PASSWD");
+				String tempSalt = rs.getString("SALT");
+				
+				if(tempPw.equals(ue.hashing(user.getPasswd(), tempSalt))) {
+					result = true;
+					user.setNickname(rs.getString("nickname"));
+				}
+			}
+			
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+		finally {
+			if(pstmt != null){
+				try{
+					pstmt.close();
+				}
+				catch(Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		
+		return result;
 	}
 	
 	/** 회원 정보 요청 */
@@ -172,6 +183,33 @@ public class UserDAO {
 		}		
 		
 		return user;
+	}
+	
+	public boolean isNicknameDuplicate(NicknameAPI getNicknameAPI) {
+	    
+		boolean isNicknameDuplicate = false;
+		
+		sql = "select NICKNAME from BoogiTrainer where NICKNAME = ?";
+
+	    try {
+	    	 
+	    	  pstmt = conn.prepareStatement(sql);
+	          pstmt.setString(1, getNicknameAPI.getNicknameAPI("json",1));
+			  
+	          rs = pstmt.executeQuery();
+	          if(rs.next()) {
+	        	  String checkNickname = rs.getString("NICKNAME"); 
+	        	  
+	        	  if(checkNickname.equals(getNicknameAPI)) {
+	        		  isNicknameDuplicate = true;
+	        	  }
+	          } 
+	         
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+
+	    return isNicknameDuplicate;
 	}
 	
 	/** 회원 닉네임 수정 
