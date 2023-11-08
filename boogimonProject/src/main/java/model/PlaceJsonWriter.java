@@ -30,7 +30,13 @@ public class PlaceJsonWriter extends JsonWriter{
 		for(StampDO place : boogiBookList) {
 			boogi = new JSONObject();
 			
-			boogi.put("thumbnail", place.getThumbnail());
+			if(place.getThumbnail() != null) {
+				boogi.put("thumbnail", place.getThumbnail());
+			}
+			else {
+				boogi.put("thumbnail", "/boogimon/images/thumnail_sample.png");
+			}
+			
 			boogi.put("name", place.getName());
 			boogi.put("lastVisitDate", place.getLastVisitDate());
 			boogi.put("totalVisitCount", place.getTotalVisitCount());
