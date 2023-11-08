@@ -1,3 +1,17 @@
+--부기몬 제공 명소 정보-- 
+-- PLACE table과 PLACE_DETAIL table 정보를 함께 입력 / type : 900~
+-- 시퀀스 PLACE : seq_place_id.nextval / PLACE_DETAIL : seq_place_id.currval
+-- ex)
+-- INSERT INTO PLACE (PLACE_ID, NAME, TYPE, ADDR, LAT, LON, THUMBNAIL)
+-- VALUES (seq_place_id.nextval, '해운대 미포철길', 900, '부산광역시 해운대 어딘가', 'latitude', 'longitude', 'thumbnail_url');
+-- INSERT INTO PLACE_DETAIL (PLACE_ID, TEL, DETAIL, PAY, IMG, HOMEPAGE, OPEN, CLOSE, FACILITY)
+-- VALUES (seq_place_id.currval, '051-701-5648', '해운대 미포철길', '무료', 'example.jpg', 'www.bluelinepark.com', '09:00 AM', '06:00 PM', '주차장');
+-- INSERT INTO PLACE (PLACE_ID, NAME, TYPE, ADDR, LAT, LON, THUMBNAIL)
+-- VALUES (seq_place_id.nextval, '황령산 레포츠공원', 900, '부산광역시 대연동 어딘가', 'latitude', 'longitude', 'thumbnail_url');
+--INSERT INTO PLACE_DETAIL (PLACE_ID, TEL, DETAIL, PAY, IMG, HOMEPAGE, OPEN, CLOSE, FACILITY)
+-- VALUES (seq_place_id.currval, '051-605-4128', '황령산 레포츠공원', '무료', 'example.jpg', 'https://www.jsports.or.kr/bbs/content.php?co_id=07_01', '09:00 AM', '06:00 PM', '와이파이, 주차장');
+SET ESCAPE ON
+
 --수정 전 데이터 삭제--
 DELETE FROM PLACE_DETAIL
 WHERE PLACE_ID IN (SELECT PLACE_ID FROM PLACE WHERE TYPE = '900');
@@ -156,4 +170,5 @@ VALUES(seq_place_id.nextval,'허브랑야생화','900','부산광역시 금정�
 INSERT INTO PLACE_DETAIL (PLACE_ID, TEL, DETAIL, PAY, IMG, HOMEPAGE, OPEN, CLOSE, FACILITY)
 VALUES (seq_place_id.currval,'051-515-0130','허브랑야생화','무료',NULL,'https://www.herbrang.kr','11:00 AM','06:30 PM','주차장,화장실');
 
+SET ESCAPE OFF
 COMMIT;
