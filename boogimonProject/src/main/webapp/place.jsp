@@ -20,7 +20,7 @@
 
 	if(request.getMethod().equals("GET")){
 		// 명소의 상세 정보 요청
-		if(command == null && placeId != -1) {
+		if(command == null && request.getParameter("placeId") != null) {
 			jsonStr = placeJson.getPlaceDetailJson(placeId);
 		}
 		// 명소 목록 요청
