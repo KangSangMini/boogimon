@@ -4,8 +4,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.SQLSyntaxErrorException;
 import java.sql.Statement;
 
 import boogimon.BoogiException;
@@ -35,7 +33,6 @@ public class UserDAO {
 	
 	//joinUser
 	public int joinUser(UserDO boogiTrainer) throws Exception {
-		
 		
 		int rowCount = 0;
 	
@@ -140,23 +137,31 @@ public class UserDAO {
 		return result;
 	}
 	
-	/** 회원 정보 요청 */
-	public UserDO getUser(String userId) {
+	/** 회원 정보 요청 
+	 * @throws Exception */
+	public UserDO getUser(String userId) throws Exception {
 		UserDO user = new UserDO();
-		this.sql = "SELECT u.nickname, u.profile_img, TO_CHAR(u.regdate, 'YYYY-MM-DD HH24:MI:SS') AS regdate, u.exp, "
-				+ "(SELECT COUNT(ush.stamped_Date) "
-				+ "from user_stamp_history ush "
-				+ "where ush.user_id = u.user_id) AS totalVisit, "
-				+ "(SELECT count(stb.user_id) "
-				+ "from stampbook stb "
-				+ "join user_like ul on ul.stampbook_id = stb.stampbook_id "
-				+ "where stb.user_id = u.user_id) AS likeCount "
-				+ "FROM boogiTrainer u "
-				+ "WHERE u.user_id = ?";
+		boolean notExists = false;
+		
 		try {
+			// 사용자의 닉네임, 프로필 이미지, 가입일, 경험치, 스탬프 찍은 횟수, 받은 좋아요 수, 랭킹순위
+			this.sql = "SELECT u.nickname, u.profile_img, TO_CHAR(u.regdate, 'YYYY-MM-DD HH24:MI:SS') AS regdate, u.exp, "
+					+ "COUNT(ush.stamped_Date) AS totalVisit, nvl(likeCount, 0) AS likeCount, ur.rnum AS ranking "
+					+ "FROM boogiTrainer u "
+					+ "LEFT OUTER JOIN user_stamp_history ush ON u.user_id = ush.user_id "
+					+ "LEFT OUTER JOIN (SELECT stb.user_id AS origin, COUNT(stb.user_id) AS likeCount "
+					+ "FROM stampbook stb "
+					+ "JOIN user_like ul ON ul.stampbook_id = stb.stampbook_id "
+					+ "WHERE stb.user_id = ? "
+					+ "GROUP BY stb.user_id) ON origin = u.user_id "
+					+ "JOIN user_ranking ur ON ur.user_id = u.user_id "
+					+ "WHERE u.user_id = ? "
+					+ "GROUP BY u.nickname, u.profile_img, regdate, u.exp, likeCount, rnum";
+			
 			this.pstmt = conn.prepareStatement(sql);
 			
 			this.pstmt.setString(1, userId);
+			this.pstmt.setString(2, userId);
 			rs = this.pstmt.executeQuery();
 			
 			if(this.rs.next()) {
@@ -166,10 +171,15 @@ public class UserDAO {
 				user.setExp(rs.getInt("exp"));
 				user.setUserTotalVisit(rs.getInt("totalVisit"));
 				user.setUserLikeCount(rs.getInt("likeCount"));
+				user.setRanking(rs.getInt("ranking"));
+			}
+			else {
+				notExists = true;
 			}
 		}
 		catch(Exception e) {
 			e.printStackTrace();
+			throw e;
 		}
 		finally {
 			try {
@@ -180,36 +190,36 @@ public class UserDAO {
 			catch(Exception e) {
 				e.printStackTrace();
 			}
-		}		
+		}
+		
+		if(notExists) {
+			throw new BoogiException(20, "존재하지 않는 사용자입니다.");
+		}
 		
 		return user;
 	}
 	
-	public boolean isNicknameDuplicate(NicknameAPI getNicknameAPI) {
-	    
-		boolean isNicknameDuplicate = false;
+	/** 닉네임 중복 체크 */
+	public boolean isNicknameUnique(String nickname) throws Exception{
+		boolean isNicknameUnique = true;
 		
-		sql = "select NICKNAME from BoogiTrainer where NICKNAME = ?";
+		this.sql = "select NICKNAME from BoogiTrainer where NICKNAME = ?";
 
 	    try {
-	    	 
-	    	  pstmt = conn.prepareStatement(sql);
-	          pstmt.setString(1, getNicknameAPI.getNicknameAPI("json",1));
-			  
+	    	  this.pstmt = conn.prepareStatement(sql);
+	          this.pstmt.setString(1, nickname);
 	          rs = pstmt.executeQuery();
+	          
 	          if(rs.next()) {
-	        	  String checkNickname = rs.getString("NICKNAME"); 
-	        	  
-	        	  if(checkNickname.equals(getNicknameAPI)) {
-	        		  isNicknameDuplicate = true;
-	        	  }
-	          } 
+	        	  isNicknameUnique = false;
+	          }
 	         
 	    } catch (Exception e) {
 	        e.printStackTrace();
+	        throw e;
 	    }
 
-	    return isNicknameDuplicate;
+	    return isNicknameUnique;
 	}
 	
 	/** 회원 닉네임 수정 
@@ -258,7 +268,7 @@ public class UserDAO {
 			this.rs = pstmt.executeQuery();
 			
 			if(rs.next()) {
-				
+
 				this.sql = "UPDATE boogiTrainer SET passwd = ?, salt = ? WHERE user_id = ?";
 				
 				String salt = ue.getSalt();
@@ -277,12 +287,12 @@ public class UserDAO {
 			}
 		}
 		catch(Exception e) {
-			if(!pstmt.isClosed()) {
-				pstmt.close();
-			}
-			this.conn.setAutoCommit(true);
+//			if(!pstmt.isClosed()) {
+//				pstmt.close();
+//			}
+//			this.conn.setAutoCommit(true);
 			e.printStackTrace();
-			this.conn.rollback();
+//			this.conn.rollback();
 			throw e;
 		}
 		finally {
@@ -432,29 +442,3 @@ public class UserDAO {
 	}
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

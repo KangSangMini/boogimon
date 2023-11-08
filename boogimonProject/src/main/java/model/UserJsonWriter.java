@@ -2,6 +2,7 @@ package model;
 
 import org.json.simple.JSONObject;
 
+import boogimon.BoogiException;
 import model.user.UserDAO;
 import model.user.UserDO;
 
@@ -21,36 +22,43 @@ public class UserJsonWriter extends JsonWriter{
 	
 	@SuppressWarnings("unchecked")
 	public String getUserInfo(UserDO user) {
-		JSONObject jsonObj = getResponseGenerator().getResponseJsonObj(0);
+		JSONObject jsonObj = null;
 		JSONObject userObj = new JSONObject();
+		int resultCode = 0;
 		
-		user = userDAO.getUser(user.getUserId());
+		try {
+			user = userDAO.getUser(user.getUserId());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			resultCode = BoogiException.getErrCode(e);
+		}
+		finally {
+			jsonObj = getResponseGenerator().getResponseJsonObj(resultCode);
+		}
+		
 		userObj.put("nickname", user.getNickname());
 		userObj.put("regdate", user.getRegdate());
 		userObj.put("exp", user.getExp());
 		userObj.put("profileImg", user.getProfileImg());
+		userObj.put("userTotalVisit", user.getUserTotalVisit());
+		userObj.put("userLikeCount", user.getUserLikeCount());
+		userObj.put("ranking", user.getRanking());
 		
 		jsonObj.put("user", userObj);
 		
 		return jsonObj.toJSONString();
 	}
 	
-	@SuppressWarnings("unchecked")
+	/** 로그인 체크 */
 	public String authLogin(UserDO user) {
 		JSONObject jsonObj = null;
-		JSONObject userObj = new JSONObject();
 		
 		if(userDAO.loginCheck(user)) {
-			user = userDAO.getUser(user.getUserId());
-			
 			jsonObj = getResponseGenerator().getResponseJsonObj(0);
-			
-			userObj.put("userId", user.getUserId());
-			userObj.put("nickname", user.getNickname());
-			jsonObj.put("user", userObj);
 		}
 		else {
-			jsonObj = getResponseGenerator().getResponseJsonObj(99);
+			jsonObj = getResponseGenerator().getResponseJsonObj(21);
 		}
 		
 		return jsonObj.toJSONString();
