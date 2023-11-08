@@ -1,9 +1,7 @@
 package test;
 
-import model.user.NicknameAPI;
-import model.user.UserDAO;
-import model.user.UserDO;
-
+import model.UserDAO;
+import model.UserDO;
 
 public class TestUser {
 
@@ -35,37 +33,11 @@ public class TestUser {
 		if(member != null) {
 			System.out.printf("아이디: %s \n", member.getUserId());
 			System.out.printf("패스워드: %s \n", member.getPasswd());
-			System.out.printf("nickname: %s \n", member.getNickname());
+			System.out.printf("이름: %s \n", member.getNickname());
 			System.out.printf("등록일: %s \n", member.getRegdate());
 			
-			System.out.println("-------------------------------------");
 		}
 		
-		
-		        NicknameAPI nicknameAPI = new NicknameAPI();
-
-		        try {
-		            // JSON 형식으로 닉네임 가져오기
-		            String format = "json";
-		            int count = 1;
-		            String nickname = nicknameAPI.getNicknameAPI(format, count);
-		            
-		            if (nickname != null) {
-		                // 닉네임이 있을 경우 중복 검사 수행
-		               
-		                boolean isDuplicate = userDAO.isNicknameDuplicate(nicknameAPI);
-
-		                if (isDuplicate) {
-		                    System.out.println("닉네임 중복됨: " + nickname);
-		                } else {
-		                    System.out.println("닉네임 중복되지 않음: " + nickname);
-		                }
-		            } else {
-		                System.out.println("서버에서 닉네임을 가져올 수 없음.");
-		            }
-		        } catch (Exception e) {
-		            e.printStackTrace();
-		        }
-		}
-
+	
+	}
 }
