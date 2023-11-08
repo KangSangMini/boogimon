@@ -9,11 +9,12 @@ SET TERMOUT ON
 PROMPT 테이블 초기화
 SET TERMOUT OFF
 
--- 인덱스, 시퀀스 초기화
+-- 인덱스, 시퀀스, 뷰 초기화
 DROP index COMMENT_ID;
 DROP sequence seq_stampbook_id;
 DROP sequence seq_place_id;
 DROP sequence seq_comment_id;
+DROP VIEW user_ranking;
 
 -- 테이블 초기화
 drop table USER_STAMP_HISTORY;
@@ -232,6 +233,24 @@ CREATE INDEX COMMENT_ID ON STB_CMT(STAMPBOOK_ID);
 -- INSERT INTO RESULTCODE(CODENUM, CODEMSG)
 -- VALUES (99, 'UNKNOWN_ERROR');
 
+SET TERMOUT ON
+PROMPT 뷰 생성
+SET TERMOUT OFF
+
+CREATE VIEW user_ranking
+AS
+SELECT rnum, user_id, nickname, totalStamp
+FROM (
+    SELECT rownum rnum, user_id, nickname, totalStamp
+    FROM (
+        SELECT u.nickname, u.user_id, COUNT(ush.stamped_Date) AS totalStamp
+            FROM boogiTrainer u 
+            LEFT OUTER JOIN user_stamp_history ush ON u.user_id = ush.user_id
+            WHERE u.deleted = 0
+            GROUP BY u.nickname, u.user_id, u.regdate
+            ORDER BY COUNT(ush.stamped_Date) desc, u.regdate
+));
+
 ----------------------------------------------------------------------------
 
 SET TERMOUT ON
@@ -243,45 +262,45 @@ SET TERMOUT OFF
 --관리자 더미 데이터
 -- boogi@boogi.com / boogi123
 INSERT INTO BoogiTrainer(USER_ID, PASSWD, SALT, NICKNAME, EXP, PROFILE_IMG)
-VALUES ('bijugi@boogimon.com', '330cf0b83e30a9e8ac61211d3a777628ff80a9a12e0659d9a238842230f69320', 'a498b3c99a378d9c11fa8d60cc66b9d5', 'BIJUGI', 100000, '/boogimon/upload/user/profile/sakaki.png');
+VALUES ('bijugi@boogimon.com', '330cf0b83e30a9e8ac61211d3a777628ff80a9a12e0659d9a238842230f69320', 'a498b3c99a378d9c11fa8d60cc66b9d5', 'BIJUGI', 100000, '/boogimon/images/upload/user/profile/sakaki.png');
 -- admin@boogimon.com / admin123
 INSERT INTO BoogiTrainer(USER_ID, PASSWD, SALT, NICKNAME, EXP, PROFILE_IMG)
-VALUES ('admin@boogimon.com', 'a092a0acff62151cc750c450dd3311288497f9dd6ea1579a44ab5d26a51aeb9e', '7b28b8cd2c5723bf414c00e9b0b6f1e3', '운영자', 100000, '/boogimon/upload/user/profile/admin.png');
+VALUES ('admin@boogimon.com', 'a092a0acff62151cc750c450dd3311288497f9dd6ea1579a44ab5d26a51aeb9e', '7b28b8cd2c5723bf414c00e9b0b6f1e3', '운영자', 100000, '/boogimon/images/upload/user/profile/admin.png');
 -- boogi / boogi123
 INSERT INTO BoogiTrainer(USER_ID, PASSWD, SALT, NICKNAME, EXP, PROFILE_IMG)
-VALUES ('boogi@boogimon.com', 'b5b522134aa9c7b14519c3df70134e699ae5130f4ad8b88e8788237761da6f65', '6bbf70841c6fbdd6594f993cfd31ea03', '부기몬', 100000, '/boogimon/upload/user/profile/boogi.png');
+VALUES ('boogi@boogimon.com', 'b5b522134aa9c7b14519c3df70134e699ae5130f4ad8b88e8788237761da6f65', '6bbf70841c6fbdd6594f993cfd31ea03', '부기몬', 100000, '/boogimon/images/upload/user/profile/boogi.png');
 
 --일반 회원 더미 데이터
 -- red@google.com / red456
 INSERT INTO BoogiTrainer(USER_ID, PASSWD, SALT, NICKNAME, EXP, PROFILE_IMG)
-VALUES ('red@google.com', 'beafc8f778046a24875bde54dd2bcb69bcf0cb64939ad8b507f767a0118dde76', '9c5b5181058248112c853b143ced7c8a', 'RED',0, '/boogimon/upload/user/profile/red.png');
+VALUES ('red@google.com', 'beafc8f778046a24875bde54dd2bcb69bcf0cb64939ad8b507f767a0118dde76', '9c5b5181058248112c853b143ced7c8a', 'RED',0, '/boogimon/images/upload/user/profile/red.png');
 -- green@google.com / green456
 INSERT INTO BoogiTrainer(USER_ID, PASSWD, SALT, NICKNAME, EXP, PROFILE_IMG)
-VALUES ('green@google.com', '58e13f9b98d980900c180abed0d825fd14ed84d94ce169bcc930d51927ac94a4', '1e738ed5bcd340b67001dbc1bcd54464', 'Green',0, '/boogimon/upload/user/profile/green.png');
+VALUES ('green@google.com', '58e13f9b98d980900c180abed0d825fd14ed84d94ce169bcc930d51927ac94a4', '1e738ed5bcd340b67001dbc1bcd54464', 'Green',0, '/boogimon/images/upload/user/profile/green.png');
 -- gold@google.com / gold456
 INSERT INTO BoogiTrainer(USER_ID, PASSWD, SALT, NICKNAME, EXP, PROFILE_IMG)
-VALUES ('gold@google.com', '61944619678db869b5a11af3811dd53142b8ba5efc9177fdfdf29ece5904dc43', 'e140b8a5cd8f6111b4ea27d2b8ea42cc', '목호',0, '/boogimon/upload/user/profile/wataru.png');
+VALUES ('gold@google.com', '61944619678db869b5a11af3811dd53142b8ba5efc9177fdfdf29ece5904dc43', 'e140b8a5cd8f6111b4ea27d2b8ea42cc', '목호',0, '/boogimon/images/upload/user/profile/wataru.png');
 -- silver@google.com / silver456
 INSERT INTO BoogiTrainer(USER_ID, PASSWD, SALT, NICKNAME, EXP, PROFILE_IMG)
-VALUES ('silver@google.com', '8fcb1de0bdae31d664ed4bd2700c6189b942d476cdeff49533320600d3b980da', '6e4da0173a794d37716b34d2fc2f298c', '성호', 0, '/boogimon/upload/user/profile/daigo.png');
+VALUES ('silver@google.com', '8fcb1de0bdae31d664ed4bd2700c6189b942d476cdeff49533320600d3b980da', '6e4da0173a794d37716b34d2fc2f298c', '성호', 0, '/boogimon/images/upload/user/profile/daigo.png');
 -- ruby@google.com / ruby456
 INSERT INTO BoogiTrainer(USER_ID, PASSWD, SALT, NICKNAME, EXP, PROFILE_IMG)
-VALUES ('ruby@google.com', '0c92634d6969b19b7a00027c98f9569869c19689127004027880aab92ffda238', '1dcf5200ad94ca5a8655a25987690035', '윤진', 0, '/boogimon/upload/user/profile/mikuri.png');
+VALUES ('ruby@google.com', '0c92634d6969b19b7a00027c98f9569869c19689127004027880aab92ffda238', '1dcf5200ad94ca5a8655a25987690035', '윤진', 0, '/boogimon/images/upload/user/profile/mikuri.png');
 -- sapphire@google.com / sapphire456
 INSERT INTO BoogiTrainer(USER_ID, PASSWD, SALT, NICKNAME, EXP, PROFILE_IMG)
-VALUES ('sapphire@google.com', '3813e1d1b7440bf0839e9a013991b39ecf9ebd1c3e778976fdd441374626c5b7', '811f725bd604fea4b29ea68ed80dbd68', 'Bomi', 0, '/boogimon/upload/user/profile/haruka.png');
+VALUES ('sapphire@google.com', '3813e1d1b7440bf0839e9a013991b39ecf9ebd1c3e778976fdd441374626c5b7', '811f725bd604fea4b29ea68ed80dbd68', 'Bomi', 0, '/boogimon/images/upload/user/profile/haruka.png');
 -- diamond@google.com / diamond456
 INSERT INTO BoogiTrainer(USER_ID, PASSWD, SALT, NICKNAME, EXP, PROFILE_IMG)
-VALUES ('diamond@google.com', '5c5c418e16d1478195c051714d47121776e257a8a163e489013d0f5535f2162a', '442cb9b9510f8a1f4186fc91bb9f3968', 'Nancheon', 0, '/boogimon/upload/user/profile/shirona.png');
+VALUES ('diamond@google.com', '5c5c418e16d1478195c051714d47121776e257a8a163e489013d0f5535f2162a', '442cb9b9510f8a1f4186fc91bb9f3968', 'Nancheon', 0, '/boogimon/images/upload/user/profile/shirona.png');
 -- pearl@google.com / pearl456
 INSERT INTO BoogiTrainer(USER_ID, PASSWD, SALT, NICKNAME, EXP, PROFILE_IMG)
-VALUES ('pearl@google.com', '4c09232d1d731135b999ab9b4d6301a0b0ff8da594f75e97d1ebb727d58deaa6', '9b37a4bbcc7b5b44ee4a9a4c282bab9c', 'Bichna', 0, '/boogimon/upload/user/profile/hikari.png');
+VALUES ('pearl@google.com', '4c09232d1d731135b999ab9b4d6301a0b0ff8da594f75e97d1ebb727d58deaa6', '9b37a4bbcc7b5b44ee4a9a4c282bab9c', 'Bichna', 0, '/boogimon/images/upload/user/profile/hikari.png');
 -- black@google.com / black456
 INSERT INTO BoogiTrainer(USER_ID, PASSWD, SALT, NICKNAME, EXP, PROFILE_IMG)
-VALUES ('black@google.com', '9437a79f30be98e795bfd9fd9f4d3bf616eecdd843a8be9212f1058721b20561', 'f205370ea7511812657c6995645132bd', '노간주', 0, '/boogimon/upload/user/profile/adeku.png');
+VALUES ('black@google.com', '9437a79f30be98e795bfd9fd9f4d3bf616eecdd843a8be9212f1058721b20561', 'f205370ea7511812657c6995645132bd', '노간주', 0, '/boogimon/images/upload/user/profile/adeku.png');
 -- white@google.com / white456
 INSERT INTO BoogiTrainer(USER_ID, PASSWD, SALT, NICKNAME, EXP, PROFILE_IMG)
-VALUES ('white@google.com', 'a7c55f1b971dbf09460063f827f251fd2e8f420a405ea1e707d67c3369e09b64', '863d8136fee38f2b86e514616c25bec8', 'Iris', 0, '/boogimon/upload/user/profile/iris.png');
+VALUES ('white@google.com', 'a7c55f1b971dbf09460063f827f251fd2e8f420a405ea1e707d67c3369e09b64', '863d8136fee38f2b86e514616c25bec8', 'Iris', 0, '/boogimon/images/upload/user/profile/iris.png');
 
 ----------------------------------------------------------------------------
 
@@ -825,23 +844,23 @@ VALUES (seq_comment_id.nextval, 0, 'red@google.com', '...');
 
 -- 레드가 0번 스탬프북의 스탬프를 모두 찍음 
 INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
-VALUES ('red@google.com', 0, 1, '/ush/sample.png');
+VALUES ('red@google.com', 0, 1, '/images/upload/user/stamp/red1.png');
 INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
-VALUES ('red@google.com', 0, 2, '/ush/sample.png');
+VALUES ('red@google.com', 0, 2, '/images/upload/user/stamp/red2.png');
 INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
-VALUES ('red@google.com', 0, 3, '/ush/sample.png');
+VALUES ('red@google.com', 0, 3, '/images/upload/user/stamp/red3.png');
 INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
-VALUES ('red@google.com', 0, 4, '/ush/sample.png');
+VALUES ('red@google.com', 0, 4, '/images/upload/user/stamp/red4.png');
 INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
-VALUES ('red@google.com', 0, 5, '/ush/sample.png');
+VALUES ('red@google.com', 0, 5, '/images/upload/user/stamp/red5.png');
 INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
-VALUES ('red@google.com', 0, 6, '/ush/sample.png');
+VALUES ('red@google.com', 0, 6, '/images/upload/user/stamp/red6.png');
 INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
-VALUES ('red@google.com', 0, 7, '/ush/sample.png');
+VALUES ('red@google.com', 0, 7, '/images/upload/user/stamp/red7.png');
 INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
-VALUES ('red@google.com', 0, 8, '/ush/sample.png');
+VALUES ('red@google.com', 0, 8, '/images/upload/user/stamp/red8.png');
 INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
-VALUES ('red@google.com', 0, 9, '/ush/sample.png');
+VALUES ('red@google.com', 0, 9, '/images/upload/user/stamp/red9.png');
 
 -- 레드가 담은 0번 스탬프북을 완성함
 UPDATE USER_PICK
@@ -882,11 +901,11 @@ WHERE STAMPBOOK_ID = 1;
 
 -- 레드가 3번 스탬프북의 1, 4, 5번째 스탬프를 찍음
 INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
-VALUES ('red@google.com', 3, 1, '/ush/sample.png');
+VALUES ('red@google.com', 3, 1, '/images/upload/user/stamp/red10.png');
 INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
-VALUES ('red@google.com', 3, 4, '/ush/sample.png');
+VALUES ('red@google.com', 3, 4, '/images/upload/user/stamp/red11.png');
 INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
-VALUES ('red@google.com', 3, 5, '/ush/sample.png');
+VALUES ('red@google.com', 3, 5, '/images/upload/user/stamp/red12.png');
 
 -- 1번 스탬프북을 삭제처리함
 UPDATE stampbook set deleted = 1 where stampbook_id = 1;
@@ -950,3 +969,16 @@ ORDER BY st.stampno;
 SELECT stb.deleted, ul.user_id FROM stampbook stb
 LEFT OUTER JOIN user_like ul ON ul.stampbook_id = stb.stampbook_id AND ul.user_id = 'red@google.com'
 WHERE stb.stampbook_id = 3;
+
+-- getUser EXP, 모은 부기몬 추가, 받은 좋아요, ranking
+SELECT u.nickname, u.profile_img, TO_CHAR(u.regdate, 'YYYY-MM-DD HH24:MI:SS') AS regdate, u.exp, COUNT(ush.stamped_Date) AS totalVisit, nvl(likeCount, 0) as likeCount, ur.rnum as ranking
+FROM boogiTrainer u 
+left outer JOIN user_stamp_history ush ON u.user_id = ush.user_id
+left outer JOIN (SELECT stb.user_id as origin, count(stb.user_id) as likeCount 
+from stampbook stb
+join user_like ul on ul.stampbook_id = stb.stampbook_id
+where stb.user_id = 'red@google.com'
+group by stb.user_id) ON origin = u.user_id
+join user_ranking ur on ur.user_id = u.user_id
+WHERE u.user_id = 'red@google.com'
+GROUP BY u.nickname, u.profile_img, regdate, u.exp, likeCount, rnum;
