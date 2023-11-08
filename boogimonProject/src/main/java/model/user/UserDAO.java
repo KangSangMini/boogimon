@@ -32,7 +32,10 @@ public class UserDAO {
 	
 	//joinUser
 	public int joinUser(UserDO boogiTrainer) throws Exception {
+		
+		
 		int rowCount = 0;
+	
 		boolean isIdDuplicate = false;
 		boolean isNicknameDuplicate = false;
 		
@@ -59,7 +62,6 @@ public class UserDAO {
 				pstmt.setString(2, ue.hashing(pw, salt));
 				pstmt.setString(3, salt);;
 				pstmt.setString(4, boogiTrainer.getNickname());
-//				boogiTrainer.setProfileImg("sample.png");
 				pstmt.setString(5, boogiTrainer.getProfileImg());
 				
 				rowCount = pstmt.executeUpdate();
@@ -99,7 +101,35 @@ public class UserDAO {
 		return rowCount;
 	}
 	
-	public boolean loginCheck(UserDO user) {
+	public boolean isNicknameDuplicate(NicknameAPI getNicknameAPI) {
+	    
+		boolean isNicknameDuplicate = false;
+		
+		sql = "select NICKNAME from BoogiTrainer where NICKNAME = ?";
+
+	    try {
+	    	 
+	    	  pstmt = conn.prepareStatement(sql);
+	          pstmt.setString(1, getNicknameAPI.getNicknameAPI("json",1));
+			  
+	          rs = pstmt.executeQuery();
+	          if(rs.next()) {
+	        	  String checkNickname = rs.getString("NICKNAME"); 
+	        	  
+	        	  if(checkNickname.equals(getNicknameAPI)) {
+	        		  isNicknameDuplicate = true;
+	        	  }
+	          } 
+	         
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+
+	    return isNicknameDuplicate;
+	}
+
+	
+	public boolean passwdCheck(UserDO user) {
 		boolean result = false;
 		
 		sql = "select PASSWD, SALT, NICKNAME from BoogiTrainer where USER_ID = ?";
