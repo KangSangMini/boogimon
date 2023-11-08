@@ -34,7 +34,7 @@ public class PlaceJsonWriter extends JsonWriter{
 				boogi.put("thumbnail", place.getThumbnail());
 			}
 			else {
-				boogi.put("thumbnail", "/boogimon/images/thumnail_sample.png");
+				boogi.put("thumbnail", "/boogimon/images/placeThumnailSample.png");
 			}
 			
 			boogi.put("name", place.getName());
