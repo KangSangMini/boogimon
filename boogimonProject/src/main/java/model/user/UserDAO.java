@@ -128,52 +128,20 @@ public class UserDAO {
 
 	    return isNicknameDuplicate;
 	}
-
 	
-	public boolean passwdCheck(UserDO user) {
-		boolean result = false;
-		
-		sql = "select PASSWD, SALT, NICKNAME from BoogiTrainer where USER_ID = ?";
-		
-		try {
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, user.getUserId().toLowerCase());
-			
-			rs = pstmt.executeQuery();
-			if(rs.next()) {
-				String tempPw = rs.getString("PASSWD");
-				String tempSalt = rs.getString("SALT");
-				
-				if(tempPw.equals(ue.hashing(user.getPasswd(), tempSalt))) {
-					result = true;
-					user.setNickname(rs.getString("nickname"));
-				}
-			}
-			
-		}
-		catch(Exception e) {
-			e.printStackTrace();
-		}
-		finally {
-			if(pstmt != null){
-				try{
-					pstmt.close();
-				}
-				catch(Exception e) {
-					e.printStackTrace();
-				}
-			}
-		}
-		
-		return result;
-	}
-	
-	//getUser
-	public UserDO getUser(String userId ) {
-		UserDO BoogiTrainer = null;
-		this.sql = "select USER_ID, PASSWD, NICKNAME, PROFILE_IMG, to_char(regdate, 'YYYY-MM-DD HH24:MI:SS') as regdate " + 
-				   "from BoogiTrainer where USER_ID = ?";
-		
+	/** 회원 정보 요청 */
+	public UserDO getUser(String userId) {
+		UserDO user = new UserDO();
+		this.sql = "SELECT u.nickname, u.profile_img, TO_CHAR(u.regdate, 'YYYY-MM-DD HH24:MI:SS') AS regdate, u.exp, "
+				+ "(SELECT COUNT(ush.stamped_Date) "
+				+ "from user_stamp_history ush "
+				+ "where ush.user_id = u.user_id) AS totalVisit, "
+				+ "(SELECT count(stb.user_id) "
+				+ "from stampbook stb "
+				+ "join user_like ul on ul.stampbook_id = stb.stampbook_id "
+				+ "where stb.user_id = u.user_id) AS likeCount "
+				+ "FROM boogiTrainer u "
+				+ "WHERE u.user_id = ?";
 		try {
 			this.pstmt = conn.prepareStatement(sql);
 			
@@ -181,13 +149,12 @@ public class UserDAO {
 			rs = this.pstmt.executeQuery();
 			
 			if(this.rs.next()) {
-				BoogiTrainer = new UserDO();
-				
-				BoogiTrainer.setUserId(this.rs.getString("user_id"));
-				BoogiTrainer.setPasswd(rs.getString("passwd"));
-				BoogiTrainer.setNickname(rs.getString("nickname"));
-				BoogiTrainer.setProfileImg(rs.getString("profile_img"));
-				BoogiTrainer.setRegdate(rs.getString("regdate"));
+				user.setNickname(rs.getString("nickname"));
+				user.setProfileImg(rs.getString("profile_img"));
+				user.setRegdate(rs.getString("regdate"));
+				user.setExp(rs.getInt("exp"));
+				user.setUserTotalVisit(rs.getInt("totalVisit"));
+				user.setUserLikeCount(rs.getInt("likeCount"));
 			}
 		}
 		catch(Exception e) {
@@ -204,7 +171,7 @@ public class UserDAO {
 			}
 		}		
 		
-		return BoogiTrainer;
+		return user;
 	}
 	
 	/** 회원 닉네임 수정 

@@ -1,6 +1,11 @@
+<%@page import="org.json.simple.JSONArray"%>
+<%@page import="org.json.simple.parser.JSONParser"%>
+<%@page import="org.json.simple.JSONObject"%>
 <%@ page contentType="application/json; charset=UTF-8" 
 		 import="java.util.*, boogimon.*, model.*"
 %>
+
+<% request.setCharacterEncoding("UTF-8"); %>
 
 <jsp:useBean id="stbDAO" class="model.stampbook.StampbookDAO" scope="session"/>
 <jsp:useBean id="stbdDAO" class="model.stampbook.StampbookDetailDAO" scope="session"/>
@@ -73,6 +78,22 @@
 				// 필수 파라미터 누락
 				jsonStr = stbJson.getGeneralResponse(12);
 			}
+		}
+	}
+	
+	if(request.getMethod().equals("POST")){
+		
+		// 스탬프북 생성
+		if(command != null && command.equals("insert")) {
+			String stampList = request.getParameter("rStampList");
+			System.out.println(stampbookDO);
+			JSONParser jparser = new JSONParser();
+			JSONArray jsonArr = (JSONArray) jparser.parse(stampList);
+			
+		}
+		// 스탬프북 담기
+		else if(command.equals("pick")){
+			
 		}
 	}
 	

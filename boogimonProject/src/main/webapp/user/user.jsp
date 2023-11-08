@@ -16,7 +16,7 @@
 	String command = request.getParameter("command");
 	int resultCode = 0;
 	String jsonStr = "";
-
+	
 	if(request.getMethod().equals("GET")){
 		if(command == null){
 			// 회원 정보 조회
