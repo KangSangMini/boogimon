@@ -66,7 +66,9 @@ public class StampbookJsonWriter extends JsonWriter{
 		jsonObj.put("title", stampbook.getTitle());
 		jsonObj.put("description", stampbook.getDescription());
 		jsonObj.put("nickname", stampbook.getNickname());
+		jsonObj.put("profileImg", stampbook.getProfileImg());
 		jsonObj.put("stampbookRegdate", stampbook.getStampbookRegdate());
+		jsonObj.put("completeDate", stampbook.getCompleteDate());
 		jsonObj.put("likeCount", stampbook.getLikeCount());
 		jsonObj.put("isLike", stampbook.getLiked());
 		
