@@ -22,6 +22,7 @@
 	StampbookJsonWriter stbJson = new StampbookJsonWriter(stbDAO, stbdDAO);
 	String command = request.getParameter("command");
 	String jsonStr = "";
+	int resultCode = 0;
 
 	if(request.getMethod().equals("GET")){
 		// 스탬프북의 상세 정보 요청
@@ -93,7 +94,14 @@
 		}
 		// 스탬프북 담기
 		else if(command.equals("pick")){
-			
+			if(request.getParameter("stampbookId") != null && userDO.getUserId() != null){
+				resultCode = stbDAO.pickStampbook(stampbookDO.getStampbookId(), userDO.getUserId()) == 1 ? 0 : 2;
+			}
+			else {
+				// 필수 파라미터 누락
+				resultCode = 12;
+			}
+			jsonStr = stbJson.getGeneralResponse(resultCode);
 		}
 	}
 	

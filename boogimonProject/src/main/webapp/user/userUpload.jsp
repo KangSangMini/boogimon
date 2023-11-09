@@ -32,7 +32,7 @@
 			}
 			
 			try {
-				resultCode = userDAO.joinUser(userDO) == 1 ? 0 : 1;
+				resultCode = userDAO.joinUser(userDO) == 1 ? 0 : 2;
 			}
 			catch (Exception e){
 				resultCode = BoogiException.getErrCode(e);
