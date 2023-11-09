@@ -323,25 +323,27 @@ public class StampbookDAO {
 		return rowCount;
 	}
 	
-	/**  스탬프북 테이블에서 해당 스탬프북 삭제 처리(deleted = 1) */
-	public int deleteStampbook(int stampbook_id) {
+	/** 스탬프북 테이블에서 해당 스탬프북 삭제 처리(deleted = 1) 
+	 * 	TODO: 사용자에 따른 예외처리 (원작자 검색: 잘못된 사용자 요청) 
+	 * @throws Exception */
+	public int deleteStampbook(int stampbook_id, String userId) throws Exception {
+		
 		int rowCount = 0;
 		
 		try {
-			
-			// !!!!삭제 처리 전 USER_LIKE 테이블에서 해당 스탬프북에 좋아요 했던 행 전부 삭제해야함
-			
-			this.sql = "UPDATE INTO STAMPBOOK "
+			this.sql = "UPDATE STAMPBOOK "
 					 + "SET deleted = 1 "
-					 + "WHERE stampbook_id = ?";
+					 + "WHERE stampbook_id = ? AND user_id = ?";
 			
 			this.pstmt = this.conn.prepareStatement(sql);
 			this.pstmt.setInt(1, stampbook_id);
+			this.pstmt.setString(2, userId);
 			
 			rowCount = pstmt.executeUpdate();
 		}
 		catch(Exception e) {
 			e.printStackTrace();
+			throw e;
 		}
 		finally {
 			try {
@@ -374,7 +376,7 @@ public class StampbookDAO {
 			
 			
 			// 담은 스탬프북 삭제
-			this.sql = "DELETE FROM stampbook WHERE user_id = ? AND stampbook_id = ?";
+			this.sql = "DELETE FROM user_pick WHERE user_id = ? AND stampbook_id = ?";
 			this.pstmt = this.conn.prepareStatement(sql);
 			
 			this.pstmt.setString(1, user_id);
@@ -387,6 +389,7 @@ public class StampbookDAO {
 		catch(Exception e) {
 			this.conn.rollback();
 			e.printStackTrace();
+			throw e;
 		}
 		finally {
 			try {
@@ -508,7 +511,8 @@ public class StampbookDAO {
 		return rowCount;
 	}
 	
-	/** 스탬프북 좋아요 취소 기능*/
+	/** 스탬프북 좋아요 취소 기능 
+	 *  TODO: 중복된 요청인지 예외처리 */
 	public int unlikeStampbook(int stampbook_id, String user_id) throws Exception {
 		int rowCount = 0;
 		boolean deleteFailure = false;

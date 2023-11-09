@@ -13,6 +13,7 @@ public class ResponseGenerator {
 		
 		codeMap.put(0, "NORMAL_CODE");
 		codeMap.put(1, "DB_ERROR");
+		codeMap.put(2, "UPDATE_FAILED_ERROR");
 		codeMap.put(10, "INVALID_REQUEST_ERROR");
 		codeMap.put(11, "INVALID_REQUEST_PARAMETER_ERROR");
 		codeMap.put(12, "NO_MANDATORY_REQUEST_PARAMETERS_ERROR");
