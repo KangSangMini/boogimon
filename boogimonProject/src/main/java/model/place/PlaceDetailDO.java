@@ -1,5 +1,7 @@
 package model.place;
 
+import org.json.simple.JSONObject;
+
 public class PlaceDetailDO {
 	private String name;
 	private String addr;
@@ -103,6 +105,25 @@ public class PlaceDetailDO {
 
 	public void setFacility(String facility) {
 		this.facility = facility;
+	}
+
+	@SuppressWarnings("unchecked")
+	public JSONObject getJSONObject() {
+		JSONObject jsonObj = new JSONObject();
+		
+		jsonObj.put("name", this.name);
+		jsonObj.put("addr", this.addr);
+		jsonObj.put("tel", this.tel);
+		jsonObj.put("detail", this.detail);
+		jsonObj.put("pay", this.pay);
+		jsonObj.put("traffic", this.traffic);
+		jsonObj.put("img", this.img);
+		jsonObj.put("homepage", this.homepage);
+		jsonObj.put("open", this.open);
+		jsonObj.put("close", this.close);
+		jsonObj.put("facility", this.facility);
+		
+		return jsonObj;
 	}
 	
 	public String toString() {

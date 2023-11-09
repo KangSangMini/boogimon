@@ -3,7 +3,10 @@ package model.stampbook;
 public class StampDO {
 	private int stampNo;
 	private int placeId;
-	private String placeName;
+	private String name;
+	private String addr;
+	private String lat;
+	private String lon;
 	private String thumbnail;
 	private String uploadImg;
 	private String stampedDate;
@@ -30,12 +33,36 @@ public class StampDO {
 		this.placeId = placeId;
 	}
 
-	public String getPlaceName() {
-		return placeName;
+	public String getName() {
+		return name;
 	}
 
-	public void setPlaceName(String placeName) {
-		this.placeName = placeName;
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getAddr() {
+		return addr;
+	}
+
+	public void setAddr(String addr) {
+		this.addr = addr;
+	}
+	
+	public String getLat() {
+		return lat;
+	}
+
+	public void setLat(String lat) {
+		this.lat = lat;
+	}
+
+	public String getLon() {
+		return lon;
+	}
+
+	public void setLon(String lon) {
+		this.lon = lon;
 	}
 
 	public String getThumbnail() {
@@ -79,7 +106,7 @@ public class StampDO {
 	}
 	
 	public String toString() {
-		return String.format("stampNo: %d / placeId: %d / placeName: %s \nthumbnail: %s\nuploadImg: %s\nstampedDate: %s / lastVisitDate: %s / totalVisitCount: %d\n", 
-				this.stampNo, this.placeId, this.placeName, this.thumbnail, this.uploadImg, this.stampedDate, this.lastVisitDate, this.totalVisitCount);
+		return String.format("stampNo: %d / placeId: %d / placeName: %s \naddr: %s\nlat: %s / lon: %s\nthumbnail: %s\nuploadImg: %s\nstampedDate: %s / lastVisitDate: %s / totalVisitCount: %d\n", 
+				this.stampNo, this.placeId, this.name, this.addr, this.lat, this.lon, this.thumbnail, this.uploadImg, this.stampedDate, this.lastVisitDate, this.totalVisitCount);
 	}
 }

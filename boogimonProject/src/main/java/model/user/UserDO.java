@@ -10,6 +10,9 @@ public class UserDO {
 	private String regdate;
 	private int exp;
 	private String profileImg;
+	private int userTotalVisit;
+	private int userLikeCount;
+	private int ranking;
 	
 	public UserDO(){
 		
@@ -78,6 +81,33 @@ public class UserDO {
 	public void setProfileImg(String profileImg) {
 		this.profileImg = profileImg;
 	}
+
+	public int getUserTotalVisit() {
+		return userTotalVisit;
+	}
+
+	public void setUserTotalVisit(int userTotalVisit) {
+		this.userTotalVisit = userTotalVisit;
+	}
+
+	public int getUserLikeCount() {
+		return userLikeCount;
+	}
+
+	public void setUserLikeCount(int userLikeCount) {
+		this.userLikeCount = userLikeCount;
+	}
+
+	public int getRanking() {
+		return ranking;
+	}
+
+	public void setRanking(int ranking) {
+		this.ranking = ranking;
+	}
 	
-	
+	public String toString() {
+		return String.format("userId: %s / nickname: %s / regdate: %s / exp: %d \nprofileImg: %s \nuserTotalVisit: %d / userLikeCount: %d \nranking: %d \n", 
+				this.userId, this.nickname, this.regdate, this.exp, this.profileImg, this.userTotalVisit, this.userLikeCount, this.ranking);
+	}
 }

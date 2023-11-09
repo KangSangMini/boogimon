@@ -1,11 +1,12 @@
 package model.stampbook;
-//배건욱 push
+
 public class CommentDO {
 	private int commentId;
 	private String nickname;
-	private String userId;
+	private String userId;	// insert용
 	private String comment;
 	private String writeDate;
+	private String profileImg;
 	
 	public CommentDO() {
 		
@@ -50,5 +51,12 @@ public class CommentDO {
 	public void setWriteDate(String writeDate) {
 		this.writeDate = writeDate;
 	}
-	
+
+	public String getProfileImg() {
+		return profileImg;
+	}
+
+	public void setProfileImg(String profileImg) {
+		this.profileImg = profileImg;
+	}
 }

@@ -10,11 +10,11 @@ public class StampbookDO {
 	private String stampbookRegdate;
 	private int likeCount;
 	private boolean liked;
+	private String completeDate;
 	private ArrayList<StampDO> stampList;
 	private ArrayList<CommentDO> commentList;
 	
 	public StampbookDO() {
-		
 	}
 
 	public int getStampbookId() {
@@ -77,6 +77,18 @@ public class StampbookDO {
 			this.liked = false;
 		}
 	}
+	
+	public String getCompleteDate() {
+		return completeDate;
+	}
+
+	public void setCompleteDate(String completeDate) {
+		this.completeDate = completeDate;
+	}
+
+	public void setLiked(boolean liked) {
+		this.liked = liked;
+	}
 
 	public ArrayList<StampDO> getStampList() {
 		return stampList;
@@ -92,5 +104,10 @@ public class StampbookDO {
 
 	public void setCommentList(ArrayList<CommentDO> commentList) {
 		this.commentList = commentList;
+	}
+	
+	public String toString() {
+		return String.format("stampbookId: %d / title: %s / description: %s \nnickname: %s / stampbookRegdate: %s / completeDate: %s \nlikeCount: %d / liked: %b\n", 
+				this.stampbookId, this.title, this.description, this.nickname, this.stampbookRegdate, this.completeDate, this.likeCount, this.liked);
 	}
 }
