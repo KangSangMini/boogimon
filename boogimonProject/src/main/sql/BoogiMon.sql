@@ -844,23 +844,23 @@ VALUES (seq_comment_id.nextval, 0, 'red@google.com', '...');
 
 -- 레드가 0번 스탬프북의 스탬프를 모두 찍음 
 INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
-VALUES ('red@google.com', 0, 1, '/images/upload/user/stamp/red1.jpg');
+VALUES ('red@google.com', 0, 1, '/boogimon/images/upload/user/stamp/red1.jpg');
 INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
-VALUES ('red@google.com', 0, 2, '/images/upload/user/stamp/red2.jpg');
+VALUES ('red@google.com', 0, 2, '/boogimon/images/upload/user/stamp/red2.jpg');
 INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
-VALUES ('red@google.com', 0, 3, '/images/upload/user/stamp/red3.jpg');
+VALUES ('red@google.com', 0, 3, '/boogimon/images/upload/user/stamp/red3.jpg');
 INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
-VALUES ('red@google.com', 0, 4, '/images/upload/user/stamp/red4.jpg');
+VALUES ('red@google.com', 0, 4, '/boogimon/images/upload/user/stamp/red4.jpg');
 INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
-VALUES ('red@google.com', 0, 5, '/images/upload/user/stamp/red5.jpg');
+VALUES ('red@google.com', 0, 5, '/boogimon/images/upload/user/stamp/red5.jpg');
 INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
-VALUES ('red@google.com', 0, 6, '/images/upload/user/stamp/red6.jpg');
+VALUES ('red@google.com', 0, 6, '/boogimon/images/upload/user/stamp/red6.jpg');
 INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
-VALUES ('red@google.com', 0, 7, '/images/upload/user/stamp/red7.jpg');
+VALUES ('red@google.com', 0, 7, '/boogimon/images/upload/user/stamp/red7.jpg');
 INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
-VALUES ('red@google.com', 0, 8, '/images/upload/user/stamp/red8.jpg');
+VALUES ('red@google.com', 0, 8, '/boogimon/images/upload/user/stamp/red8.jpg');
 INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
-VALUES ('red@google.com', 0, 9, '/images/upload/user/stamp/red9.jpg');
+VALUES ('red@google.com', 0, 9, '/boogimon/images/upload/user/stamp/red9.jpg');
 
 -- 레드가 담은 0번 스탬프북을 완성함
 UPDATE USER_PICK
@@ -901,11 +901,11 @@ WHERE STAMPBOOK_ID = 1;
 
 -- 레드가 3번 스탬프북의 1, 4, 5번째 스탬프를 찍음
 INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
-VALUES ('red@google.com', 3, 1, '/images/upload/user/stamp/red10.jpg');
+VALUES ('red@google.com', 3, 1, '/boogimon/images/upload/user/stamp/red10.jpg');
 INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
-VALUES ('red@google.com', 3, 4, '/images/upload/user/stamp/red11.jpg');
+VALUES ('red@google.com', 3, 4, '/boogimon/images/upload/user/stamp/red11.jpg');
 INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
-VALUES ('red@google.com', 3, 5, '/images/upload/user/stamp/red12.jpg');
+VALUES ('red@google.com', 3, 5, '/boogimon/images/upload/user/stamp/red12.jpg');
 
 -- 1번 스탬프북을 삭제처리함
 UPDATE stampbook set deleted = 1 where stampbook_id = 1;
