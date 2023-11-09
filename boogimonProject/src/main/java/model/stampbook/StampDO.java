@@ -1,5 +1,10 @@
 package model.stampbook;
 
+import java.util.ArrayList;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
 public class StampDO {
 	private int stampNo;
 	private int placeId;
@@ -15,6 +20,11 @@ public class StampDO {
 	
 	public StampDO() {
 		
+	}
+	
+	public StampDO(int stampNo, int placeId) {
+		this.stampNo = stampNo;
+		this.placeId = placeId;
 	}
 
 	public int getStampNo() {
@@ -103,6 +113,19 @@ public class StampDO {
 
 	public void setTotalVisitCount(int totalVisitCount) {
 		this.totalVisitCount = totalVisitCount;
+	}
+	
+	static public ArrayList<StampDO> JsonArrayToStampList(JSONArray jsonArr) {
+		ArrayList<StampDO> stampList = new ArrayList<StampDO>();
+		
+		for(int i = 0; i < jsonArr.size(); i++) {
+			stampList.add(
+					new StampDO(
+							Integer.parseInt(String.valueOf(((JSONObject)jsonArr.get(i)).get("stampNo"))), 
+							Integer.parseInt(String.valueOf(((JSONObject)jsonArr.get(i)).get("placeId"))))
+					);
+		}
+		return stampList;
 	}
 	
 	public String toString() {
