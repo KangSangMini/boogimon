@@ -577,6 +577,111 @@ public class StampbookDAO {
 		return rowCount;
 	}
 	
+	/** 회원이 만든 스탬프북 삽입 
+	 * @throws Exception */
+	public int insertStampbook(StampbookDO stampbook, String userId) throws Exception {
+		int rowCount = 0;
+		
+		boolean notExists = false;
+		boolean isDeleted = false;
+		boolean insertStampbookFailure = false;
+		boolean insertStampFailure = false;
+		
+		try {
+			// 회원 체크
+			this.sql = "SELECT deleted FROM boogiTrainer WHERE user_id = ?";
+			this.pstmt = this.conn.prepareStatement(sql);
+			this.pstmt.setString(1, userId);
+			rs = pstmt.executeQuery();
+			
+			// 회원이 존재하고
+			if(rs.next()) {
+				// 탈퇴한 회원이 아닐때 쿼리 실행
+				if(rs.getInt("deleted") == 0) {
+					this.conn.setAutoCommit(false);
+					
+					// 스탬프북 생성 쿼리
+					this.sql = "INSERT INTO STAMPBOOK (STAMPBOOK_ID, TITLE, DESCRIPTION, USER_ID) "
+							 + "VALUES (seq_stampbook_id.nextval, ?, ?, ?)";
+					
+					this.pstmt = this.conn.prepareStatement(sql);
+					this.pstmt.setString(1, stampbook.getTitle());
+					this.pstmt.setString(2, stampbook.getDescription());
+					this.pstmt.setString(3, userId);
+					rowCount = pstmt.executeUpdate();
+					
+					if(rowCount == 1) {
+						for(StampDO stamp : stampbook.getStampList()) {
+							// 스탬프 생성 쿼리
+							this.sql = "INSERT INTO STAMP (STAMPBOOK_ID, STAMPNO, PLACE_ID) "
+									 + "VALUES (seq_stampbook_id.currval, ?, ?)";
+							
+							this.pstmt = this.conn.prepareStatement(sql);
+							this.pstmt.setInt(1, stamp.getStampNo());
+							this.pstmt.setInt(2, stamp.getPlaceId());
+							rowCount = pstmt.executeUpdate();
+							
+							if(rowCount != 1) {
+								// 스탬프 생성 실패
+								this.conn.rollback();
+								insertStampFailure = true;
+								break;
+							}
+						}
+						
+						if(!insertStampbookFailure) {
+							this.conn.commit();
+						}
+					}
+					else {
+						// 스탬프북 생성 실패
+						this.conn.rollback();
+						insertStampbookFailure = true;
+					}
+				}
+				else {
+					// 탈퇴한 회원
+					isDeleted = true;
+				}
+			}
+			else {
+				// 존재하지 않는 회원
+				notExists = true;
+			}
+		}
+		catch(Exception e){
+			e.printStackTrace();
+			this.conn.rollback();
+			throw e;
+		}
+		finally {
+			try {
+				this.conn.setAutoCommit(true);
+				if(!pstmt.isClosed()) {
+					pstmt.close();
+				}
+			}
+			catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		if(isDeleted) {
+			throw new BoogiException(24, "탈퇴한 회원입니다.");
+		}
+		if(notExists) {
+			throw new BoogiException(20, "존재하지 않는 사용자입니다.");
+		}
+		if(insertStampbookFailure) {
+			throw new BoogiException(38, "스탬프북 생성을 실패했습니다.");
+		}
+		if(insertStampFailure) {
+			throw new BoogiException(51, "스탬프 생성을 실패했습니다.");
+		}
+		
+		return rowCount; 
+	}
+	
 	public void closeConn() {
 		if(conn != null) {
 			try {
