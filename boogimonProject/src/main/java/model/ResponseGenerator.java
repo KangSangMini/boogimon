@@ -22,6 +22,8 @@ public class ResponseGenerator {
 		codeMap.put(21, "INVALID_USER_ERROR");
 		codeMap.put(22, "DUPLICATE_USERID_ERROR");
 		codeMap.put(23, "DUPLICATE_NICKNAME_ERROR");
+		codeMap.put(24, "DELETED_USER_ERROR");
+		codeMap.put(25, "RANDOM_NICKNAME_GENERATION_FAILED_ERROR");
 		codeMap.put(30, "NON_EXISTENT_STAMPBOOK_ERROR");
 		codeMap.put(31, "DELETED_STAMPBOOK_ERROR");
 		codeMap.put(32, "LIKE_PROCESSING_FAILED_ERROR");
@@ -30,7 +32,9 @@ public class ResponseGenerator {
 		codeMap.put(35, "LIKE_COUNT_DECREMENT_FAILED_ERROR");
 		codeMap.put(36, "ALREADY_PICKED_STAMPBOOK_ERROR");
 		codeMap.put(37, "UNPICKED_STAMPBOOK_ERROR");
+		codeMap.put(38, "STAMPBOOK_CREATION_FAILED_ERROR");
 		codeMap.put(50, "NON_EXISTENT_STAMP_ERROR");
+		codeMap.put(51, "STAMP_CREATION_FAILED_ERROR");
 		codeMap.put(60, "NON_EXISTENT_PLACE_ERROR");
 		codeMap.put(99, "UNKNOWN_ERROR");
 	}
