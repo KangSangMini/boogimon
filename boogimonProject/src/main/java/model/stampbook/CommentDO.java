@@ -59,4 +59,9 @@ public class CommentDO {
 	public void setProfileImg(String profileImg) {
 		this.profileImg = profileImg;
 	}
+	
+	public String toString() {
+		return String.format("commentId: %d / nickname: %d / writeDate: %s \ncomment: %s\nprofileImg: %s\n", 
+				this.commentId, this.nickname, this.writeDate, this.comment, this.profileImg);
+	}
 }

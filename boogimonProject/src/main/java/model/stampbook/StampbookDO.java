@@ -107,7 +107,25 @@ public class StampbookDO {
 	}
 	
 	public String toString() {
-		return String.format("stampbookId: %d / title: %s / description: %s \nnickname: %s / stampbookRegdate: %s / completeDate: %s \nlikeCount: %d / liked: %b\n", 
+		String result = String.format("stampbookId: %d / title: %s / description: %s \nnickname: %s / stampbookRegdate: %s / completeDate: %s \nlikeCount: %d / liked: %b\n", 
 				this.stampbookId, this.title, this.description, this.nickname, this.stampbookRegdate, this.completeDate, this.likeCount, this.liked);
+		
+		if(this.stampList != null && !(this.stampList.isEmpty())) {
+			result += String.format("========== stampList ==========\n");
+			for(StampDO stamp : this.stampList) {
+				result += stamp.toString();
+				result += String.format("-------------------------------\n");
+			}
+		}
+		
+		if(this.commentList != null && !(this.commentList.isEmpty())) {
+			result += String.format("========== commentList ==========\n");
+			for(CommentDO comment : this.commentList) {
+				result += comment.toString();
+				result += String.format("-------------------------------\n");
+			}
+		}
+		
+		return result;
 	}
 }
