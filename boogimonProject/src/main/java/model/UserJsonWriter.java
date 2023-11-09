@@ -3,6 +3,7 @@ package model;
 import org.json.simple.JSONObject;
 
 import boogimon.BoogiException;
+import model.user.NicknameAPI;
 import model.user.UserDAO;
 import model.user.UserDO;
 
@@ -59,6 +60,33 @@ public class UserJsonWriter extends JsonWriter{
 		}
 		else {
 			jsonObj = getResponseGenerator().getResponseJsonObj(21);
+		}
+		
+		return jsonObj.toJSONString();
+	}
+	
+	/** 랜덤 닉네임 생성 */
+	@SuppressWarnings("unchecked")
+	public String getRandomNickname() {
+		JSONObject jsonObj = null;
+		
+		try {
+			String nickname = NicknameAPI.getNicknameAPI("json", 10);
+			
+			if(!nickname.isEmpty()) {
+				jsonObj = getResponseGenerator().getResponseJsonObj(0);
+				JSONObject userObj = new JSONObject();
+				userObj.put("nickname", nickname);
+				jsonObj.put("user", userObj);
+			}
+			else {
+				jsonObj = getResponseGenerator().getResponseJsonObj(25);
+			}
+			
+		}
+		catch (Exception e) {
+			// TODO: handle exception
+			jsonObj = getResponseGenerator().getResponseJsonObj(BoogiException.getErrCode(e));
 		}
 		
 		return jsonObj.toJSONString();

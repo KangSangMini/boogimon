@@ -4,82 +4,77 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
 public class NicknameAPI {
-	
-	public String getNicknameAPI(String format, int count) throws Exception {
-	    String nickname = null;
-	    
-	    StringBuilder urlBuilder = new StringBuilder("https://nickname.hwanmoo.kr/?");
-	    
-	    urlBuilder.append("format=" + format);
-	    urlBuilder.append("&count=" + count);
 
-	    URL url = new URL(urlBuilder.toString());
-	    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+	static public String getNicknameAPI(String format, int count) throws Exception {
+		String nickname = null;
 
-	    conn.setRequestMethod("GET");
-	     //타입 설정(json),Request Body 전달시 application/json로 서버 전달.
-	    conn.setRequestProperty("Content-type", "application/json");
+		StringBuilder urlBuilder = new StringBuilder("https://nickname.hwanmoo.kr/?");
 
-	    BufferedReader rd = null;
+		urlBuilder.append("format=" + format);
+		urlBuilder.append("&count=" + count);
 
-	    try {
-	        if (conn.getResponseCode() >= 200 && conn.getResponseCode() <= 300) {
-	            rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-	        } else {
-	            rd = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
-	        }
+		URL url = new URL(urlBuilder.toString());
+		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
-	        StringBuilder sb = new StringBuilder();
-	        String line;
-	        while ((line = rd.readLine()) != null) {
-	            sb.append(line);
-	        }
+		conn.setRequestMethod("GET");
+		// 타입 설정(json),Request Body 전달시 application/json로 서버 전달.
+		conn.setRequestProperty("Content-type", "application/json");
 
-	        if (sb.length() > 0 && sb.toString().startsWith("{")) {
-	            JSONParser parser = new JSONParser();
-	            JSONObject jsonObject = (JSONObject) parser.parse(sb.toString());
+		BufferedReader rd = null;
 
-	            JSONArray nicknames = (JSONArray) jsonObject.get("words");
+		try {
+			
+			if (conn.getResponseCode() >= 200 && conn.getResponseCode() <= 300) {
+				rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+			} else {
+				rd = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
+			}
 
-	            UserDAO userDAO = new UserDAO();
-	            
-	            if (nicknames != null && nicknames.size() > 0) {
-	                for (int i = 0; i < nicknames.size(); i++) {
-	                      nickname = (String) nicknames.get(i);
+			StringBuilder sb = new StringBuilder();
+			String line;
+			while ((line = rd.readLine()) != null) {
+				sb.append(line);
+			}
 
-	                    try {
-	                    	if (userDAO.isNicknameUnique(nickname)) {
-		                        System.out.println("Duplicate found: " + nickname);
-		                        break; 
-		                    }
-	                    }
-	                    catch(Exception e) {
-	                    	
-	                    }
-	                }
-	            }
+			if (sb.length() > 0 && sb.toString().startsWith("{")) {
+				JSONParser parser = new JSONParser();
+				JSONObject jsonObject = (JSONObject) parser.parse(sb.toString());
 
-	        }
+				JSONArray nicknames = (JSONArray) jsonObject.get("words");
 
-	        return nickname;
-	    }
-	    catch (Exception e) {
-	        e.printStackTrace();
-	    } 
-	    finally {
-	        if (rd != null) {
-	            rd.close();
-	        }
-	        conn.disconnect();
-	    }
-	    return nickname;
+				UserDAO userDAO = new UserDAO();
+
+				if (nicknames != null && nicknames.size() > 0) {
+					for (int i = 0; i < nicknames.size(); i++) {
+						nickname = (String) nicknames.get(i);
+
+						try {
+							if (userDAO.isNicknameUnique(nickname)) {
+								return nickname;
+							}
+						} catch (Exception e) {
+							throw e;
+						}
+					}
+				}
+
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (rd != null) {
+				rd.close();
+			}
+			conn.disconnect();
+		}
+		
+		return "";
 	}
 }
-
-    
-

@@ -28,6 +28,9 @@
 				jsonStr = userJson.getGeneralResponse(12);
 			}
 		}
+		if(command != null && command.equals("randomNickname")){
+			jsonStr = userJson.getRandomNickname();
+		}
 	}
 	
 	if(request.getMethod().equals("POST")){
