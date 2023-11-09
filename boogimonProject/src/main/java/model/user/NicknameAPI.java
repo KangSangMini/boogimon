@@ -12,7 +12,7 @@ public class NicknameAPI {
 	
 	public String getNicknameAPI(String format, int count) throws Exception {
 	    String nickname = null;
-	    //
+	    
 	    StringBuilder urlBuilder = new StringBuilder("https://nickname.hwanmoo.kr/?");
 	    
 	    urlBuilder.append("format=" + format);
@@ -40,20 +40,33 @@ public class NicknameAPI {
 	            sb.append(line);
 	        }
 
-	        //서버에서 응답 데이터 처리하는 부분
-	        	 //응답이 json 형식으로 올바르게 반환 되었는 지 확인
 	        if (sb.length() > 0 && sb.toString().startsWith("{")) {
-	            //json 응답 문자열을 분석하여 JSONObject로 변환
-	        	JSONParser parser = new JSONParser();
+	            JSONParser parser = new JSONParser();
 	            JSONObject jsonObject = (JSONObject) parser.parse(sb.toString());
 
-	            //JSONObject에서 "words"키의 값을 JSONArray 가져오기
 	            JSONArray nicknames = (JSONArray) jsonObject.get("words");
+
+	            UserDAO userDAO = new UserDAO();
 	            
 	            if (nicknames != null && nicknames.size() > 0) {
-	                nickname = (String) nicknames.get(0);
-	            } 
-	           } 
+	                for (int i = 0; i < nicknames.size(); i++) {
+	                      nickname = (String) nicknames.get(i);
+
+	                    try {
+	                    	if (userDAO.isNicknameUnique(nickname)) {
+		                        System.out.println("Duplicate found: " + nickname);
+		                        break; 
+		                    }
+	                    }
+	                    catch(Exception e) {
+	                    	
+	                    }
+	                }
+	            }
+
+	        }
+
+	        return nickname;
 	    }
 	    catch (Exception e) {
 	        e.printStackTrace();
