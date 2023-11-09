@@ -34,7 +34,7 @@ public class StampbookDAO {
 		ArrayList<StampbookDO> stampbookList = new ArrayList<StampbookDO>();
 		StampbookDO stampbook = null;
 		
-		this.sql = "SELECT stb.stampbook_id, stb.title, stb.description, bt.nickname, to_char(stb.stampbook_regdate, 'YYYY-MM-DD HH24:MI:SS') as stampbookRegdate, stb.likeCount "
+		this.sql = "SELECT stb.stampbook_id, stb.title, stb.description, bt.nickname, bt.profile_img, to_char(stb.stampbook_regdate, 'YYYY-MM-DD HH24:MI:SS') as stampbookRegdate, stb.likeCount "
 				+ "FROM stampbook stb INNER JOIN boogiTrainer bt ON stb.user_id = bt.user_id WHERE stb.deleted = 0";
 		
 		try {
@@ -48,6 +48,7 @@ public class StampbookDAO {
 				stampbook.setTitle(rs.getString("title"));
 				stampbook.setDescription(rs.getString("description"));
 				stampbook.setNickname(rs.getString("nickname"));
+				stampbook.setProfileImg(rs.getString("profile_img"));
 				stampbook.setStampbookRegdate(rs.getString("stampbookRegdate"));
 				stampbook.setLikeCount(rs.getInt("likeCount"));
 				
@@ -71,6 +72,7 @@ public class StampbookDAO {
 		return stampbookList;
 	}
 	
+	/** 로그인한 사용자의 메인페이지 스탬프북 리스트 출력 */
 	public ArrayList<StampbookDO> getAllStampbook(String user_id) throws Exception{
 		ArrayList<StampbookDO> stampbookList = new ArrayList<StampbookDO>();
 		StampbookDO stampbook = null;
@@ -88,9 +90,11 @@ public class StampbookDAO {
 			if(rs.next()) {
 				// 탈퇴한 회원이 아닐때 쿼리 실행
 				if(rs.getInt("deleted") == 0) {
-					this.sql = "SELECT stb.stampbook_id, stb.title, stb.description, bt.nickname, to_char(stb.stampbook_regdate, 'YYYY-MM-DD HH24:MI:SS') as stampbookRegdate, stb.likeCount, "
-							+ "nvl((SELECT 1 FROM user_like ul where ul.user_id = ? AND ul.stampbook_id = stb.stampbook_id), 0) AS isLike "
-							+ "FROM stampbook stb INNER JOIN boogiTrainer bt ON stb.user_id = bt.user_id "
+					this.sql = "SELECT stb.stampbook_id, stb.title, stb.description, bt.nickname, bt.profile_img, to_char(stb.stampbook_regdate, 'YYYY-MM-DD HH24:MI:SS') AS stampbookRegdate, stb.likeCount, "
+							+ "nvl2(ul.user_id, 1, 0) AS isLike "
+							+ "FROM stampbook stb "
+							+ "INNER JOIN boogiTrainer bt ON stb.user_id = bt.user_id "
+							+ "LEFT OUTER JOIN user_like ul ON ul.stampbook_id = stb.stampbook_id AND ul.user_id = ? "
 							+ "WHERE stb.deleted = 0";
 					
 					this.pstmt = this.conn.prepareStatement(sql);
@@ -104,6 +108,7 @@ public class StampbookDAO {
 						stampbook.setTitle(rs.getString("title"));
 						stampbook.setDescription(rs.getString("description"));
 						stampbook.setNickname(rs.getString("nickname"));
+						stampbook.setProfileImg(rs.getString("profile_img"));
 						stampbook.setStampbookRegdate(rs.getString("stampbookRegdate"));
 						stampbook.setLikeCount(rs.getInt("likeCount"));
 						stampbook.setLiked(rs.getInt("isLike"));
@@ -147,6 +152,7 @@ public class StampbookDAO {
 		return stampbookList;
 	}
 	
+	/** my페이지(내 스탬프북)의 스탬프북 리스트 요청 */
 	public ArrayList<StampbookDO> getUsersStampbook(String user_id) throws Exception{
 		ArrayList<StampbookDO> stampbookList = new ArrayList<StampbookDO>();
 		StampbookDO stampbook = null;
@@ -164,14 +170,17 @@ public class StampbookDAO {
 			if(rs.next()) {
 				// 탈퇴한 회원이 아닐때 쿼리 실행
 				if(rs.getInt("deleted") == 0) {
-					this.sql = "SELECT stb.stampbook_id, stb.title, stb.description, bt.nickname, to_char(stb.stampbook_regdate, 'YYYY-MM-DD HH24:MI:SS') as stampbookRegdate, stb.likeCount, "
-							+ "nvl((SELECT 1 FROM user_like ul where ul.user_id = ? AND ul.stampbook_id = stb.stampbook_id), 0) AS isLike "
-							+ "FROM user_pick up INNER JOIN stampbook stb ON up.stampbook_id = stb.stampbook_id INNER JOIN boogiTrainer bt ON stb.user_id = bt.user_id "
+					this.sql = "SELECT stb.stampbook_id, stb.title, stb.description, bt.nickname, bt.profile_img, "
+							+ "to_char(stb.stampbook_regdate, 'YYYY-MM-DD HH24:MI:SS') AS stampbookRegdate, up.complete_date, stb.likeCount, "
+							+ "nvl2(ul.user_id, 1, 0) AS isLike "
+							+ "FROM user_pick up "
+							+ "INNER JOIN stampbook stb ON up.stampbook_id = stb.stampbook_id "
+							+ "INNER JOIN boogiTrainer bt ON stb.user_id = bt.user_id "
+							+ "LEFT OUTER JOIN user_like ul ON ul.stampbook_id = stb.stampbook_id AND ul.user_id = up.user_id "
 							+ "WHERE up.user_id = ?";
 					
 					this.pstmt = this.conn.prepareStatement(sql);
 					this.pstmt.setString(1, user_id);
-					this.pstmt.setString(2, user_id);
 					rs = pstmt.executeQuery();
 					
 					while(rs.next()) {
@@ -181,7 +190,9 @@ public class StampbookDAO {
 						stampbook.setTitle(rs.getString("title"));
 						stampbook.setDescription(rs.getString("description"));
 						stampbook.setNickname(rs.getString("nickname"));
+						stampbook.setProfileImg(rs.getString("profile_img"));
 						stampbook.setStampbookRegdate(rs.getString("stampbookRegdate"));
+						stampbook.setCompleteDate(rs.getString("complete_date"));
 						stampbook.setLikeCount(rs.getInt("likeCount"));
 						stampbook.setLiked(rs.getInt("isLike"));
 						
@@ -226,7 +237,7 @@ public class StampbookDAO {
 	public StampbookDO getStampbook(int stampbook_id){
 		StampbookDO stampbook = new StampbookDO();
 		
-		this.sql = "SELECT stampbook_id, title, description, bt.nickname, to_char(stampbook_regdate, 'YYYY-MM-DD HH24:MI:SS') as stampbookRegdate, likeCount FROM stampbook " +
+		this.sql = "SELECT stampbook_id, title, description, bt.nickname, bt.profile_img, to_char(stampbook_regdate, 'YYYY-MM-DD HH24:MI:SS') as stampbookRegdate, likeCount FROM stampbook " +
 					"INNER JOIN boogiTrainer bt ON stampbook.user_id = bt.user_id " + 
 					"WHERE stampbook_id = ? AND stampbook.deleted = 0";
 		
@@ -241,6 +252,7 @@ public class StampbookDAO {
 				stampbook.setTitle(rs.getString("title"));
 				stampbook.setDescription(rs.getString("description"));
 				stampbook.setNickname(rs.getString("nickname"));
+				stampbook.setProfileImg(rs.getString("profile_img"));				
 				stampbook.setStampbookRegdate(rs.getString("stampbookRegdate"));
 				stampbook.setLikeCount(rs.getInt("likeCount"));
 			}

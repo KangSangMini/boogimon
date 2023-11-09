@@ -287,12 +287,7 @@ public class UserDAO {
 			}
 		}
 		catch(Exception e) {
-//			if(!pstmt.isClosed()) {
-//				pstmt.close();
-//			}
-//			this.conn.setAutoCommit(true);
 			e.printStackTrace();
-//			this.conn.rollback();
 			throw e;
 		}
 		finally {

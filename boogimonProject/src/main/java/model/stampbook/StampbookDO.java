@@ -6,7 +6,8 @@ public class StampbookDO {
 	private int stampbookId;
 	private String title;
 	private String description;
-	private String nickname;
+	private String nickname;	// author
+	private String profileImg;	// author
 	private String stampbookRegdate;
 	private int likeCount;
 	private boolean liked;
@@ -47,6 +48,14 @@ public class StampbookDO {
 
 	public void setNickname(String nickname) {
 		this.nickname = nickname;
+	}
+
+	public String getProfileImg() {
+		return profileImg;
+	}
+
+	public void setProfileImg(String profileImg) {
+		this.profileImg = profileImg;
 	}
 
 	public String getStampbookRegdate() {
@@ -107,8 +116,8 @@ public class StampbookDO {
 	}
 	
 	public String toString() {
-		String result = String.format("stampbookId: %d / title: %s / description: %s \nnickname: %s / stampbookRegdate: %s / completeDate: %s \nlikeCount: %d / liked: %b\n", 
-				this.stampbookId, this.title, this.description, this.nickname, this.stampbookRegdate, this.completeDate, this.likeCount, this.liked);
+		String result = String.format("stampbookId: %d / title: %s / description: %s \nnickname: %s / nickname: %s / stampbookRegdate: %s / completeDate: %s \nlikeCount: %d / liked: %b\n", 
+				this.stampbookId, this.title, this.description, this.nickname, this.profileImg, this.stampbookRegdate, this.completeDate, this.likeCount, this.liked);
 		
 		if(this.stampList != null && !(this.stampList.isEmpty())) {
 			result += String.format("========== stampList ==========\n");

@@ -13,8 +13,8 @@
 SET ESCAPE ON
 
 --수정 전 데이터 삭제--
-DELETE FROM PLACE_DETAIL
-WHERE PLACE_ID IN (SELECT PLACE_ID FROM PLACE WHERE TYPE = '900');
+-- DELETE FROM PLACE_DETAIL
+-- WHERE PLACE_ID IN (SELECT PLACE_ID FROM PLACE WHERE TYPE = '900');
 --변경한 데이터(THUMBNAIL -> NULL)--
 -------------------------------------------------------------------------2차 수정
 --PLACE NAME 중복된 데이터 삭제,밑에 쿼리문은 중복된 데이터 삭제한 쿼리문!!!
