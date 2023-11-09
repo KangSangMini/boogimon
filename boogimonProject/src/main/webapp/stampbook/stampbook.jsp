@@ -80,6 +80,70 @@
 				jsonStr = stbJson.getGeneralResponse(12);
 			}
 		}
+		// 스탬프북 담기 취소
+		if(command != null && command.equals("unpick")){
+			if(request.getParameter("stampbookId") != null && userDO.getUserId() != null){
+				try{
+					resultCode = stbDAO.unpickStampbook(userDO.getUserId(), stampbookDO.getStampbookId()) == 1 ? 0 : 2;
+				}
+				catch(Exception e){
+					resultCode = BoogiException.getErrCode(e);
+				}
+			}
+			else {
+				// 필수 파라미터 누락
+				resultCode = 12;
+			}
+			jsonStr = stbJson.getGeneralResponse(resultCode);
+		}
+		// 스탬프북 삭제
+		if(command != null && command.equals("delete")){
+			if(request.getParameter("stampbookId") != null && userDO.getUserId() != null){
+				try{
+					resultCode = stbDAO.deleteStampbook(stampbookDO.getStampbookId(), userDO.getUserId()) == 1 ? 0 : 2;
+				}
+				catch(Exception e){
+					resultCode = BoogiException.getErrCode(e);
+				}
+			}
+			else {
+				// 필수 파라미터 누락
+				resultCode = 12;
+			}
+			jsonStr = stbJson.getGeneralResponse(resultCode);
+		}
+		// 스탬프북 좋아요
+		if(command != null && command.equals("like")){
+			if(request.getParameter("stampbookId") != null && userDO.getUserId() != null){
+				try{
+					resultCode = stbDAO.likeStampbook(stampbookDO.getStampbookId(), userDO.getUserId()) == 1 ? 0 : 2;
+				}
+				catch(Exception e){
+					resultCode = BoogiException.getErrCode(e);
+				}
+			}
+			else {
+				// 필수 파라미터 누락
+				resultCode = 12;
+			}
+			jsonStr = stbJson.getGeneralResponse(resultCode);
+		}
+		// 스탬프북 좋아요 취소
+		if(command != null && command.equals("unlike")){
+			if(request.getParameter("stampbookId") != null && userDO.getUserId() != null){
+				try{
+					resultCode = stbDAO.unlikeStampbook(stampbookDO.getStampbookId(), userDO.getUserId()) == 1 ? 0 : 2;
+				}
+				catch(Exception e){
+					resultCode = BoogiException.getErrCode(e);
+				}
+			}
+			else {
+				// 필수 파라미터 누락
+				resultCode = 12;
+			}
+			jsonStr = stbJson.getGeneralResponse(resultCode);
+		}
 	}
 	
 	if(request.getMethod().equals("POST")){
@@ -95,7 +159,12 @@
 		// 스탬프북 담기
 		else if(command.equals("pick")){
 			if(request.getParameter("stampbookId") != null && userDO.getUserId() != null){
-				resultCode = stbDAO.pickStampbook(stampbookDO.getStampbookId(), userDO.getUserId()) == 1 ? 0 : 2;
+				try{
+					resultCode = stbDAO.pickStampbook(stampbookDO.getStampbookId(), userDO.getUserId()) == 1 ? 0 : 2;
+				}
+				catch (Exception e){
+					resultCode = BoogiException.getErrCode(e);
+				}
 			}
 			else {
 				// 필수 파라미터 누락
