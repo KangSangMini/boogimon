@@ -57,7 +57,7 @@ INSERT INTO PLACE_DETAIL (PLACE_ID, TEL, DETAIL, PAY, IMG, HOMEPAGE, OPEN, CLOSE
 VALUES (seq_place_id.currval,'051-605-4065','황령산 봉수대','무료',NULL,'www.bisco.or.kr/jungangpark/facil/facil03/facil03_2/','12:00 AM','12:00 PM','공영주차장,화장실');
 
 INSERT INTO PLACE(PLACE_ID,NAME,TYPE,ADDR,LAT,LON,THUMBNAIL)
-VALUES(seq_place_id.nextval,'이기대 전망대','900','부산광역시 남구 용호동 산1','35.13804831461976','129.05241378784098','/boogimon/images/place/leegidae.png');
+VALUES(seq_place_id.nextval,'이기대 전망대','900','부산광역시 남구 용호동 산1','35.13804831461976','129.05241378784098','/boogimon/images/place/leegidae.jpg');
 INSERT INTO PLACE_DETAIL (PLACE_ID, TEL, DETAIL, PAY, IMG, HOMEPAGE, OPEN, CLOSE, FACILITY)
 VALUES (seq_place_id.currval,'051-607-6361','이기대 전망대','무료',NULL,'www.bsnamgu.go.kr','12:00 AM','12:00 PM','공영주차장,화장실');
 
