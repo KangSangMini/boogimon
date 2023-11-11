@@ -115,7 +115,6 @@ public class UserDAO {
 				
 				if(tempPw.equals(ue.hashing(user.getPasswd(), tempSalt))) {
 					result = true;
-					user.setNickname(rs.getString("nickname"));
 				}
 			}
 			
@@ -272,7 +271,7 @@ public class UserDAO {
 				this.sql = "UPDATE boogiTrainer SET passwd = ?, salt = ? WHERE user_id = ?";
 				
 				String salt = ue.getSalt();
-				String pw = user.getPasswd();
+				String pw = user.getNewPasswd();
 
 				pstmt = conn.prepareStatement(sql);
 				pstmt.setString(1, ue.hashing(pw, salt));
