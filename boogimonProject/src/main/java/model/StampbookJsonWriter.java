@@ -61,6 +61,9 @@ public class StampbookJsonWriter extends JsonWriter{
 	@SuppressWarnings("unchecked")
 	private JSONObject getStampbookJsonObj(StampbookDO stampbook) {
 		JSONObject jsonObj = new JSONObject();
+		JSONObject stObj = null;
+		JSONArray jsonArr = new JSONArray();
+		
 		
 		jsonObj.put("stampbookId", stampbook.getStampbookId());
 		jsonObj.put("title", stampbook.getTitle());
@@ -71,6 +74,20 @@ public class StampbookJsonWriter extends JsonWriter{
 		jsonObj.put("completeDate", stampbook.getCompleteDate());
 		jsonObj.put("likeCount", stampbook.getLikeCount());
 		jsonObj.put("isLike", stampbook.getLiked());
+		
+		if(!stampbook.getStampList().isEmpty()) {
+			for(StampDO stamp : stampbook.getStampList()) {
+				stObj = new JSONObject();
+				
+				stObj.put("stampNo", stamp.getStampNo());
+				stObj.put("name", stamp.getName());
+				stObj.put("thumbnail", stamp.getThumbnail());
+				
+				jsonArr.add(stObj);
+			}
+		}
+		
+		jsonObj.put("stampList", jsonArr);
 		
 		return jsonObj;
 	}
@@ -95,7 +112,6 @@ public class StampbookJsonWriter extends JsonWriter{
 	public String getCommentListJson(int stampbookId) {
 		ArrayList<CommentDO> commentList = new ArrayList<CommentDO>();
 		JSONObject jsonObj = null;
-		JSONObject cmtObj = null;
 		JSONArray jsonArr = new JSONArray();
 		int resultCode = 0;
 		
