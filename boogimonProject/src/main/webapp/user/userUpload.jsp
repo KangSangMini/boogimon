@@ -3,7 +3,7 @@
 		 import="java.util.*, boogimon.*, model.*, model.user.*"
 %>
 
-<jsp:useBean id="userDAO" class="model.user.UserDAO" scope="session"/>
+<jsp:useBean id="userDAO" class="model.user.UserDAO" scope="application"/>
 <jsp:useBean id="userDO" class="model.user.UserDO" />
 
 <%

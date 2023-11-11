@@ -2,7 +2,7 @@
 		 import="java.util.*, boogimon.*, model.*, model.stampbook.*"
 %>
 
-<jsp:useBean id="stbdDAO" class="model.stampbook.StampbookDetailDAO" scope="session"/>
+<jsp:useBean id="stbdDAO" class="model.stampbook.StampbookDetailDAO" scope="application"/>
 
 <jsp:useBean id="stampDO" class="model.stampbook.StampDO" />
 <jsp:setProperty name="stampDO" property="*" />

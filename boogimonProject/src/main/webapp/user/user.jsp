@@ -4,13 +4,13 @@
 
 <% request.setCharacterEncoding("UTF-8"); %>
 
-<jsp:useBean id="userDAO" class="model.user.UserDAO" scope="session"/>
+<jsp:useBean id="userDAO" class="model.user.UserDAO" scope="application"/>
 
 <jsp:useBean id="userDO" class="model.user.UserDO" />
 <jsp:setProperty name="userDO" property="*" />
 
 <%
-	response.setHeader("Access-Control-Allow-Origin","http://localhost:3000");
+	response.setHeader("Access-Control-Allow-Origin","*");
 	out.clearBuffer();
 	UserJsonWriter userJson = new UserJsonWriter(userDAO);
 	String command = request.getParameter("command");
