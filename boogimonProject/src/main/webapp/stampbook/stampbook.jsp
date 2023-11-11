@@ -24,7 +24,7 @@
 	String command = request.getParameter("command");
 	String jsonStr = "";
 	int resultCode = 0;
-
+	
 	if(request.getMethod().equals("GET")){
 		// 스탬프북의 상세 정보 요청
 		if(command == null) {
@@ -51,11 +51,11 @@
 			try{
 				if(userDO.getUserId() == null){
 					// 비로그인 유저
-					stampbookListDO.setStampbookList(stbDAO.getAllStampbook());
+					stampbookListDO.setStampbookList(stbDAO.getAllStampbookWS());
 				}
 				else{
 					// 로그인 한 사용자라면 각 스탬프북 좋아요 여부 포함한 리스트 반환
-					stampbookListDO.setStampbookList(stbDAO.getAllStampbook(userDO.getUserId()));
+					stampbookListDO.setStampbookList(stbDAO.getAllStampbookWS(userDO.getUserId()));
 				}
 				
 				jsonStr = stbJson.getStampbookListJson(stampbookListDO);
@@ -69,7 +69,7 @@
 			if(userDO.getUserId() != null){
 				try{
 					// 잘못된 사용자 id가 입력되었을때 예외처리 DAO 수정 (아이디 확인)
-					stampbookListDO.setStampbookList(stbDAO.getUsersStampbook(userDO.getUserId()));
+					stampbookListDO.setStampbookList(stbDAO.getUsersStampbookWS(userDO.getUserId()));
 					jsonStr = stbJson.getStampbookListJson(stampbookListDO);
 				}
 				catch(Exception e){

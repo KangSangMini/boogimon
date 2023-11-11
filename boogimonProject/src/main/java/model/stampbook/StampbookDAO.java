@@ -15,6 +15,8 @@ public class StampbookDAO {
 	private Statement stmt;
 	private PreparedStatement pstmt;
 	private ResultSet rs;
+	private PreparedStatement pstmt2;
+	private ResultSet rs2;
 	private String sql;
 	
 	public StampbookDAO() {
@@ -30,6 +32,7 @@ public class StampbookDAO {
 		}
 	}
 	
+	/** 스탬프북 전체 리스트 요청 */
 	public ArrayList<StampbookDO> getAllStampbook(){
 		ArrayList<StampbookDO> stampbookList = new ArrayList<StampbookDO>();
 		StampbookDO stampbook = null;
@@ -234,6 +237,7 @@ public class StampbookDAO {
 		return stampbookList;
 	}
 	
+	/** 스탬프북 상세 설명 요청 */
 	public StampbookDO getStampbook(int stampbook_id){
 		StampbookDO stampbook = new StampbookDO();
 		
@@ -693,6 +697,298 @@ public class StampbookDAO {
 		
 		return rowCount; 
 	}
+	
+	
+	/** 스탬프북 전체 리스트 요청 with 스탬프 이미지 */
+	public ArrayList<StampbookDO> getAllStampbookWS(){
+		ArrayList<StampbookDO> stampbookList = new ArrayList<StampbookDO>();
+		ArrayList<StampDO> stampList = null;
+		StampbookDO stampbook = null;
+		StampDO stamp = null;
+		String sub = "";
+		
+		this.sql = "SELECT stb.stampbook_id, stb.title, stb.description, bt.nickname, bt.profile_img, to_char(stb.stampbook_regdate, 'YYYY-MM-DD HH24:MI:SS') as stampbookRegdate, stb.likeCount "
+				+ "FROM stampbook stb INNER JOIN boogiTrainer bt ON stb.user_id = bt.user_id WHERE stb.deleted = 0";
+		
+		try {
+			stmt = this.conn.createStatement();
+			rs = stmt.executeQuery(sql);
+			
+			while(rs.next()) {
+				stampbook = new StampbookDO();
+				
+				stampbook.setStampbookId(rs.getInt("stampbook_id"));
+				stampbook.setTitle(rs.getString("title"));
+				stampbook.setDescription(rs.getString("description"));
+				stampbook.setNickname(rs.getString("nickname"));
+				stampbook.setProfileImg(rs.getString("profile_img"));
+				stampbook.setStampbookRegdate(rs.getString("stampbookRegdate"));
+				stampbook.setLikeCount(rs.getInt("likeCount"));
+				
+				// 스탬프북 썸네일
+				sub = "SELECT st.stampno, p.name, p.thumbnail "
+						+ "FROM STAMP st "
+						+ "JOIN PLACE p ON st.place_id = p.place_id "
+						+ "WHERE st.stampbook_id = ? "
+						+ "ORDER BY st.stampno";
+				
+				this.pstmt2 = this.conn.prepareStatement(sub);
+				this.pstmt2.setInt(1, stampbook.getStampbookId());
+				rs2 = pstmt2.executeQuery();
+				stampList = new ArrayList<StampDO>();
+				while(rs2.next()) {
+					stamp = new StampDO();
+					
+					stamp.setStampNo(rs2.getInt("stampno"));
+					stamp.setName(rs2.getString("name"));
+					stamp.setThumbnail(rs2.getString("thumbnail"));
+					
+					stampList.add(stamp);
+				}
+				stampbook.setStampList(stampList);
+				
+				stampbookList.add(stampbook);
+			}
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		finally {
+			try {
+				if(!stmt.isClosed()) {
+					stmt.close();
+				}
+			}
+			catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return stampbookList;
+	}
+	
+	/** 로그인한 사용자의 메인페이지 스탬프북 리스트 출력 with 스탬프 이미지 */
+	public ArrayList<StampbookDO> getAllStampbookWS(String user_id) throws Exception{
+		ArrayList<StampbookDO> stampbookList = new ArrayList<StampbookDO>();
+		ArrayList<StampDO> stampList = null;
+		StampbookDO stampbook = null;
+		StampDO stamp = null;
+		String sub = "";
+		
+		boolean notExists = false;
+		boolean isDeleted = false;
+		
+		try {
+			// 회원 체크
+			this.sql = "SELECT deleted FROM boogiTrainer WHERE user_id = ?";
+			this.pstmt = this.conn.prepareStatement(sql);
+			this.pstmt.setString(1, user_id);
+			rs = pstmt.executeQuery();
+			
+			// 회원이 존재하고
+			if(rs.next()) {
+				// 탈퇴한 회원이 아닐때 쿼리 실행
+				if(rs.getInt("deleted") == 0) {
+					this.sql = "SELECT stb.stampbook_id, stb.title, stb.description, bt.nickname, bt.profile_img, to_char(stb.stampbook_regdate, 'YYYY-MM-DD HH24:MI:SS') AS stampbookRegdate, stb.likeCount, "
+							+ "nvl2(ul.user_id, 1, 0) AS isLike "
+							+ "FROM stampbook stb "
+							+ "INNER JOIN boogiTrainer bt ON stb.user_id = bt.user_id "
+							+ "LEFT OUTER JOIN user_like ul ON ul.stampbook_id = stb.stampbook_id AND ul.user_id = ? "
+							+ "WHERE stb.deleted = 0";
+					
+					this.pstmt = this.conn.prepareStatement(sql);
+					this.pstmt.setString(1, user_id);
+					rs = pstmt.executeQuery();
+					
+					while(rs.next()) {
+						stampbook = new StampbookDO();
+						
+						stampbook.setStampbookId(rs.getInt("stampbook_id"));
+						stampbook.setTitle(rs.getString("title"));
+						stampbook.setDescription(rs.getString("description"));
+						stampbook.setNickname(rs.getString("nickname"));
+						stampbook.setProfileImg(rs.getString("profile_img"));
+						stampbook.setStampbookRegdate(rs.getString("stampbookRegdate"));
+						stampbook.setLikeCount(rs.getInt("likeCount"));
+						stampbook.setLiked(rs.getInt("isLike"));
+						
+						// 스탬프북 썸네일 
+						sub = "SELECT st.stampno, p.name, p.thumbnail "
+								+ "FROM STAMP st "
+								+ "JOIN PLACE p ON st.place_id = p.place_id "
+								+ "WHERE st.stampbook_id = ? "
+								+ "ORDER BY st.stampno";
+						
+						this.pstmt2 = this.conn.prepareStatement(sub);
+						this.pstmt2.setInt(1, stampbook.getStampbookId());
+						rs2 = pstmt2.executeQuery();
+						stampList = new ArrayList<StampDO>();
+						while(rs2.next()) {
+							stamp = new StampDO();
+							
+							stamp.setStampNo(rs2.getInt("stampno"));
+							stamp.setName(rs2.getString("name"));
+							stamp.setThumbnail(rs2.getString("thumbnail"));
+							
+							stampList.add(stamp);
+						}
+						stampbook.setStampList(stampList);
+						
+						stampbookList.add(stampbook);
+					}
+				}
+				else {
+					// 탈퇴한 회원
+					isDeleted = true;
+				}
+			}
+			else {
+				// 존재하지 않는 회원
+				notExists = true;
+			}
+			
+		}
+		catch(Exception e){
+			e.printStackTrace();
+			throw e;
+		}
+		finally {
+			try {
+				if(!pstmt.isClosed()) {
+					pstmt.close();
+				}
+			}
+			catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		if(isDeleted) {
+			throw new BoogiException(24, "탈퇴한 회원입니다.");
+		}
+		if(notExists) {
+			throw new BoogiException(20, "존재하지 않는 사용자입니다.");
+		}
+		
+		return stampbookList;
+	}
+	
+	/** my페이지(내 스탬프북)의 스탬프북 리스트 요청 with 스탬프 이미지 */
+	public ArrayList<StampbookDO> getUsersStampbookWS(String user_id) throws Exception{
+		ArrayList<StampbookDO> stampbookList = new ArrayList<StampbookDO>();
+		ArrayList<StampDO> stampList = null;
+		StampbookDO stampbook = null;
+		StampDO stamp = null;
+		String sub = "";
+		
+		boolean notExists = false;
+		boolean isDeleted = false;
+		
+		try {
+			// 회원 체크
+			this.sql = "SELECT deleted FROM boogiTrainer WHERE user_id = ?";
+			this.pstmt = this.conn.prepareStatement(sql);
+			this.pstmt.setString(1, user_id);
+			rs = pstmt.executeQuery();
+			
+			// 회원이 존재하고
+			if(rs.next()) {
+				// 탈퇴한 회원이 아닐때 쿼리 실행
+				if(rs.getInt("deleted") == 0) {
+					this.sql = "SELECT stb.stampbook_id, stb.title, stb.description, bt.nickname, bt.profile_img, "
+							+ "to_char(stb.stampbook_regdate, 'YYYY-MM-DD HH24:MI:SS') AS stampbookRegdate, up.complete_date, stb.likeCount, "
+							+ "nvl2(ul.user_id, 1, 0) AS isLike "
+							+ "FROM user_pick up "
+							+ "INNER JOIN stampbook stb ON up.stampbook_id = stb.stampbook_id "
+							+ "INNER JOIN boogiTrainer bt ON stb.user_id = bt.user_id "
+							+ "LEFT OUTER JOIN user_like ul ON ul.stampbook_id = stb.stampbook_id AND ul.user_id = up.user_id "
+							+ "WHERE up.user_id = ?";
+					
+					this.pstmt = this.conn.prepareStatement(sql);
+					this.pstmt.setString(1, user_id);
+					rs = pstmt.executeQuery();
+					
+					while(rs.next()) {
+						stampbook = new StampbookDO();
+						
+						stampbook.setStampbookId(rs.getInt("stampbook_id"));
+						stampbook.setTitle(rs.getString("title"));
+						stampbook.setDescription(rs.getString("description"));
+						stampbook.setNickname(rs.getString("nickname"));
+						stampbook.setProfileImg(rs.getString("profile_img"));
+						stampbook.setStampbookRegdate(rs.getString("stampbookRegdate"));
+						stampbook.setCompleteDate(rs.getString("complete_date"));
+						stampbook.setLikeCount(rs.getInt("likeCount"));
+						stampbook.setLiked(rs.getInt("isLike"));
+						
+						// 스탬프북 썸네일 
+						sub = "SELECT st.stampno, st.place_id, p.name, p.lat, p.lon, p.thumbnail, ush.user_id, ush.upload_img, to_char(ush.stamped_date, 'YYYY-MM-DD HH24:MI:SS') as stamped_date "
+								+ "FROM STAMP st JOIN PLACE p ON st.place_id = p.place_id "
+								+ "LEFT OUTER JOIN USER_STAMP_HISTORY ush ON ush.stampbook_id = st.stampbook_id AND ush.stampno = st.stampno AND ush.user_id = ? "
+								+ "WHERE st.stampbook_id = ? "
+								+ "ORDER BY st.stampno";
+						
+						this.pstmt2 = this.conn.prepareStatement(sub);
+						this.pstmt2.setString(1, user_id);
+						this.pstmt2.setInt(2, stampbook.getStampbookId());
+						rs2 = pstmt2.executeQuery();
+						stampList = new ArrayList<StampDO>();
+						while(rs2.next()) {
+							stamp = new StampDO();
+							
+							stamp.setStampNo(rs2.getInt("stampno"));
+							stamp.setName(rs2.getString("name"));
+							
+							if(rs2.getString("upload_img") != null) {
+								stamp.setThumbnail(rs2.getString("upload_img"));
+							}
+							else {
+								stamp.setThumbnail(rs2.getString("thumbnail"));
+							}
+							
+							stampList.add(stamp);
+						}
+						stampbook.setStampList(stampList);
+						
+						stampbookList.add(stampbook);
+					}
+				}
+				else {
+					// 탈퇴한 회원
+					isDeleted = true;
+				}
+			}
+			else {
+				// 존재하지 않는 회원
+				notExists = true;
+			}
+		}
+		catch(Exception e){
+			e.printStackTrace();
+			throw e;
+		}
+		finally {
+			try {
+				if(!pstmt.isClosed()) {
+					pstmt.close();
+				}
+			}
+			catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		if(isDeleted) {
+			throw new BoogiException(24, "탈퇴한 회원입니다.");
+		}
+		if(notExists) {
+			throw new BoogiException(20, "존재하지 않는 사용자입니다.");
+		}
+		
+		return stampbookList;
+	}
+	
+	
 	
 	public void closeConn() {
 		if(conn != null) {
