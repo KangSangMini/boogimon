@@ -8,8 +8,8 @@
 
 <% request.setCharacterEncoding("UTF-8"); %>
 
-<jsp:useBean id="stbDAO" class="model.stampbook.StampbookDAO" scope="session"/>
-<jsp:useBean id="stbdDAO" class="model.stampbook.StampbookDetailDAO" scope="session"/>
+<jsp:useBean id="stbDAO" class="model.stampbook.StampbookDAO" scope="application"/>
+<jsp:useBean id="stbdDAO" class="model.stampbook.StampbookDetailDAO" scope="application"/>
 
 <jsp:useBean id="stampbookListDO" class="model.stampbook.StampbookListDO" />
 <jsp:useBean id="stampbookDO" class="model.stampbook.StampbookDO" />
@@ -148,9 +148,9 @@
 	}
 	
 	if(request.getMethod().equals("POST")){
-		
 		// 스탬프북 생성
 		if(command != null && command.equals("insert")) {
+			
 			if(userDO.getUserId() != null && stampbookDO.getTitle() != null && stampbookDO.getDescription() != null && request.getParameter("rStampList") != null){
 				JSONParser jparser = new JSONParser();
 				JSONArray jsonArr = (JSONArray) jparser.parse(request.getParameter("rStampList"));

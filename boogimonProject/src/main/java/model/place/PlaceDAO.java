@@ -220,8 +220,6 @@ public class PlaceDAO {
 				stamp.setLon(rs.getString("lon"));
 				stamp.setThumbnail(rs.getString("thumbnail"));
 				
-				System.out.println(stamp);
-				
 				stampList.add(stamp);
 			}
 		}

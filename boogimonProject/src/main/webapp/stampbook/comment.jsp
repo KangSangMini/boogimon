@@ -4,7 +4,7 @@
 
 <% request.setCharacterEncoding("UTF-8"); %>
 
-<jsp:useBean id="stbdDAO" class="model.stampbook.StampbookDetailDAO" scope="session"/>
+<jsp:useBean id="stbdDAO" class="model.stampbook.StampbookDetailDAO" scope="application"/>
 
 <jsp:useBean id="commentDO" class="model.stampbook.CommentDO" />
 <jsp:setProperty name="commentDO" property="*" />
