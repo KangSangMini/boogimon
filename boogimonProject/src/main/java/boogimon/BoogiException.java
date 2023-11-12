@@ -15,7 +15,6 @@ public class BoogiException extends Exception {
 	public BoogiException(OperationResult or) {
 		super(or.getMsg());
 		this.or = or;
-		System.out.println("BoogiException 생성자: " + this.or);
 	}
 	
 	public int getErrCode() {
@@ -24,7 +23,6 @@ public class BoogiException extends Exception {
 	
 	/** Exception객체의 OperationResult를 반환 */
 	static public OperationResult getResult(Exception e) {
-		System.out.println("BoogiException getResult: " + ((BoogiException) e).or);
 		return (e instanceof BoogiException) ? ((BoogiException) e).or : 
 			(e instanceof SQLException) ? OperationResult.DB_ERROR : 
 				OperationResult.UNKNOWN_ERROR;
