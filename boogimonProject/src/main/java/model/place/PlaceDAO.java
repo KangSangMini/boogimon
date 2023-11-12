@@ -165,7 +165,7 @@ public class PlaceDAO {
 				// 그 이외일 경우 공공데이터 API 요청으로 데이터 제공
 				else {
 					OpenData openData = new OpenData();
-					placeDetail = openData.getOpenDataAPI(rs.getInt("type"), rs.getString("contents_id"));
+					placeDetail = openData.getOpenDataAPI(rs.getInt("type"), rs.getString("contents_id"), "kr");
 					placeDetail.setName(rs.getString("name"));
 					placeDetail.setAddr(rs.getString("addr"));
 				}
