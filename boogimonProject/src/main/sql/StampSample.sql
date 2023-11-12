@@ -918,13 +918,13 @@ VALUES ('sapphire@google.com', 6, 4, '/boogimon/images/upload/user/stamp/ruby4.j
 INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
 VALUES ('sapphire@google.com', 6, 5, '/boogimon/images/upload/user/stamp/ruby5.jpg');
 INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
-VALUES ('rsapphireuby@google.com', 6, 6, '/boogimon/images/upload/user/stamp/ruby6.jpg');
+VALUES ('sapphire@google.com', 6, 6, '/boogimon/images/upload/user/stamp/ruby6.jpg');
 INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
 VALUES ('sapphire@google.com', 6, 7, '/boogimon/images/upload/user/stamp/ruby7.jpg');
 INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
 VALUES ('sapphire@google.com', 6, 8, '/boogimon/images/upload/user/stamp/ruby8.jpg');
 INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
-VALUES ('rusapphireby@google.com', 6, 9, '/boogimon/images/upload/user/stamp/ruby9.jpg');
+VALUES ('sapphire@google.com', 6, 9, '/boogimon/images/upload/user/stamp/ruby9.jpg');
 
 -- 사파이어 담은 6번 스탬프북을 완성함
 UPDATE USER_PICK
