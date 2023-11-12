@@ -25,7 +25,7 @@
 			}
 			else {
 				// 필수 파라미터 누락
-				jsonStr = userJson.getGeneralResponse(12);
+				jsonStr = userJson.getGeneralResponse(OperationResult.NO_MANDATORY_REQUEST_PARAMETERS_ERROR);
 			}
 		}
 		if(command != null && command.equals("randomNickname")){
@@ -40,20 +40,18 @@
 				jsonStr = userJson.authLogin(userDO);
 			}
 			catch(Exception e){
-				resultCode = BoogiException.getErrCode(e);
-				jsonStr = userJson.getGeneralResponse(resultCode);
+				jsonStr = BoogiException.getResult(e).getResponseJsonObj().toJSONString();
 			}
 		}
 		// 회원 가입
 		else if(command != null && command.equals("join")){
 			try {
-				userDAO.joinUser(userDO);
+				jsonStr = userDAO.joinUser(userDO) == 1 ? 
+						OperationResult.NORMAL_CODE.getResponseJsonObj().toJSONString() 
+						: OperationResult.UPDATE_FAILED_ERROR.getResponseJsonObj().toJSONString();
 			}
 			catch (Exception e){
-				resultCode = BoogiException.getErrCode(e);
-			}
-			finally {
-				jsonStr = userJson.getGeneralResponse(resultCode);
+				jsonStr = BoogiException.getResult(e).getResponseJsonObj().toJSONString();
 			}
 		}
 		// 닉네임 수정 
@@ -63,17 +61,16 @@
 			// 필수 파라미터 검사
 			if(userDO.getUserId() != null && userDO.getNewNickname() != null){
 				try {
-					userDAO.changeNickname(userDO);
+					jsonStr = userDAO.changeNickname(userDO) == 1 ? 
+							OperationResult.NORMAL_CODE.getResponseJsonObj().toJSONString() 
+							: OperationResult.UPDATE_FAILED_ERROR.getResponseJsonObj().toJSONString();
 				}
 				catch (Exception e){
-					resultCode = BoogiException.getErrCode(e);
+					jsonStr = BoogiException.getResult(e).getResponseJsonObj().toJSONString();
 				}
-				finally {
-					jsonStr = userJson.getGeneralResponse(resultCode);
-				}	
 			}
 			else{
-				jsonStr = userJson.getGeneralResponse(12);
+				jsonStr = userJson.getGeneralResponse(OperationResult.NO_MANDATORY_REQUEST_PARAMETERS_ERROR);
 			}
 		}
 		// 패스워드 수정 
@@ -81,17 +78,16 @@
 			// 필수 파라미터 검사
 			if(userDO.getUserId() != null && userDO.getNewPasswd() != null){
 				try {
-					userDAO.changePasswd(userDO);
+					jsonStr = userDAO.changePasswd(userDO) == 1 ? 
+							OperationResult.NORMAL_CODE.getResponseJsonObj().toJSONString() 
+							: OperationResult.UPDATE_FAILED_ERROR.getResponseJsonObj().toJSONString();
 				}
 				catch (Exception e){
-					resultCode = BoogiException.getErrCode(e);
+					jsonStr = BoogiException.getResult(e).getResponseJsonObj().toJSONString();
 				}
-				finally {
-					jsonStr = userJson.getGeneralResponse(resultCode);
-				}	
 			}
 			else{
-				jsonStr = userJson.getGeneralResponse(12);
+				jsonStr = userJson.getGeneralResponse(OperationResult.NO_MANDATORY_REQUEST_PARAMETERS_ERROR);
 			}
 		}
 		// 회원 탈퇴 
@@ -99,24 +95,23 @@
 			// 필수 파라미터 검사
 			if(userDO.getUserId() != null){
 				try {
-					userDAO.deleteUser(userDO.getUserId());
+					jsonStr = userDAO.deleteUser(userDO.getUserId()) == 1 ? 
+							OperationResult.NORMAL_CODE.getResponseJsonObj().toJSONString() 
+							: OperationResult.UPDATE_FAILED_ERROR.getResponseJsonObj().toJSONString();
 				}
 				catch (Exception e){
-					resultCode = BoogiException.getErrCode(e);
+					jsonStr = BoogiException.getResult(e).getResponseJsonObj().toJSONString();
 				}
-				finally {
-					jsonStr = userJson.getGeneralResponse(resultCode);
-				}	
 			}
 			else{
-				jsonStr = userJson.getGeneralResponse(12);
+				jsonStr = userJson.getGeneralResponse(OperationResult.NO_MANDATORY_REQUEST_PARAMETERS_ERROR);
 			}
 		}
 	}
 	
 	// 잘못된 요청
 	if(jsonStr.isEmpty()){
-		jsonStr = userJson.getGeneralResponse(10);
+		jsonStr = userJson.getGeneralResponse(OperationResult.INVALID_REQUEST_ERROR);
 	}
 	
 	out.println(jsonStr);

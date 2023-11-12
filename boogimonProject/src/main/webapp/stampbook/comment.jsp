@@ -19,7 +19,7 @@
 	StampbookJsonWriter stbJson = new StampbookJsonWriter();
 	stbJson.setStampbookDetailDAO(stbdDAO);
 	String command = request.getParameter("command");
-	int resultCode = 0;
+	OperationResult or = OperationResult.NORMAL_CODE;
 	String jsonStr = "";
 
 	if(request.getMethod().equals("GET")){
@@ -30,23 +30,23 @@
 			}
 			else{
 				// stampbookId 필수 파라미터 누락
-				jsonStr = stbJson.getGeneralResponse(12);
+				jsonStr = stbJson.getGeneralResponse(OperationResult.NO_MANDATORY_REQUEST_PARAMETERS_ERROR);
 			}
 		}
 		if(command != null && command.equals("delete")){
 			if(commentDO.getUserId() != null && request.getParameter("commentId") != null){
 				try {
-					resultCode = stbdDAO.deleteComment(commentDO) == 1 ? 0 : 2;
+					or = stbdDAO.deleteComment(commentDO) == 1 ? OperationResult.NORMAL_CODE : OperationResult.UPDATE_FAILED_ERROR;
 				}
 				catch(Exception e){
-					resultCode = BoogiException.getErrCode(e);
+					or = BoogiException.getResult(e);
 				}
 			}
 			else{
 				// stampbookId 필수 파라미터 누락
-				resultCode = 12;
+				or = OperationResult.NO_MANDATORY_REQUEST_PARAMETERS_ERROR;
 			}
-			jsonStr = stbJson.getGeneralResponse(resultCode);
+			jsonStr = stbJson.getGeneralResponse(or);
 		}
 	}
 	
@@ -55,23 +55,23 @@
 		// 공백 불가 검사를 프론트에서..
 		if(commentDO.getUserId() != null && commentDO.getComment() != null && commentDO.getComment().length() <= 250) {
 			try {
-				resultCode = stbdDAO.insertComment(commentDO, stampbookDO.getStampbookId()) == 1 ? 0 : 2;
+				or = stbdDAO.insertComment(commentDO, stampbookDO.getStampbookId()) == 1 ? OperationResult.NORMAL_CODE : OperationResult.UPDATE_FAILED_ERROR;
 			}
 			catch(Exception e){
-				resultCode = BoogiException.getErrCode(e);
+				or = BoogiException.getResult(e);
 			}
 		}
 		else if(commentDO.getUserId() == null || commentDO.getComment() == null) {
-			resultCode = 12;
+			or = OperationResult.NO_MANDATORY_REQUEST_PARAMETERS_ERROR;
 		}
 		else {
-			resultCode = 11;
+			or = OperationResult.INVALID_REQUEST_PARAMETER_ERROR;
 		}
-		jsonStr = stbJson.getGeneralResponse(resultCode);
+		jsonStr = stbJson.getGeneralResponse(or);
 	}
 	
 	if(jsonStr.isEmpty()){
-		jsonStr = stbJson.getGeneralResponse(10);
+		jsonStr = stbJson.getGeneralResponse(OperationResult.INVALID_REQUEST_ERROR);
 	}
 	
 	out.println(jsonStr);

@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import boogimon.BoogiException;
+import model.OperationResult;
 import model.stampbook.StampDO;
 
 public class PlaceDAO {
@@ -189,7 +190,7 @@ public class PlaceDAO {
 		}
 		
 		if(!exists) {
-			throw new BoogiException(60, "존재하지 않는 명소입니다.");
+			throw new BoogiException(OperationResult.NON_EXISTENT_PLACE_ERROR);
 		}
 		
 		return placeDetail;

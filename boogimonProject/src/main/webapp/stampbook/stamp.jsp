@@ -17,7 +17,6 @@
 	StampbookJsonWriter stbJson = new StampbookJsonWriter();
 	stbJson.setStampbookDetailDAO(stbdDAO);
 	String command = request.getParameter("command");
-	int resultCode = 0;
 	String jsonStr = "";
 
 	if(request.getMethod().equals("GET")){
@@ -34,13 +33,13 @@
 			}
 			else {
 				// stampbookId 필수 파라미터 누락
-				jsonStr = stbJson.getGeneralResponse(12);
+				jsonStr = stbJson.getGeneralResponse(OperationResult.NO_MANDATORY_REQUEST_PARAMETERS_ERROR);
 			}
 		}
 	}
 	
 	if(jsonStr.isEmpty()){
-		jsonStr = stbJson.getGeneralResponse(10);
+		jsonStr = stbJson.getGeneralResponse(OperationResult.INVALID_REQUEST_ERROR);
 	}
 	
 	out.println(jsonStr);

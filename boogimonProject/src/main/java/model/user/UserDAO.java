@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 
 import boogimon.BoogiException;
+import model.OperationResult;
 
 public class UserDAO {
 
@@ -33,7 +34,6 @@ public class UserDAO {
 	
 	//joinUser
 	public int joinUser(UserDO boogiTrainer) throws Exception {
-		
 		int rowCount = 0;
 	
 		boolean isIdDuplicate = false;
@@ -89,11 +89,11 @@ public class UserDAO {
 		}
 		
 		if(isIdDuplicate) {
-			throw new BoogiException(22, "아이디가 중복되었습니다.");
+			throw new BoogiException(OperationResult.DUPLICATE_USERID_ERROR);
 		}
 		
 		if(isNicknameDuplicate) {
-			throw new BoogiException(23, "닉네임이 중복되었습니다.");
+			throw new BoogiException(OperationResult.DUPLICATE_NICKNAME_ERROR);
 		}
 
 		return rowCount;
@@ -192,7 +192,7 @@ public class UserDAO {
 		}
 		
 		if(notExists) {
-			throw new BoogiException(20, "존재하지 않는 사용자입니다.");
+			throw new BoogiException(OperationResult.NON_EXISTENT_USER_ERROR);
 		}
 		
 		return user;
@@ -302,7 +302,7 @@ public class UserDAO {
 		}
 		
 		if(notExists) {
-			throw new BoogiException(20, "존재하지 않는 사용자입니다.");
+			throw new BoogiException(OperationResult.NON_EXISTENT_USER_ERROR);
 		}
 		
 		return rowCount;
@@ -362,7 +362,7 @@ public class UserDAO {
 		}
 		
 		if(notExists) {
-			throw new BoogiException(20, "존재하지 않는 사용자입니다.");
+			throw new BoogiException(OperationResult.NON_EXISTENT_USER_ERROR);
 		}
 		
 		return rowCount;
@@ -418,7 +418,7 @@ public class UserDAO {
 		}
 		
 		if(notExists) {
-			throw new BoogiException(20, "존재하지 않는 사용자입니다.");
+			throw new BoogiException(OperationResult.NON_EXISTENT_USER_ERROR);
 		}
 
 		return rowCount;

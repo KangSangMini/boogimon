@@ -1,72 +1,72 @@
 package model;
 
-import java.util.HashMap;
 import org.json.simple.JSONObject;
 
-public class ResponseGenerator {
+public enum OperationResult {
 	
-	private static ResponseGenerator responseGenerator;
-	private HashMap<Integer, String> codeMap;
+	NORMAL_CODE(0, "정상"),
+	DB_ERROR(1, "DB에러"),
+	UPDATE_FAILED_ERROR(2, "DB업데이트 실패"),
+	INVALID_REQUEST_ERROR(10, "잘못된 요청"),
+	INVALID_REQUEST_PARAMETER_ERROR(11, "잘못된 파라미터 값"),
+	NO_MANDATORY_REQUEST_PARAMETERS_ERROR(12, "필수 파라미터 누락"),
+	DUPLICATE_REQUEST_ERROR(13, "중복된 요청"),
+	NON_EXISTENT_USER_ERROR(20, "존재하지 않는 사용자"),
+	INVALID_USER_ERROR(21, "잘못된 사용자 요청"),
+	DUPLICATE_USERID_ERROR(22, "중복된 사용자ID"),
+	DUPLICATE_NICKNAME_ERROR(23, "중복된 닉네임"),
+	DELETED_USER_ERROR(24, "탈퇴한 회원"),
+	RANDOM_NICKNAME_GENERATION_FAILED_ERROR(25, "랜덤 닉네임 생성 실패"),
+	NON_EXISTENT_STAMPBOOK_ERROR(30, "존재하지 않는 스탬프북"),
+	DELETED_STAMPBOOK_ERROR(31, "삭제된 스탬프북"),
+	LIKE_PROCESSING_FAILED_ERROR(32, "좋아요 작업 실패"),
+	UNLIKE_PROCESSING_FAILED_ERROR(33, "좋아요 취소 작업 실패"),
+	LIKE_COUNT_INCREMENT_FAILED_ERROR(34, "좋아요수 가산 실패"),
+	LIKE_COUNT_DECREMENT_FAILED_ERROR(35, "좋아요수 감산 실패"),
+	ALREADY_PICKED_STAMPBOOK_ERROR(36, "사용자가 이미 담은 스탬프북"),
+	UNPICKED_STAMPBOOK_ERROR(37, "사용자가 담지 않은 스탬프북"),
+	STAMPBOOK_CREATION_FAILED_ERROR(38, "스탬프북 생성 실패"),
+	NON_EXISTENT_STAMP_ERROR(50, "존재하지 않는 스탬프"),
+	STAMP_CREATION_FAILED_ERROR(51, "스탬프 생성 실패"),
+	NON_EXISTENT_PLACE_ERROR(60, "존재하지 않는 명소"),
+	UNKNOWN_ERROR(99, "기타 에러");
 	
-	private ResponseGenerator() {
-		this.codeMap = new HashMap<Integer, String>();
-		
-		codeMap.put(0, "NORMAL_CODE");
-		codeMap.put(1, "DB_ERROR");
-		codeMap.put(2, "UPDATE_FAILED_ERROR");
-		codeMap.put(10, "INVALID_REQUEST_ERROR");
-		codeMap.put(11, "INVALID_REQUEST_PARAMETER_ERROR");
-		codeMap.put(12, "NO_MANDATORY_REQUEST_PARAMETERS_ERROR");
-		codeMap.put(13, "DUPLICATE_REQUEST_ERROR");
-		codeMap.put(20, "NON_EXISTENT_USER_ERROR");
-		codeMap.put(21, "INVALID_USER_ERROR");
-		codeMap.put(22, "DUPLICATE_USERID_ERROR");
-		codeMap.put(23, "DUPLICATE_NICKNAME_ERROR");
-		codeMap.put(24, "DELETED_USER_ERROR");
-		codeMap.put(25, "RANDOM_NICKNAME_GENERATION_FAILED_ERROR");
-		codeMap.put(30, "NON_EXISTENT_STAMPBOOK_ERROR");
-		codeMap.put(31, "DELETED_STAMPBOOK_ERROR");
-		codeMap.put(32, "LIKE_PROCESSING_FAILED_ERROR");
-		codeMap.put(33, "UNLIKE_PROCESSING_FAILED_ERROR");
-		codeMap.put(34, "LIKE_COUNT_INCREMENT_FAILED_ERROR");
-		codeMap.put(35, "LIKE_COUNT_DECREMENT_FAILED_ERROR");
-		codeMap.put(36, "ALREADY_PICKED_STAMPBOOK_ERROR");
-		codeMap.put(37, "UNPICKED_STAMPBOOK_ERROR");
-		codeMap.put(38, "STAMPBOOK_CREATION_FAILED_ERROR");
-		codeMap.put(50, "NON_EXISTENT_STAMP_ERROR");
-		codeMap.put(51, "STAMP_CREATION_FAILED_ERROR");
-		codeMap.put(60, "NON_EXISTENT_PLACE_ERROR");
-		codeMap.put(99, "UNKNOWN_ERROR");
+	private final int resultCode;
+	private final String msg;
+	
+	private OperationResult(int resultCode, String msg) {
+		this.resultCode = resultCode;
+		this.msg = msg;
 	}
 	
-	// 싱글턴 패턴
-	static ResponseGenerator getInstance() {
-		if(ResponseGenerator.responseGenerator == null) {
-			ResponseGenerator.responseGenerator = new ResponseGenerator();
-		}
-		return ResponseGenerator.responseGenerator;
+	public int getResultCode() {
+		return this.resultCode;
+	}
+	
+	public String getMsg() {
+		return this.msg;
 	}
 	
 	@SuppressWarnings("unchecked")
-	public JSONObject getResponseJsonObj(int resultCode) {
+	public JSONObject getResponseJsonObj() {
 		JSONObject headerObj = new JSONObject();
 		
 		// resultCode에 맞는 헤더 생성
-		headerObj.put("resultCode", String.format("%02d", resultCode));
-		headerObj.put("resultMsg", codeMap.get(resultCode));
+		headerObj.put("resultCode", String.format("%02d", this.resultCode));
+		headerObj.put("resultMsg", this.msg);
 		
 		return headerObj;
 	}
 	
-	/** 임의 코드와 메시지 생성 */
-//	@SuppressWarnings("unchecked")
-//	public JSONObject getHeaderJsonObj(int resultCode, String msg) {
-//		JSONObject headerObj = new JSONObject();
-//		
-//		// resultCode에 맞는 헤더 생성
-//		headerObj.put("resultCode", String.format("%02d", resultCode));
-//		headerObj.put("resultMsg", msg);
-//		
-//		return headerObj;
-//	}
+	/** ResultCode와 msg를 jsonObject로 반환 */
+	@SuppressWarnings("unchecked")
+	public static JSONObject getResponseJsonObj(OperationResult or) {
+		JSONObject headerObj = new JSONObject();
+		
+		// resultCode에 맞는 헤더 생성
+		headerObj.put("resultCode", String.format("%02d", or.resultCode));
+		headerObj.put("resultMsg", or.msg);
+		
+		return headerObj;
+	}
 }

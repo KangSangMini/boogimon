@@ -2,24 +2,37 @@ package boogimon;
 
 import java.sql.SQLException;
 
+import model.OperationResult;
+
 @SuppressWarnings("serial")
 public class BoogiException extends Exception {
-	private final int ERROR_CODE;
+	private final OperationResult or;
 
-	public BoogiException(String msg) {
-		this(99, msg);
+	public BoogiException() {
+		this(OperationResult.UNKNOWN_ERROR);
 	}
 	
-	public BoogiException(int errCode, String msg) {
-		super(msg);
-		this.ERROR_CODE = errCode;
+	public BoogiException(OperationResult or) {
+		super(or.getMsg());
+		this.or = or;
+		System.out.println("BoogiException 생성자: " + this.or);
 	}
 	
 	public int getErrCode() {
-		return this.ERROR_CODE;
+		return this.or.getResultCode();
 	}
 	
-	static public int getErrCode(Exception e) {
-		return (e instanceof BoogiException) ? ((BoogiException) e).getErrCode() : (e instanceof SQLException) ? 1 : 99;
+	/** Exception객체의 OperationResult를 반환 */
+	static public OperationResult getResult(Exception e) {
+		System.out.println("BoogiException getResult: " + ((BoogiException) e).or);
+		return (e instanceof BoogiException) ? ((BoogiException) e).or : 
+			(e instanceof SQLException) ? OperationResult.DB_ERROR : 
+				OperationResult.UNKNOWN_ERROR;
 	}
+	
+//	static public int getErrCode(Exception e) {
+//		return (e instanceof BoogiException) ? ((BoogiException) e).getErrCode() : 
+//			(e instanceof SQLException) ? OperationResult.DB_ERROR.getResultCode() : 
+//				OperationResult.UNKNOWN_ERROR.getResultCode();
+//	}
 }

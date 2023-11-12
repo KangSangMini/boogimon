@@ -23,7 +23,7 @@
 	StampbookJsonWriter stbJson = new StampbookJsonWriter(stbDAO, stbdDAO);
 	String command = request.getParameter("command");
 	String jsonStr = "";
-	int resultCode = 0;
+	OperationResult or = OperationResult.NORMAL_CODE;
 	
 	if(request.getMethod().equals("GET")){
 		// 스탬프북의 상세 정보 요청
@@ -39,11 +39,11 @@
 					jsonStr = stbJson.getStampbookDetailJson(stampbookDO);
 				}
 				catch(Exception e) {
-					jsonStr = stbJson.getGeneralResponse(BoogiException.getErrCode(e));
+					jsonStr = stbJson.getGeneralResponse(BoogiException.getResult(e));
 				}
 			}
 			else {
-				jsonStr = stbJson.getGeneralResponse(12);
+				jsonStr = stbJson.getGeneralResponse(OperationResult.NO_MANDATORY_REQUEST_PARAMETERS_ERROR);
 			}
 		}
 		// 스탬프북 리스트 요청
@@ -61,7 +61,7 @@
 				jsonStr = stbJson.getStampbookListJson(stampbookListDO);
 			}
 			catch(Exception e){
-				jsonStr = stbJson.getGeneralResponse(BoogiException.getErrCode(e));
+				jsonStr = stbJson.getGeneralResponse(BoogiException.getResult(e));
 			}
 		}
 		// 사용자의 마이페이지 스탬프북 리스트 요청
@@ -73,77 +73,77 @@
 					jsonStr = stbJson.getStampbookListJson(stampbookListDO);
 				}
 				catch(Exception e){
-					jsonStr = stbJson.getGeneralResponse(BoogiException.getErrCode(e));
+					jsonStr = stbJson.getGeneralResponse(BoogiException.getResult(e));
 				}
 			}
 			else {
 				// 필수 파라미터 누락
-				jsonStr = stbJson.getGeneralResponse(12);
+				jsonStr = stbJson.getGeneralResponse(OperationResult.NO_MANDATORY_REQUEST_PARAMETERS_ERROR);
 			}
 		}
 		// 스탬프북 담기 취소
 		if(command != null && command.equals("unpick")){
 			if(request.getParameter("stampbookId") != null && userDO.getUserId() != null){
 				try{
-					resultCode = stbDAO.unpickStampbook(userDO.getUserId(), stampbookDO.getStampbookId()) == 1 ? 0 : 2;
+					or = stbDAO.unpickStampbook(userDO.getUserId(), stampbookDO.getStampbookId()) == 1 ? OperationResult.NORMAL_CODE : OperationResult.UPDATE_FAILED_ERROR;
 				}
 				catch(Exception e){
-					resultCode = BoogiException.getErrCode(e);
+					or = BoogiException.getResult(e);
 				}
 			}
 			else {
 				// 필수 파라미터 누락
-				resultCode = 12;
+				or = OperationResult.NO_MANDATORY_REQUEST_PARAMETERS_ERROR;
 			}
-			jsonStr = stbJson.getGeneralResponse(resultCode);
+			jsonStr = stbJson.getGeneralResponse(or);
 		}
 		// 스탬프북 삭제
 		if(command != null && command.equals("delete")){
 			if(request.getParameter("stampbookId") != null && userDO.getUserId() != null){
 				try{
-					resultCode = stbDAO.deleteStampbook(stampbookDO.getStampbookId(), userDO.getUserId()) == 1 ? 0 : 2;
+					or = stbDAO.deleteStampbook(stampbookDO.getStampbookId(), userDO.getUserId()) == 1 ? OperationResult.NORMAL_CODE : OperationResult.UPDATE_FAILED_ERROR;
 				}
 				catch(Exception e){
-					resultCode = BoogiException.getErrCode(e);
+					or = BoogiException.getResult(e);
 				}
 			}
 			else {
 				// 필수 파라미터 누락
-				resultCode = 12;
+				or = OperationResult.NO_MANDATORY_REQUEST_PARAMETERS_ERROR;
 			}
-			jsonStr = stbJson.getGeneralResponse(resultCode);
+			jsonStr = stbJson.getGeneralResponse(or);
 		}
 		// 스탬프북 좋아요
 		if(command != null && command.equals("like")){
 			if(request.getParameter("stampbookId") != null && userDO.getUserId() != null){
 				try{
-					resultCode = stbDAO.likeStampbook(stampbookDO.getStampbookId(), userDO.getUserId()) == 1 ? 0 : 2;
+					or = stbDAO.likeStampbook(stampbookDO.getStampbookId(), userDO.getUserId()) == 1 ? OperationResult.NORMAL_CODE : OperationResult.UPDATE_FAILED_ERROR;
 				}
 				catch(Exception e){
-					resultCode = BoogiException.getErrCode(e);
+					or = BoogiException.getResult(e);
 				}
 			}
 			else {
 				// 필수 파라미터 누락
-				resultCode = 12;
+				or = OperationResult.NO_MANDATORY_REQUEST_PARAMETERS_ERROR;
 			}
-			jsonStr = stbJson.getGeneralResponse(resultCode);
+			jsonStr = stbJson.getGeneralResponse(or);
 		}
 		// 스탬프북 좋아요 취소
 		if(command != null && command.equals("unlike")){
 			if(request.getParameter("stampbookId") != null && userDO.getUserId() != null){
 				try{
-					resultCode = stbDAO.unlikeStampbook(stampbookDO.getStampbookId(), userDO.getUserId()) == 1 ? 0 : 2;
+					or = stbDAO.unlikeStampbook(stampbookDO.getStampbookId(), userDO.getUserId()) == 1 ? OperationResult.NORMAL_CODE : OperationResult.UPDATE_FAILED_ERROR;
 				}
 				catch(Exception e){
-					resultCode = BoogiException.getErrCode(e);
+					or = BoogiException.getResult(e);
 				}
 			}
 			else {
 				// 필수 파라미터 누락
-				resultCode = 12;
+				or = OperationResult.NO_MANDATORY_REQUEST_PARAMETERS_ERROR;
 			}
-			jsonStr = stbJson.getGeneralResponse(resultCode);
+			jsonStr = stbJson.getGeneralResponse(or);
 		}
 	}
 	
@@ -157,40 +157,41 @@
 				stampbookDO.setStampList(StampDO.JsonArrayToStampList(jsonArr));
 				
 				try {
-					resultCode = stbDAO.insertStampbook(stampbookDO, userDO.getUserId()) == 1 ? 0 : 2;
+					or = stbDAO.insertStampbook(stampbookDO, userDO.getUserId()) == 1 ? OperationResult.NORMAL_CODE : OperationResult.UPDATE_FAILED_ERROR;
 				}
 				catch (Exception e){
-					resultCode = BoogiException.getErrCode(e);
+					or = BoogiException.getResult(e);
 				}
 			}
 			else {
 				// 필수 파라미터 누락
-				resultCode = 12;
+				or = OperationResult.NO_MANDATORY_REQUEST_PARAMETERS_ERROR;
 			}
 			
-			jsonStr = stbJson.getGeneralResponse(resultCode);
+			jsonStr = stbJson.getGeneralResponse(or);
 		}
 		// 스탬프북 담기
 		else if(command.equals("pick")){
 			if(request.getParameter("stampbookId") != null && userDO.getUserId() != null){
 				try{
-					resultCode = stbDAO.pickStampbook(stampbookDO.getStampbookId(), userDO.getUserId()) == 1 ? 0 : 2;
+					or = stbDAO.pickStampbook(stampbookDO.getStampbookId(), userDO.getUserId()) == 1 ? OperationResult.NORMAL_CODE : OperationResult.UPDATE_FAILED_ERROR;
 				}
 				catch (Exception e){
-					resultCode = BoogiException.getErrCode(e);
+					or = BoogiException.getResult(e);
 				}
 			}
 			else {
 				// 필수 파라미터 누락
-				resultCode = 12;
+				or = OperationResult.NO_MANDATORY_REQUEST_PARAMETERS_ERROR;
 			}
-			jsonStr = stbJson.getGeneralResponse(resultCode);
+			
+			jsonStr = stbJson.getGeneralResponse(or);
 		}
 	}
 	
 	// 잘못된 요청
 	if(jsonStr.isEmpty()){
-		jsonStr = stbJson.getGeneralResponse(10);
+		jsonStr = stbJson.getGeneralResponse(OperationResult.INVALID_REQUEST_ERROR);
 	}
 	
 	out.println(jsonStr);

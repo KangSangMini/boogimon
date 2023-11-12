@@ -41,7 +41,7 @@ public class StampbookJsonWriter extends JsonWriter{
 		JSONObject stbObj = new JSONObject();
 		
 		// 헤더 탑재
-		JSONObject jsonObj = getResponseGenerator().getResponseJsonObj(0);
+		JSONObject jsonObj = OperationResult.NORMAL_CODE.getResponseJsonObj();
 		
 		// stampbook 객체 생성
 		stbObj = getStampbookJsonObj(stampbook);
@@ -102,7 +102,7 @@ public class StampbookJsonWriter extends JsonWriter{
 			jsonArr.add(this.getStampbookJsonObj(stampbook));
 		}
 		
-		JSONObject jsonObj = getResponseGenerator().getResponseJsonObj(0);
+		JSONObject jsonObj = OperationResult.NORMAL_CODE.getResponseJsonObj();
 		jsonObj.put("stampbookList", jsonArr);
 		
 		return jsonObj.toJSONString();
@@ -113,22 +113,16 @@ public class StampbookJsonWriter extends JsonWriter{
 		ArrayList<CommentDO> commentList = new ArrayList<CommentDO>();
 		JSONObject jsonObj = null;
 		JSONArray jsonArr = new JSONArray();
-		int resultCode = 0;
 		
 		try {
 			commentList = stbdDAO.getComments(stampbookId);
-			
 			jsonArr = commentListJsonBuilder(commentList);
+			
+			jsonObj = OperationResult.NORMAL_CODE.getResponseJsonObj();
+			jsonObj.put("commentList", jsonArr);
 		}
 		catch (Exception e) {
-			resultCode = BoogiException.getErrCode(e);
-		}
-		finally {
-			jsonObj = getResponseGenerator().getResponseJsonObj(resultCode);
-		}
-		
-		if(resultCode == 0) {
-			jsonObj.put("commentList", jsonArr);
+			jsonObj = BoogiException.getResult(e).getResponseJsonObj();
 		}
 		
 		return jsonObj.toJSONString();
@@ -162,7 +156,6 @@ public class StampbookJsonWriter extends JsonWriter{
 		
 		JSONObject jsonObj = null;
 		JSONArray jsonArr = null;
-		int resultCode = 0;
 		
 		try {
 			if(userId != null) { 
@@ -172,16 +165,12 @@ public class StampbookJsonWriter extends JsonWriter{
 				stampList = stbdDAO.getStamp(stampbookId);
 			}	
 			jsonArr = stampListJsonBuilder(stampList);
+			
+			jsonObj = OperationResult.NORMAL_CODE.getResponseJsonObj();
+			jsonObj.put("stampList", jsonArr);
 		}
 		catch (Exception e) {
-			resultCode = BoogiException.getErrCode(e);
-		}
-		finally {
-			jsonObj = getResponseGenerator().getResponseJsonObj(resultCode);
-		}
-		
-		if(resultCode == 0) {
-			jsonObj.put("stampList", jsonArr);
+			jsonObj = BoogiException.getResult(e).getResponseJsonObj();
 		}
 		
 		return jsonObj.toJSONString();

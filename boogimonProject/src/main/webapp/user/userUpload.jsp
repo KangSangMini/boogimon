@@ -18,7 +18,7 @@
 	
 	UserJsonWriter userJson = new UserJsonWriter();
 	String command = (String)multi.getParameter("command");
-	int resultCode = 0;
+	OperationResult or = OperationResult.NORMAL_CODE;
 	String jsonStr = "";
 	
 	if(command != null) {
@@ -32,13 +32,13 @@
 			}
 			
 			try {
-				resultCode = userDAO.joinUser(userDO) == 1 ? 0 : 2;
+				or = userDAO.joinUser(userDO) == 1 ? OperationResult.NORMAL_CODE : OperationResult.UPDATE_FAILED_ERROR;
 			}
 			catch (Exception e){
-				resultCode = BoogiException.getErrCode(e);
+				or = BoogiException.getResult(e);
 			}
 			finally {
-				jsonStr = userJson.getGeneralResponse(resultCode);
+				jsonStr = userJson.getGeneralResponse(or);
 			}
 		}
 		// 프로필 사진 변경
@@ -47,22 +47,22 @@
 			if(multi.getFileNames().hasMoreElements()){
 				userDO.setProfileImg("/boogimon/upload/user/profile/" + multi.getFilesystemName((String)multi.getFileNames().nextElement()));
 				try {
-					resultCode = userDAO.changeImg(userDO) == 1 ? 0 : 2;
+					or = userDAO.changeImg(userDO) == 1 ? OperationResult.NORMAL_CODE : OperationResult.UPDATE_FAILED_ERROR;
 				}
 				catch (Exception e){
-					resultCode = BoogiException.getErrCode(e);
+					or = BoogiException.getResult(e);
 				}
 			}
 			else{
 				//필수 파라미터 누락
-				resultCode = 12;
+				or = OperationResult.NO_MANDATORY_REQUEST_PARAMETERS_ERROR;
 			}
-			jsonStr = userJson.getGeneralResponse(resultCode);
+			jsonStr = userJson.getGeneralResponse(or);
 		}
 	}
 	
 	if(jsonStr.isEmpty()){
-		jsonStr = userJson.getGeneralResponse(10);
+		jsonStr = userJson.getGeneralResponse(OperationResult.INVALID_REQUEST_ERROR);
 	}
 	
 	out.println(jsonStr);

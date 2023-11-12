@@ -29,7 +29,7 @@
 				jsonStr = placeJson.searchPlaceJson((String)request.getParameter("keyword"));
 			}
 			else{
-				jsonStr = placeJson.getGeneralResponse(12); 
+				jsonStr = placeJson.getGeneralResponse(OperationResult.NO_MANDATORY_REQUEST_PARAMETERS_ERROR); 
 			}
 		}
 		// 사용자의 부기도감 리스트 요청
@@ -42,14 +42,14 @@
 				jsonStr = placeJson.getBoogiBookDetailJson(placeId, userDO.getUserId());
 			}
 			else {
-				jsonStr = placeJson.getGeneralResponse(12); 
+				jsonStr = placeJson.getGeneralResponse(OperationResult.NO_MANDATORY_REQUEST_PARAMETERS_ERROR); 
 			}
 		}
 	}
 	
 	// 잘못된 요청
 	if(jsonStr.isEmpty()){
-		jsonStr = placeJson.getGeneralResponse(10);
+		jsonStr = placeJson.getGeneralResponse(OperationResult.INVALID_REQUEST_ERROR);
 	}
 	
 	out.println(jsonStr);
