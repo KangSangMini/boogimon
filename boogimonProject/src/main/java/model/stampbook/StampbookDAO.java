@@ -952,6 +952,9 @@ public class StampbookDAO {
 				if(!pstmt.isClosed()) {
 					pstmt.close();
 				}
+				if(!pstmt2.isClosed()) {
+					pstmt2.close();
+				}
 			}
 			catch(Exception e) {
 				e.printStackTrace();
@@ -1067,6 +1070,9 @@ public class StampbookDAO {
 				if(!pstmt.isClosed()) {
 					pstmt.close();
 				}
+				if(!pstmt2.isClosed()) {
+					pstmt2.close();
+				}
 			}
 			catch(Exception e) {
 				e.printStackTrace();
@@ -1082,8 +1088,6 @@ public class StampbookDAO {
 		
 		return stampbookList;
 	}
-	
-	
 	
 	public void closeConn() {
 		if(conn != null) {
