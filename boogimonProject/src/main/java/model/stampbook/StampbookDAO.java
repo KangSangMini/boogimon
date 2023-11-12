@@ -302,16 +302,20 @@ public class StampbookDAO {
 				// 탈퇴한 회원이 아닐때 쿼리 실행
 				if(rs.getInt("deleted") == 0) {
 					
-					this.sql = "SELECT stb.stampbook_id, stb.title, stb.description, bt.nickname, bt.profile_img, to_char(stampbook_regdate, 'YYYY-MM-DD HH24:MI:SS') as stampbookRegdate, likeCount, nvl2(ul.user_id, 1, 0) AS isLike "
+					this.sql = "SELECT stb.stampbook_id, stb.title, stb.description, bt.nickname, bt.profile_img, to_char(stampbook_regdate, 'YYYY-MM-DD HH24:MI:SS') as stampbookRegdate, likeCount, "
+							+ "nvl2(ul.user_id, 1, 0) AS isLike, "
+							+ "nvl2(up.pick_date, 1, 0) AS isPick "
 							+ "FROM stampbook stb "
 							+ "INNER JOIN boogiTrainer bt ON stb.user_id = bt.user_id "
 							+ "LEFT OUTER JOIN user_like ul ON ul.stampbook_id = stb.stampbook_id AND ul.user_id = ? "
+							+ "LEFT OUTER JOIN user_pick up ON up.stampbook_id = stb.stampbook_id AND up.user_id = ? "
 							+ "WHERE stb.stampbook_id = ?";
 					
 					this.pstmt = this.conn.prepareStatement(sql);
 					
 					this.pstmt.setString(1, userId);
-					this.pstmt.setInt(2, stampbookId);
+					this.pstmt.setString(2, userId);
+					this.pstmt.setInt(3, stampbookId);
 					rs = pstmt.executeQuery();
 					
 					if(rs.next()) {
@@ -323,6 +327,7 @@ public class StampbookDAO {
 						stampbook.setStampbookRegdate(rs.getString("stampbookRegdate"));
 						stampbook.setLikeCount(rs.getInt("likeCount"));
 						stampbook.setLiked(rs.getInt("isLike"));
+						stampbook.setPicked(rs.getInt("isPick"));
 					}
 					else {
 						// 존재하지 않는 스탬프북
