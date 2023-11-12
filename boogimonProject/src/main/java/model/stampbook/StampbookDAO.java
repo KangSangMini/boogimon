@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import boogimon.BoogiException;
+import model.OperationResult;
 
 public class StampbookDAO {
 	
@@ -146,10 +147,10 @@ public class StampbookDAO {
 		}
 		
 		if(isDeleted) {
-			throw new BoogiException(24, "탈퇴한 회원입니다.");
+			throw new BoogiException(OperationResult.DELETED_USER_ERROR);
 		}
 		if(notExists) {
-			throw new BoogiException(20, "존재하지 않는 사용자입니다.");
+			throw new BoogiException(OperationResult.NON_EXISTENT_USER_ERROR);
 		}
 		
 		return stampbookList;
@@ -228,10 +229,10 @@ public class StampbookDAO {
 		}
 		
 		if(isDeleted) {
-			throw new BoogiException(24, "탈퇴한 회원입니다.");
+			throw new BoogiException(OperationResult.DELETED_USER_ERROR);
 		}
 		if(notExists) {
-			throw new BoogiException(20, "존재하지 않는 사용자입니다.");
+			throw new BoogiException(OperationResult.NON_EXISTENT_USER_ERROR);
 		}
 		
 		return stampbookList;
@@ -333,7 +334,7 @@ public class StampbookDAO {
 		}
 		
 		if(idDeleted) {
-			throw new BoogiException(31, "삭제된 스탬프북 입니다.");
+			throw new BoogiException(OperationResult.DELETED_STAMPBOOK_ERROR);
 		}
 		
 		return rowCount;
@@ -509,19 +510,22 @@ public class StampbookDAO {
 		}
 		
 		if(isDuplicate) {
-			throw new BoogiException(13, "중복된 요청입니다.");
+			// 중복된 요청 
+			throw new BoogiException(OperationResult.DUPLICATE_REQUEST_ERROR);
 		}
 		if(isDeleted) {
-			throw new BoogiException(31, "삭제된 스탬프북입니다.");
+			// 삭제된 스탬프북
+			throw new BoogiException(OperationResult.DELETED_STAMPBOOK_ERROR);
 		}
 		if(notExists) {
-			throw new BoogiException(30, "존재하지 않는 스탬프북입니다.");
+			// 존재하지 않는 스탬프북
+			throw new BoogiException(OperationResult.NON_EXISTENT_STAMPBOOK_ERROR);
 		}
 		if(insertFailure) {
-			throw new BoogiException(32, "좋아요 처리 실패");
+			throw new BoogiException(OperationResult.LIKE_PROCESSING_FAILED_ERROR);
 		}
 		if(updateFailure) {
-			throw new BoogiException(34, "좋아요수 가산 실패");
+			throw new BoogiException(OperationResult.LIKE_COUNT_INCREMENT_FAILED_ERROR);
 		}
 		
 		return rowCount;
@@ -584,10 +588,10 @@ public class StampbookDAO {
 		}
 		
 		if(deleteFailure) {
-			throw new BoogiException(33, "좋아요 취소 처리 실패");
+			throw new BoogiException(OperationResult.UNLIKE_PROCESSING_FAILED_ERROR);
 		}
 		if(updateFailure) {
-			throw new BoogiException(35, "좋아요수 감산 실패");
+			throw new BoogiException(OperationResult.LIKE_COUNT_DECREMENT_FAILED_ERROR);
 		}
 		
 		return rowCount;
@@ -683,16 +687,16 @@ public class StampbookDAO {
 		}
 		
 		if(isDeleted) {
-			throw new BoogiException(24, "탈퇴한 회원입니다.");
+			throw new BoogiException(OperationResult.DELETED_USER_ERROR);
 		}
 		if(notExists) {
-			throw new BoogiException(20, "존재하지 않는 사용자입니다.");
+			throw new BoogiException(OperationResult.NON_EXISTENT_USER_ERROR);
 		}
 		if(insertStampbookFailure) {
-			throw new BoogiException(38, "스탬프북 생성을 실패했습니다.");
+			throw new BoogiException(OperationResult.STAMPBOOK_CREATION_FAILED_ERROR);
 		}
 		if(insertStampFailure) {
-			throw new BoogiException(51, "스탬프 생성을 실패했습니다.");
+			throw new BoogiException(OperationResult.STAMP_CREATION_FAILED_ERROR);
 		}
 		
 		return rowCount; 
@@ -864,10 +868,10 @@ public class StampbookDAO {
 		}
 		
 		if(isDeleted) {
-			throw new BoogiException(24, "탈퇴한 회원입니다.");
+			throw new BoogiException(OperationResult.DELETED_USER_ERROR);
 		}
 		if(notExists) {
-			throw new BoogiException(20, "존재하지 않는 사용자입니다.");
+			throw new BoogiException(OperationResult.NON_EXISTENT_USER_ERROR);
 		}
 		
 		return stampbookList;
@@ -979,10 +983,10 @@ public class StampbookDAO {
 		}
 		
 		if(isDeleted) {
-			throw new BoogiException(24, "탈퇴한 회원입니다.");
+			throw new BoogiException(OperationResult.DELETED_USER_ERROR);
 		}
 		if(notExists) {
-			throw new BoogiException(20, "존재하지 않는 사용자입니다.");
+			throw new BoogiException(OperationResult.NON_EXISTENT_USER_ERROR);
 		}
 		
 		return stampbookList;

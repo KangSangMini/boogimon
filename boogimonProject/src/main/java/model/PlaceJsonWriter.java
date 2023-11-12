@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import boogimon.BoogiException;
 import model.place.PlaceDAO;
 import model.place.PlaceDetailDO;
 import model.stampbook.StampDO;
@@ -44,7 +45,7 @@ public class PlaceJsonWriter extends JsonWriter{
 			boogiArray.add(boogi);
 		}
 		
-		JSONObject jsonObj = getResponseGenerator().getResponseJsonObj(0);
+		JSONObject jsonObj = OperationResult.NORMAL_CODE.getResponseJsonObj();
 		jsonObj.put("boogiBook", boogiArray);
 		
 		return jsonObj.toJSONString();
@@ -69,7 +70,7 @@ public class PlaceJsonWriter extends JsonWriter{
 	        boogiArray.add(boogi);
 	    }
 	    
-	    JSONObject jsonObj = getResponseGenerator().getResponseJsonObj(0);
+	    JSONObject jsonObj = OperationResult.NORMAL_CODE.getResponseJsonObj();
 		jsonObj.put("boogiBookDetail", boogiArray);
 
 	    return jsonObj.toJSONString();
@@ -95,7 +96,7 @@ public class PlaceJsonWriter extends JsonWriter{
 	    	jsonArr.add(stObj);
 	    }
 	    
-	    JSONObject jsonObj = getResponseGenerator().getResponseJsonObj(0);
+	    JSONObject jsonObj = OperationResult.NORMAL_CODE.getResponseJsonObj();
 		jsonObj.put("searchList", jsonArr);
 
 	    return jsonObj.toJSONString();
@@ -112,11 +113,11 @@ public class PlaceJsonWriter extends JsonWriter{
 			pdObj = new JSONObject();
 			pdObj = placeDetail.getJSONObject();
 		    
-		    jsonObj = getResponseGenerator().getResponseJsonObj(0);
+		    jsonObj = OperationResult.NORMAL_CODE.getResponseJsonObj();
 			jsonObj.put("placeDetail", pdObj);
 		} 
 	    catch (Exception e) {
-	    	jsonObj = getResponseGenerator().getResponseJsonObj(99);
+	    	jsonObj = BoogiException.getResult(e).getResponseJsonObj();
 		}
 	    
 	    return jsonObj.toJSONString();

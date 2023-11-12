@@ -25,28 +25,26 @@ public class UserJsonWriter extends JsonWriter{
 	public String getUserInfo(UserDO user) {
 		JSONObject jsonObj = null;
 		JSONObject userObj = new JSONObject();
-		int resultCode = 0;
 		
 		try {
 			user = userDAO.getUser(user.getUserId());
+			jsonObj = OperationResult.NORMAL_CODE.getResponseJsonObj();
+			
+			userObj.put("nickname", user.getNickname());
+			userObj.put("regdate", user.getRegdate());
+			userObj.put("exp", user.getExp());
+			userObj.put("profileImg", user.getProfileImg());
+			userObj.put("userTotalVisit", user.getUserTotalVisit());
+			userObj.put("userLikeCount", user.getUserLikeCount());
+			userObj.put("ranking", user.getRanking());
+			
+			jsonObj.put("user", userObj);
+			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			resultCode = BoogiException.getErrCode(e);
+			jsonObj = BoogiException.getResult(e).getResponseJsonObj();
 		}
-		finally {
-			jsonObj = getResponseGenerator().getResponseJsonObj(resultCode);
-		}
-		
-		userObj.put("nickname", user.getNickname());
-		userObj.put("regdate", user.getRegdate());
-		userObj.put("exp", user.getExp());
-		userObj.put("profileImg", user.getProfileImg());
-		userObj.put("userTotalVisit", user.getUserTotalVisit());
-		userObj.put("userLikeCount", user.getUserLikeCount());
-		userObj.put("ranking", user.getRanking());
-		
-		jsonObj.put("user", userObj);
 		
 		return jsonObj.toJSONString();
 	}
@@ -56,10 +54,10 @@ public class UserJsonWriter extends JsonWriter{
 		JSONObject jsonObj = null;
 		
 		if(userDAO.loginCheck(user)) {
-			jsonObj = getResponseGenerator().getResponseJsonObj(0);
+			jsonObj = OperationResult.NORMAL_CODE.getResponseJsonObj();
 		}
 		else {
-			jsonObj = getResponseGenerator().getResponseJsonObj(21);
+			jsonObj = OperationResult.INVALID_USER_ERROR.getResponseJsonObj();
 		}
 		
 		return jsonObj.toJSONString();
@@ -74,19 +72,18 @@ public class UserJsonWriter extends JsonWriter{
 			String nickname = NicknameAPI.getNicknameAPI("json", 10);
 			
 			if(!nickname.isEmpty()) {
-				jsonObj = getResponseGenerator().getResponseJsonObj(0);
+				jsonObj = OperationResult.NORMAL_CODE.getResponseJsonObj();
 				JSONObject userObj = new JSONObject();
 				userObj.put("nickname", nickname);
 				jsonObj.put("user", userObj);
 			}
 			else {
-				jsonObj = getResponseGenerator().getResponseJsonObj(25);
+				jsonObj = OperationResult.RANDOM_NICKNAME_GENERATION_FAILED_ERROR.getResponseJsonObj();
 			}
-			
 		}
 		catch (Exception e) {
 			// TODO: handle exception
-			jsonObj = getResponseGenerator().getResponseJsonObj(BoogiException.getErrCode(e));
+			jsonObj = BoogiException.getResult(e).getResponseJsonObj();
 		}
 		
 		return jsonObj.toJSONString();

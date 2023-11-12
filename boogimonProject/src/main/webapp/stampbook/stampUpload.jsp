@@ -19,7 +19,7 @@
 	StampbookJsonWriter stbJson = new StampbookJsonWriter();
 	stbJson.setStampbookDetailDAO(stbdDAO);
 	String command = (String)multi.getParameter("command");
-	int resultCode = 0;
+	OperationResult or = OperationResult.NORMAL_CODE;
 	String jsonStr = "";
 	
 	if(command != null) {
@@ -34,21 +34,21 @@
 				stampDO.setUploadImg("/boogimon/upload/user/stamp/" + multi.getFilesystemName((String)multi.getFileNames().nextElement()));
 				
 				try {
-					resultCode = stbdDAO.setStampImg(userId, stampbookId, stampDO) == 1 ? 0 : 1;
+					or = stbdDAO.setStampImg(userId, stampbookId, stampDO) == 1 ? OperationResult.NORMAL_CODE : OperationResult.UPDATE_FAILED_ERROR;
 				}
 				catch (Exception e){
-					resultCode = BoogiException.getErrCode(e);
+					or = BoogiException.getResult(e);
 				}
 			}
 			else{
-				resultCode = 12;
+				or = OperationResult.NO_MANDATORY_REQUEST_PARAMETERS_ERROR;
 			}
-			jsonStr = stbJson.getGeneralResponse(resultCode);
+			jsonStr = stbJson.getGeneralResponse(or);
 		}
 	}
 	
 	if(jsonStr.isEmpty()){
-		jsonStr = stbJson.getGeneralResponse(10);
+		jsonStr = stbJson.getGeneralResponse(OperationResult.INVALID_REQUEST_ERROR);
 	}
 	out.println(jsonStr);
 	out.flush();

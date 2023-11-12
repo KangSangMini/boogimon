@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import boogimon.BoogiException;
+import model.OperationResult;
 
 public class StampbookDetailDAO {
 	private Connection conn;
@@ -98,10 +99,10 @@ public class StampbookDetailDAO {
 		}
 		
 		if(isDeleted) {
-			throw new BoogiException(31, "삭제된 스탬프북입니다.");
+			throw new BoogiException(OperationResult.DELETED_STAMPBOOK_ERROR);
 		}
 		if(notExists) {
-			throw new BoogiException(30, "존재하지 않는 스탬프북입니다.");
+			throw new BoogiException(OperationResult.NON_EXISTENT_STAMPBOOK_ERROR);
 		}
 		
 		return stampList;
@@ -178,13 +179,14 @@ public class StampbookDetailDAO {
 //			throw new BoogiException(31, "삭제된 스탬프북입니다.");
 //		}
 		if(notExists) {
-			throw new BoogiException(30, "존재하지 않는 스탬프북입니다.");
+			throw new BoogiException(OperationResult.NON_EXISTENT_STAMPBOOK_ERROR);
 		}
 		
 		return stampList;
 	}
 	
 	/** 스탬프 찍기 (스탬프 이미지 업로드 기능) 
+	 * TODO: 업로드 중복 검사
 	 * @throws Exception */
 	public int setStampImg(String user_id, int stampbook_id, StampDO stamp) throws Exception {
 		int rowCount = 0;
@@ -233,7 +235,7 @@ public class StampbookDetailDAO {
 		}
 		
 		if(notExists) {
-			throw new BoogiException(37, "사용자가 담지 않은 스탬프북입니다.");
+			throw new BoogiException(OperationResult.UNPICKED_STAMPBOOK_ERROR);
 		}
 		
 		return rowCount;
@@ -292,6 +294,7 @@ public class StampbookDetailDAO {
 		}
 		catch(Exception e){
 			e.printStackTrace();
+			throw e;
 		}
 		finally {
 			try {
@@ -305,10 +308,10 @@ public class StampbookDetailDAO {
 		}
 		
 		if(isDeleted) {
-			throw new BoogiException(31, "삭제된 스탬프북입니다.");
+			throw new BoogiException(OperationResult.DELETED_STAMPBOOK_ERROR);
 		}
 		if(notExists) {
-			throw new BoogiException(30, "존재하지 않는 스탬프북입니다.");
+			throw new BoogiException(OperationResult.NON_EXISTENT_STAMPBOOK_ERROR);
 		}
 		
 		return commentList;
@@ -378,10 +381,10 @@ public class StampbookDetailDAO {
 		}
 		
 		if(isDeleted) {
-			throw new BoogiException(31, "삭제된 스탬프북입니다.");
+			throw new BoogiException(OperationResult.DELETED_STAMPBOOK_ERROR);
 		}
 		if(notExists) {
-			throw new BoogiException(30, "존재하지 않는 스탬프북입니다.");
+			throw new BoogiException(OperationResult.NON_EXISTENT_STAMPBOOK_ERROR);
 		}
 		
 		return rowCount;
@@ -440,7 +443,7 @@ public class StampbookDetailDAO {
 		}
 		
 		if(isWrongUser) {
-			throw new BoogiException(21, "잘못된 사용자 입니다.");
+			throw new BoogiException(OperationResult.INVALID_USER_ERROR);
 		}
 		
 		return rowCount;
