@@ -1,7 +1,7 @@
 ALTER SESSION SET NLS_DATE_FORMAT = 'YYYY-MM-DD';
 ALTER SESSION SET NLS_LANGUAGE = 'KOREAN';
 
--- 휴지통 비우기
+--휴지통 비우기
 PROMPT 휴지통 비우기
 purge recyclebin;
 
@@ -9,14 +9,14 @@ SET TERMOUT ON
 PROMPT 테이블 초기화
 SET TERMOUT OFF
 
--- 인덱스, 시퀀스, 뷰 초기화
+--인덱스, 시퀀스, 뷰 초기화
 DROP index COMMENT_ID;
 DROP sequence seq_stampbook_id;
 DROP sequence seq_place_id;
 DROP sequence seq_comment_id;
 DROP VIEW user_ranking;
 
--- 테이블 초기화
+--테이블 초기화
 drop table USER_STAMP_HISTORY;
 drop table USER_PICK;
 drop table USER_LIKE;
@@ -31,7 +31,7 @@ SET TERMOUT ON
 PROMPT 시퀀스 생성
 SET TERMOUT OFF
 
--- 시퀀스 생성
+--시퀀스 생성
 create sequence seq_stampbook_id
     start with 0
     increment by 1
@@ -57,8 +57,7 @@ SET TERMOUT ON
 PROMPT 테이블 생성
 SET TERMOUT OFF
 
--- 트레이너 정보 테이블 생성
-
+--트레이너 정보 테이블 생성
 CREATE TABLE BoogiTrainer (
     USER_ID VARCHAR2(30),
     PASSWD VARCHAR(64) CONSTRAINT BoogiTrainer_PASSWD_nn NOT NULL,
@@ -78,7 +77,6 @@ CREATE TABLE BoogiTrainer (
 );
 
 --스탬프 북 테이블 생성
-
 CREATE TABLE STAMPBOOK (
     STAMPBOOK_ID NUMBER(6),
     TITLE VARCHAR2(60) CONSTRAINT STAMPBOOK_TITLE_nn NOT NULL ,
@@ -94,8 +92,7 @@ CREATE TABLE STAMPBOOK (
     CONSTRAINT STAMPBOOK_USER_ID_fk FOREIGN KEY (USER_ID) REFERENCES BoogiTrainer(USER_ID)
 );
 
--- 명소 정보 테이블 생성
-
+--명소 정보 테이블 생성
 CREATE TABLE PLACE (
     PLACE_ID NUMBER(4),
     NAME VARCHAR2(300) CONSTRAINT PLACE_NAME_nn NOT NULL,
@@ -108,8 +105,7 @@ CREATE TABLE PLACE (
     CONSTRAINT PLACE_PLACE_ID_pk PRIMARY KEY (PLACE_ID)
 );
 
--- 명소 정보 상세 테이블 생성
-
+--명소 정보 상세 테이블 생성
 CREATE TABLE PLACE_DETAIL (
     PLACE_ID NUMBER(4),
     TEL VARCHAR2(200),
@@ -127,7 +123,6 @@ CREATE TABLE PLACE_DETAIL (
 CREATE INDEX PLACE_ID ON PLACE_DETAIL (PLACE_ID);
 
 --스탬프 테이블 생성
-
 CREATE TABLE STAMP (
     STAMPBOOK_ID NUMBER(6),
     STAMPNO NUMBER(3) CONSTRAINT STAMP_STAMPNO_nn NOT NULL,
@@ -138,8 +133,7 @@ CREATE TABLE STAMP (
     CONSTRAINT STAMP_pk PRIMARY KEY(STAMPBOOK_ID, STAMPNO)
 );
 
--- 유저 선택 테이블 생성
-
+--유저 선택 테이블 생성
 CREATE TABLE USER_PICK (
     USER_ID VARCHAR2(30),
     STAMPBOOK_ID NUMBER(6),
@@ -151,7 +145,6 @@ CREATE TABLE USER_PICK (
 );
 
 --유저 스탬프 정보 테이블 생성
-
 CREATE TABLE USER_STAMP_HISTORY (
     USER_ID VARCHAR2(30),
     STAMPBOOK_ID NUMBER(6),
@@ -163,8 +156,7 @@ CREATE TABLE USER_STAMP_HISTORY (
     CONSTRAINT USH_STAMP_fk FOREIGN KEY (STAMPBOOK_ID, STAMPNO) REFERENCES STAMP(STAMPBOOK_ID, STAMPNO)
 );
 
--- 유저 좋아요 테이블 생성
-
+--유저 좋아요 테이블 생성
 CREATE TABLE USER_LIKE (
     USER_ID VARCHAR2(30),
     STAMPBOOK_ID NUMBER(6),
@@ -173,8 +165,7 @@ CREATE TABLE USER_LIKE (
     CONSTRAINT USER_LIKE_pk PRIMARY KEY (USER_ID, STAMPBOOK_ID)
 );
 
---스탬프북 댓글 테이블 생성 (ORA-00972: 식별자가 너무 깁니다.,STAMP_COMMENT -> STB_CMT)
-
+--스탬프북 댓글 테이블 생성 (ORA-00972: 식별자가 너무 깁니다., STAMP_COMMENT -> STB_CMT)
 CREATE TABLE STB_CMT (
     COMMENT_ID NUMBER(7) CONSTRAINT STB_CMT_COMMENT_ID_nn NOT NULL,
     STAMPBOOK_ID NUMBER(6),
@@ -260,45 +251,45 @@ SET TERMOUT OFF
 --트레이너 정보 테이블 더미 데이터 입력
 
 --관리자 더미 데이터
--- boogi@boogi.com / boogi123
+--boogi@boogimon.com / boogi123
 INSERT INTO BoogiTrainer(USER_ID, PASSWD, SALT, NICKNAME, EXP, PROFILE_IMG)
 VALUES ('bijugi@boogimon.com', '330cf0b83e30a9e8ac61211d3a777628ff80a9a12e0659d9a238842230f69320', 'a498b3c99a378d9c11fa8d60cc66b9d5', 'BIJUGI', 100000, '/boogimon/images/upload/user/profile/sakaki.png');
--- admin@boogimon.com / admin123
+--admin@boogimon.com / admin123
 INSERT INTO BoogiTrainer(USER_ID, PASSWD, SALT, NICKNAME, EXP, PROFILE_IMG)
 VALUES ('admin@boogimon.com', 'a092a0acff62151cc750c450dd3311288497f9dd6ea1579a44ab5d26a51aeb9e', '7b28b8cd2c5723bf414c00e9b0b6f1e3', '운영자', 100000, '/boogimon/images/upload/user/profile/admin.png');
--- boogi / boogi123
+--boogi@boogimon.com / boogi123
 INSERT INTO BoogiTrainer(USER_ID, PASSWD, SALT, NICKNAME, EXP, PROFILE_IMG)
 VALUES ('boogi@boogimon.com', 'b5b522134aa9c7b14519c3df70134e699ae5130f4ad8b88e8788237761da6f65', '6bbf70841c6fbdd6594f993cfd31ea03', '부기몬', 100000, '/boogimon/images/upload/user/profile/boogi.png');
 
 --일반 회원 더미 데이터
--- red@google.com / red456
+--red@google.com / red456
 INSERT INTO BoogiTrainer(USER_ID, PASSWD, SALT, NICKNAME, EXP, PROFILE_IMG)
 VALUES ('red@google.com', 'beafc8f778046a24875bde54dd2bcb69bcf0cb64939ad8b507f767a0118dde76', '9c5b5181058248112c853b143ced7c8a', 'RED',0, '/boogimon/images/upload/user/profile/red.png');
--- green@google.com / green456
+--green@google.com / green456
 INSERT INTO BoogiTrainer(USER_ID, PASSWD, SALT, NICKNAME, EXP, PROFILE_IMG)
 VALUES ('green@google.com', '58e13f9b98d980900c180abed0d825fd14ed84d94ce169bcc930d51927ac94a4', '1e738ed5bcd340b67001dbc1bcd54464', 'Green',0, '/boogimon/images/upload/user/profile/green.png');
--- gold@google.com / gold456
+--gold@google.com / gold456
 INSERT INTO BoogiTrainer(USER_ID, PASSWD, SALT, NICKNAME, EXP, PROFILE_IMG)
 VALUES ('gold@google.com', '61944619678db869b5a11af3811dd53142b8ba5efc9177fdfdf29ece5904dc43', 'e140b8a5cd8f6111b4ea27d2b8ea42cc', '목호',0, '/boogimon/images/upload/user/profile/wataru.png');
--- silver@google.com / silver456
+--silver@google.com / silver456
 INSERT INTO BoogiTrainer(USER_ID, PASSWD, SALT, NICKNAME, EXP, PROFILE_IMG)
 VALUES ('silver@google.com', '8fcb1de0bdae31d664ed4bd2700c6189b942d476cdeff49533320600d3b980da', '6e4da0173a794d37716b34d2fc2f298c', '성호', 0, '/boogimon/images/upload/user/profile/daigo.png');
--- ruby@google.com / ruby456
+--ruby@google.com / ruby456
 INSERT INTO BoogiTrainer(USER_ID, PASSWD, SALT, NICKNAME, EXP, PROFILE_IMG)
 VALUES ('ruby@google.com', '0c92634d6969b19b7a00027c98f9569869c19689127004027880aab92ffda238', '1dcf5200ad94ca5a8655a25987690035', '윤진', 0, '/boogimon/images/upload/user/profile/mikuri.png');
--- sapphire@google.com / sapphire456
+--sapphire@google.com / sapphire456
 INSERT INTO BoogiTrainer(USER_ID, PASSWD, SALT, NICKNAME, EXP, PROFILE_IMG)
 VALUES ('sapphire@google.com', '3813e1d1b7440bf0839e9a013991b39ecf9ebd1c3e778976fdd441374626c5b7', '811f725bd604fea4b29ea68ed80dbd68', 'Bomi', 0, '/boogimon/images/upload/user/profile/haruka.png');
--- diamond@google.com / diamond456
+--diamond@google.com / diamond456
 INSERT INTO BoogiTrainer(USER_ID, PASSWD, SALT, NICKNAME, EXP, PROFILE_IMG)
 VALUES ('diamond@google.com', '5c5c418e16d1478195c051714d47121776e257a8a163e489013d0f5535f2162a', '442cb9b9510f8a1f4186fc91bb9f3968', 'Nancheon', 0, '/boogimon/images/upload/user/profile/shirona.png');
--- pearl@google.com / pearl456
+--pearl@google.com / pearl456
 INSERT INTO BoogiTrainer(USER_ID, PASSWD, SALT, NICKNAME, EXP, PROFILE_IMG)
 VALUES ('pearl@google.com', '4c09232d1d731135b999ab9b4d6301a0b0ff8da594f75e97d1ebb727d58deaa6', '9b37a4bbcc7b5b44ee4a9a4c282bab9c', 'Bichna', 0, '/boogimon/images/upload/user/profile/hikari.png');
--- black@google.com / black456
+--black@google.com / black456
 INSERT INTO BoogiTrainer(USER_ID, PASSWD, SALT, NICKNAME, EXP, PROFILE_IMG)
 VALUES ('black@google.com', '9437a79f30be98e795bfd9fd9f4d3bf616eecdd843a8be9212f1058721b20561', 'f205370ea7511812657c6995645132bd', '노간주', 0, '/boogimon/images/upload/user/profile/adeku.png');
--- white@google.com / white456
+--white@google.com / white456
 INSERT INTO BoogiTrainer(USER_ID, PASSWD, SALT, NICKNAME, EXP, PROFILE_IMG)
 VALUES ('white@google.com', 'a7c55f1b971dbf09460063f827f251fd2e8f420a405ea1e707d67c3369e09b64', '863d8136fee38f2b86e514616c25bec8', 'Iris', 0, '/boogimon/images/upload/user/profile/iris.png');
 
@@ -310,8 +301,8 @@ SET TERMOUT OFF
 
 SET ESCAPE ON
 
--- 명소 데이터 입력 (공공데이터 API 활용)
--- 명소
+--명소 데이터 입력 (공공데이터 API 활용)
+--명소
 INSERT INTO PLACE (PLACE_ID, NAME, TYPE, ADDR, LAT, LON, THUMBNAIL, CONTENTS_ID)
 VALUES (seq_place_id.nextval, '흰여울문화마을', 100, '부산광역시 영도구 흰여울길', '35.07885', '129.04402', 'https://www.visitbusan.net/uploadImgs/files/cntnts/20191222164810529_thumbL', '255');
 INSERT INTO PLACE (PLACE_ID, NAME, TYPE, ADDR, LAT, LON, THUMBNAIL, CONTENTS_ID)
@@ -596,7 +587,7 @@ VALUES (seq_place_id.nextval, '박태준기념관 ', 100, '부산광역시 기�
 INSERT INTO PLACE (PLACE_ID, NAME, TYPE, ADDR, LAT, LON, THUMBNAIL, CONTENTS_ID)
 VALUES (seq_place_id.nextval, '다대포해변공원 ', 100, '부산광역시 사하구 다대동 1674', '35.048687', '128.96555', 'https://www.visitbusan.net/uploadImgs/files/cntnts/20230921171143286_thumbL', '1718');
 
--- 축제
+--축제
 INSERT INTO PLACE (PLACE_ID, NAME, TYPE, ADDR, LAT, LON, THUMBNAIL, CONTENTS_ID)
 VALUES (seq_place_id.nextval, '부산바다축제', 200, '', '35.151604', '129.11713', 'https://www.visitbusan.net/uploadImgs/files/cntnts/20191213191711585_thumbL', '71');
 INSERT INTO PLACE (PLACE_ID, NAME, TYPE, ADDR, LAT, LON, THUMBNAIL, CONTENTS_ID)
@@ -687,13 +678,13 @@ VALUES (seq_place_id.nextval, '해운대역(폐역) / 아뜰리에 칙칙폭폭'
 
 -- INSERT INTO PLACE (PLACE_ID, NAME, TYPE, ADDR, LAT, LON, THUMBNAIL)
 -- VALUES (seq_place_id.nextval, '황령산 레포츠공원', 900, '부산광역시 대연동 어딘가', 'latitude', 'longitude', 'thumbnail_url');
---INSERT INTO PLACE_DETAIL (PLACE_ID, TEL, DETAIL, PAY, IMG, HOMEPAGE, OPEN, CLOSE, FACILITY)
+-- INSERT INTO PLACE_DETAIL (PLACE_ID, TEL, DETAIL, PAY, IMG, HOMEPAGE, OPEN, CLOSE, FACILITY)
 -- VALUES (seq_place_id.currval, '051-605-4128', '황령산 레포츠공원', '무료', 'example.jpg', 'https://www.jsports.or.kr/bbs/content.php?co_id=07_01', '09:00 AM', '06:00 PM', '와이파이, 주차장');
 
 ----------------------------------------------------------------------------
 
--- 스탬프북 더미 데이터 입력 
--- STAMPBOOK과 STAMP를 함께 입력 
+--스탬프북 더미 데이터 입력 
+--STAMPBOOK과 STAMP를 함께 입력 
 
 SET TERMOUT ON
 PROMPT 스탬프북 더미 데이터 입력 
@@ -721,14 +712,14 @@ VALUES (seq_stampbook_id.currval, 8, 9);
 INSERT INTO STAMP (STAMPBOOK_ID, STAMPNO, PLACE_ID)
 VALUES (seq_stampbook_id.currval, 9, 7);
 
--- 스탬프북 작성과 함께 작성자에게 스탬프북을 pick해야함
+--스탬프북 작성과 함께 작성자에게 스탬프북을 pick해야함
 INSERT INTO USER_PICK (USER_ID, STAMPBOOK_ID)
 VALUES ('admin@boogimon.com', seq_stampbook_id.currval);
 
 
--- 1번 무작위 스탬프북 
+--무작위 더미 스탬프북 
 INSERT INTO STAMPBOOK (STAMPBOOK_ID, TITLE, DESCRIPTION, USER_ID)
-VALUES (seq_stampbook_id.nextval, '무작위 더미 스탬프북1', '무작위 번호 부여한 스탬프북 차후에 수정해야함', 'admin@boogimon.com');
+VALUES (seq_stampbook_id.nextval, '무작위 더미 스탬프북', '무작위 번호 부여한 스탬프북 삭제된 것', 'admin@boogimon.com');
 
 INSERT INTO STAMP (STAMPBOOK_ID, STAMPNO, PLACE_ID)
 VALUES (seq_stampbook_id.currval, 1, 23);
@@ -749,13 +740,13 @@ VALUES (seq_stampbook_id.currval, 8, 6);
 INSERT INTO STAMP (STAMPBOOK_ID, STAMPNO, PLACE_ID)
 VALUES (seq_stampbook_id.currval, 9, 1);
 
--- 스탬프북 작성과 함께 작성자에게 스탬프북을 pick해야함
+--스탬프북 작성과 함께 작성자에게 스탬프북을 pick해야함
 INSERT INTO USER_PICK (USER_ID, STAMPBOOK_ID)
 VALUES ('admin@boogimon.com', seq_stampbook_id.currval);
 
--- 2번 무작위 스탬프북 
+--아름다운 부산
 INSERT INTO STAMPBOOK (STAMPBOOK_ID, TITLE, DESCRIPTION, USER_ID)
-VALUES (seq_stampbook_id.nextval, '무작위 더미 스탬프북2', '무작위 번호 부여한 스탬프북 차후에 수정해야함', 'admin@boogimon.com');
+VALUES (seq_stampbook_id.nextval, '아름다운 부산', '부산에 놀러오세요~~', 'admin@boogimon.com');
 
 INSERT INTO STAMP (STAMPBOOK_ID, STAMPNO, PLACE_ID)
 VALUES (seq_stampbook_id.currval, 1, 3);
@@ -776,12 +767,12 @@ VALUES (seq_stampbook_id.currval, 8, 12);
 INSERT INTO STAMP (STAMPBOOK_ID, STAMPNO, PLACE_ID)
 VALUES (seq_stampbook_id.currval, 9, 42);
 
--- 스탬프북 작성과 함께 작성자에게 스탬프북을 pick해야함
+--스탬프북 작성과 함께 작성자에게 스탬프북을 pick해야함
 INSERT INTO USER_PICK (USER_ID, STAMPBOOK_ID)
 VALUES ('admin@boogimon.com', seq_stampbook_id.currval);
 
 
--- 그린이 운영자가 만든 스탬프북을 긴빠이해서 만듬
+--그린이 운영자가 만든 스탬프북을 긴빠이해서 만듦
 INSERT INTO STAMPBOOK (STAMPBOOK_ID, TITLE, DESCRIPTION, USER_ID)
 VALUES (seq_stampbook_id.nextval, '그린이 만든 세븐비치', '내용 긴빠이함', 'green@google.com');
 
@@ -804,7 +795,7 @@ VALUES (seq_stampbook_id.currval, 8, 9);
 INSERT INTO STAMP (STAMPBOOK_ID, STAMPNO, PLACE_ID)
 VALUES (seq_stampbook_id.currval, 9, 7);
 
--- 스탬프북 작성과 함께 작성자에게 스탬프북을 pick해야함
+--스탬프북 작성과 함께 작성자에게 스탬프북을 pick해야함
 INSERT INTO USER_PICK (USER_ID, STAMPBOOK_ID)
 VALUES ('green@google.com', seq_stampbook_id.currval);
 
@@ -814,23 +805,23 @@ COMMIT;
 
 ----------------------------------------------------------------------------
 
--- 결과 출력 활성화
+--결과 출력 활성화
 SET TERMOUT ON 
 
--- SELECT 문 실행
+--SELECT 문 실행
 SELECT * FROM BoogiTrainer;
 SELECT * FROM PLACE;
 SELECT * FROM PLACE_DETAIL;
 SELECT * FROM STAMPBOOK;
 SELECT * FROM STAMP;
 
--- 예상쿼리 테스트
+--예상쿼리 테스트
 
--- 레드가 0번 스탬프북을 담음
+--레드가 0번 스탬프북을 담음
 INSERT INTO USER_PICK (USER_ID, STAMPBOOK_ID)
 VALUES ('red@google.com', 0);
 
--- 레드가 0번 스탬프북 좋아요
+--레드가 0번 스탬프북 좋아요
 INSERT INTO USER_LIKE (USER_ID, STAMPBOOK_ID)
 VALUES ('red@google.com', 0);
 
@@ -838,11 +829,11 @@ UPDATE STAMPBOOK
 SET LIKECOUNT = LIKECOUNT + 1
 WHERE STAMPBOOK_ID = 0;
 
--- 레드가 0번 스탬프북에 댓글을 담 
+--레드가 0번 스탬프북에 댓글을 담 
 INSERT INTO STB_CMT (COMMENT_ID, STAMPBOOK_ID, USER_ID, BCOMMENT)
 VALUES (seq_comment_id.nextval, 0, 'red@google.com', '...');
 
--- 레드가 0번 스탬프북의 스탬프를 모두 찍음 
+--레드가 0번 스탬프북의 스탬프를 모두 찍음 
 INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
 VALUES ('red@google.com', 0, 1, '/boogimon/images/upload/user/stamp/red1.jpg');
 INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
@@ -862,20 +853,20 @@ VALUES ('red@google.com', 0, 8, '/boogimon/images/upload/user/stamp/red8.jpg');
 INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
 VALUES ('red@google.com', 0, 9, '/boogimon/images/upload/user/stamp/red9.jpg');
 
--- 레드가 담은 0번 스탬프북을 완성함
+--레드가 담은 0번 스탬프북을 완성함
 UPDATE USER_PICK
 SET COMPLETE_DATE = SYSDATE
 WHERE USER_ID = 'red@google.com' AND STAMPBOOK_ID = 0;
 
--- 레드가 그린이 만든 3번 스탬프북을 담음
+--레드가 그린이 만든 3번 스탬프북을 담음
 INSERT INTO USER_PICK (USER_ID, STAMPBOOK_ID)
 VALUES ('red@google.com', 3);
 
--- 레드가 3번 스탬프북에 댓글을 담 
+--레드가 3번 스탬프북에 댓글을 담 
 INSERT INTO STB_CMT (COMMENT_ID, STAMPBOOK_ID, USER_ID, BCOMMENT)
 VALUES (seq_comment_id.nextval, 3, 'red@google.com', '...!');
 
--- 레드가 3번 스탬프북 좋아요
+--레드가 3번 스탬프북 좋아요
 INSERT INTO USER_LIKE (USER_ID, STAMPBOOK_ID)
 VALUES ('red@google.com', 3);
 
@@ -883,7 +874,7 @@ UPDATE STAMPBOOK
 SET LIKECOUNT = LIKECOUNT + 1
 WHERE STAMPBOOK_ID = 3;
 
--- 그린이 0번 스탬프북 좋아요
+--그린이 0번 스탬프북 좋아요
 INSERT INTO USER_LIKE (USER_ID, STAMPBOOK_ID)
 VALUES ('green@google.com', 0);
 
@@ -891,7 +882,7 @@ UPDATE STAMPBOOK
 SET LIKECOUNT = LIKECOUNT + 1
 WHERE STAMPBOOK_ID = 0;
 
--- 그린이 1번 스탬프북 좋아요
+--그린이 1번 스탬프북 좋아요
 INSERT INTO USER_LIKE (USER_ID, STAMPBOOK_ID)
 VALUES ('green@google.com', 1);
 
@@ -899,7 +890,7 @@ UPDATE STAMPBOOK
 SET LIKECOUNT = LIKECOUNT + 1
 WHERE STAMPBOOK_ID = 1;
 
--- 레드가 3번 스탬프북의 1, 4, 5번째 스탬프를 찍음
+--레드가 3번 스탬프북의 1, 4, 5번째 스탬프를 찍음
 INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
 VALUES ('red@google.com', 3, 1, '/boogimon/images/upload/user/stamp/red10.jpg');
 INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
@@ -907,9 +898,9 @@ VALUES ('red@google.com', 3, 4, '/boogimon/images/upload/user/stamp/red11.jpg');
 INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
 VALUES ('red@google.com', 3, 5, '/boogimon/images/upload/user/stamp/red12.jpg');
 
--- 1번 스탬프북을 삭제처리함
+--1번 스탬프북을 삭제처리함
 UPDATE stampbook set deleted = 1 where stampbook_id = 1;
--- 작성자가 삭제했으므로 작성자의 user_pick에서 삭제 
+--작성자가 삭제했으므로 작성자의 user_pick에서 삭제 
 DELETE FROM user_pick WHERE user_id = 'admin@boogimon.com' AND stampbook_id = 1;
 
 -- 레드가 3번 스탬프북에 찍은 스탬프 모두 조회
@@ -930,34 +921,34 @@ SELECT * FROM USER_LIKE;
 SELECT * FROM USER_STAMP_HISTORY;
 SELECT * FROM STB_CMT;
 
--- 로그인한 유저의 전체 스탬프북 조회 
+--로그인한 유저의 전체 스탬프북 조회 
 SELECT stb.stampbook_id, stb.title, stb.description, bt.nickname, to_char(stb.stampbook_regdate, 'YYYY-MM-DD HH24:MI:SS') as stampbookRegdate, 
 stb.likeCount, 
 nvl((SELECT 1 FROM user_like ul where ul.user_id = 'red@google.com' AND ul.stampbook_id = stb.stampbook_id), 0) AS isLike
 FROM stampbook stb INNER JOIN boogiTrainer bt ON stb.user_id = bt.user_id
 WHERE stb.deleted = 0;
 
--- 비로그인 유저의 전체 스탬프북 조회
+--비로그인 유저의 전체 스탬프북 조회
 SELECT stb.stampbook_id, stb.title, stb.description, bt.nickname, to_char(stb.stampbook_regdate, 'YYYY-MM-DD HH24:MI:SS') as stampbookRegdate, 
 stb.likeCount
 FROM stampbook stb INNER JOIN boogiTrainer bt ON stb.user_id = bt.user_id
 WHERE stb.deleted = 0;
 
--- 로그인한 유저의 내가 담은 스탬프북 조회
+--로그인한 유저의 내가 담은 스탬프북 조회
 SELECT stb.stampbook_id, stb.title, stb.description, bt.nickname, to_char(stb.stampbook_regdate, 'YYYY-MM-DD HH24:MI:SS') as stampbookRegdate, 
 stb.likeCount, 
 nvl((SELECT 1 FROM user_like ul where ul.user_id = 'red@google.com' AND ul.stampbook_id = stb.stampbook_id), 0) AS isLike
 FROM user_pick up INNER JOIN stampbook stb ON up.stampbook_id = stb.stampbook_id INNER JOIN boogiTrainer bt ON stb.user_id = bt.user_id
 WHERE up.user_id = 'red@google.com';
 
--- 특정 스탬프북의 스탬프 목록 조회
+--특정 스탬프북의 스탬프 목록 조회
 SELECT st.stampno, st.place_id, p.name, p.thumbnail
 FROM STAMP st
 JOIN PLACE p ON st.place_id = p.place_id
 WHERE st.stampbook_id = 0
 ORDER BY st.stampno;
 
--- 사용자가 담은 스탬프북의 스탬프 목록 조회
+--사용자가 담은 스탬프북의 스탬프 목록 조회
 SELECT st.stampno, st.place_id, p.name, p.thumbnail, ush.user_id, ush.upload_img, to_char(ush.stamped_date, 'YYYY-MM-DD HH24:MI:SS') as stamped_date
 FROM STAMP st
 JOIN PLACE p ON st.place_id = p.place_id
@@ -965,12 +956,12 @@ LEFT OUTER JOIN USER_STAMP_HISTORY ush ON ush.stampbook_id = st.stampbook_id AND
 WHERE st.stampbook_id = 3
 ORDER BY st.stampno;
 
--- 좋아요 테이블 중복 및 삭제된 스탬프북인지 체크 
+--좋아요 테이블 중복 및 삭제된 스탬프북인지 체크 
 SELECT stb.deleted, ul.user_id FROM stampbook stb
 LEFT OUTER JOIN user_like ul ON ul.stampbook_id = stb.stampbook_id AND ul.user_id = 'red@google.com'
 WHERE stb.stampbook_id = 3;
 
--- getUser EXP, 모은 부기몬 추가, 받은 좋아요, ranking
+--getUser EXP, 모은 부기몬 추가, 받은 좋아요, ranking
 SELECT u.nickname, u.profile_img, TO_CHAR(u.regdate, 'YYYY-MM-DD HH24:MI:SS') AS regdate, u.exp, COUNT(ush.stamped_Date) AS totalVisit, nvl(likeCount, 0) as likeCount, ur.rnum as ranking
 FROM boogiTrainer u 
 left outer JOIN user_stamp_history ush ON u.user_id = ush.user_id
@@ -982,3 +973,5 @@ group by stb.user_id) ON origin = u.user_id
 join user_ranking ur on ur.user_id = u.user_id
 WHERE u.user_id = 'red@google.com'
 GROUP BY u.nickname, u.profile_img, regdate, u.exp, likeCount, rnum;
+
+commit;
