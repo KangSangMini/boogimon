@@ -31,11 +31,19 @@
 			if(request.getParameter("stampbookId") != null){
 				try{
 					int stampbookId = Integer.parseInt(request.getParameter("stampbookId"));
-					// 스탬프북DO에 요청받은 정보 탑재
-					stampbookDO = stbDAO.getStampbook(stampbookId);
-					stampbookDO.setStampList(stbdDAO.getStamp(stampbookId));
-					stampbookDO.setCommentList(stbdDAO.getComments(stampbookId));
 					
+					if(userDO.getUserId() != null) { 	// 로그인유저
+						// 스탬프북DO에 요청받은 정보 탑재
+						stampbookDO = stbDAO.getStampbook(stampbookId, userDO.getUserId());
+						stampbookDO.setStampList(stbdDAO.getStamp(stampbookId));
+						stampbookDO.setCommentList(stbdDAO.getComments(stampbookId));
+					}
+					else { 								// 비 로그인유저
+						// 스탬프북DO에 요청받은 정보 탑재
+						stampbookDO = stbDAO.getStampbook(stampbookId);
+						stampbookDO.setStampList(stbdDAO.getStamp(stampbookId));
+						stampbookDO.setCommentList(stbdDAO.getComments(stampbookId));
+					}
 					jsonStr = stbJson.getStampbookDetailJson(stampbookDO);
 				}
 				catch(Exception e) {

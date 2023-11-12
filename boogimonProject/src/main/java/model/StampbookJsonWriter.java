@@ -74,6 +74,7 @@ public class StampbookJsonWriter extends JsonWriter{
 		jsonObj.put("completeDate", stampbook.getCompleteDate());
 		jsonObj.put("likeCount", stampbook.getLikeCount());
 		jsonObj.put("isLike", stampbook.getLiked());
+		jsonObj.put("isPick", stampbook.getPicked());
 		
 		if(!stampbook.getStampList().isEmpty()) {
 			for(StampDO stamp : stampbook.getStampList()) {

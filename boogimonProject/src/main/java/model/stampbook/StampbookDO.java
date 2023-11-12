@@ -11,6 +11,7 @@ public class StampbookDO {
 	private String stampbookRegdate;
 	private int likeCount;
 	private boolean liked;
+	private boolean picked;
 	private String completeDate;
 	private ArrayList<StampDO> stampList;
 	private ArrayList<CommentDO> commentList;
@@ -84,6 +85,19 @@ public class StampbookDO {
 		}
 		else {
 			this.liked = false;
+		}
+	}
+	
+	public boolean getPicked() {
+		return picked;
+	}
+
+	public void setPicked(int isPick) {
+		if(isPick == 1) {
+			this.picked = true;
+		}
+		else {
+			this.picked = false;
 		}
 	}
 	
