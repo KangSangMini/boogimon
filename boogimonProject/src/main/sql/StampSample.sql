@@ -15,7 +15,7 @@ VALUES (seq_stampbook_id.currval, 5, 3);
 INSERT INTO STAMP (STAMPBOOK_ID, STAMPNO, PLACE_ID)
 VALUES (seq_stampbook_id.currval, 6, 2);
 INSERT INTO STAMP (STAMPBOOK_ID, STAMPNO, PLACE_ID)
-VALUES (seq_stampbook_id.currval, 7, 178);
+VALUES (seq_stampbook_id.currval, 7, 150);
 INSERT INTO STAMP (STAMPBOOK_ID, STAMPNO, PLACE_ID)
 VALUES (seq_stampbook_id.currval, 8, 133);
 INSERT INTO STAMP (STAMPBOOK_ID, STAMPNO, PLACE_ID)
@@ -51,7 +51,6 @@ INSERT INTO USER_PICK (USER_ID, STAMPBOOK_ID)
 VALUES('silver@google.com',seq_stampbook_id.currval);
 
 --ruby
-
 INSERT INTO STAMPBOOK (STAMPBOOK_ID, TITLE, DESCRIPTION, USER_ID)
 VALUES (seq_stampbook_id.nextval, '부산 박물관', '부산지식 여행 ', 'ruby@google.com');
 
@@ -78,7 +77,6 @@ INSERT INTO USER_PICK (USER_ID, STAMPBOOK_ID)
 VALUES('ruby@google.com',seq_stampbook_id.currval);
 
 --sapphire
-
 INSERT INTO STAMPBOOK (STAMPBOOK_ID, TITLE, DESCRIPTION, USER_ID)
 VALUES (seq_stampbook_id.nextval, '부산 마을', '어서와 부산 마을은 처음이지? ', 'sapphire@google.com');
 
@@ -105,7 +103,6 @@ INSERT INTO USER_PICK (USER_ID, STAMPBOOK_ID)
 VALUES( 'sapphire@google.com',seq_stampbook_id.currval);
 
 --white
-
 INSERT INTO STAMPBOOK (STAMPBOOK_ID, TITLE, DESCRIPTION, USER_ID)
 VALUES (seq_stampbook_id.nextval, '부산 MZ ', '부산 MZ 취향 저격!', 'white@google.com');
 
@@ -134,9 +131,6 @@ VALUES( 'white@google.com',seq_stampbook_id.currval);
 --------------------------------------------------------유저 스탬프 담기 더미 데이터
 --골드(4~8)--
 INSERT INTO USER_PICK (USER_ID, STAMPBOOK_ID)
-VALUES ('gold@google.com', 4);
-
-INSERT INTO USER_PICK (USER_ID, STAMPBOOK_ID)
 VALUES ('gold@google.com', 5);
 
 INSERT INTO USER_PICK (USER_ID, STAMPBOOK_ID)
@@ -148,13 +142,7 @@ VALUES ('gold@google.com', 7);
 INSERT INTO USER_PICK (USER_ID, STAMPBOOK_ID)
 VALUES ('gold@google.com', 8);
 
---실버(4~8)--
-INSERT INTO USER_PICK (USER_ID, STAMPBOOK_ID)
-VALUES ('silver@google.com', 4);
-
-INSERT INTO USER_PICK (USER_ID, STAMPBOOK_ID)
-VALUES ('silver@google.com', 5);
-
+--실버(6~8)--
 INSERT INTO USER_PICK (USER_ID, STAMPBOOK_ID)
 VALUES ('silver@google.com', 6);
 
@@ -164,23 +152,14 @@ VALUES ('silver@google.com', 7);
 INSERT INTO USER_PICK (USER_ID, STAMPBOOK_ID)
 VALUES ('silver@google.com', 8);
 
---루비(4~8)--
-INSERT INTO USER_PICK (USER_ID, STAMPBOOK_ID)
-VALUES ('ruby@google.com', 4);
-
-INSERT INTO USER_PICK (USER_ID, STAMPBOOK_ID)
-VALUES ('ruby@google.com', 5);
-
-INSERT INTO USER_PICK (USER_ID, STAMPBOOK_ID)
-VALUES ('ruby@google.com', 6);
-
+--루비(7~8)--
 INSERT INTO USER_PICK (USER_ID, STAMPBOOK_ID)
 VALUES ('ruby@google.com', 7);
 
 INSERT INTO USER_PICK (USER_ID, STAMPBOOK_ID)
 VALUES ('ruby@google.com', 8);
 
---사파이어(4~8)--
+--사파이어(4~6)--
 INSERT INTO USER_PICK (USER_ID, STAMPBOOK_ID)
 VALUES ('sapphire@google.com', 4);
 
@@ -190,13 +169,7 @@ VALUES ('sapphire@google.com', 5);
 INSERT INTO USER_PICK (USER_ID, STAMPBOOK_ID)
 VALUES ('sapphire@google.com', 6);
 
-INSERT INTO USER_PICK (USER_ID, STAMPBOOK_ID)
-VALUES ('sapphire@google.com', 7);
-
-INSERT INTO USER_PICK (USER_ID, STAMPBOOK_ID)
-VALUES ('sapphire@google.com', 8);
-
---화이트(4~8)--
+--화이트(4~7)--
 INSERT INTO USER_PICK (USER_ID, STAMPBOOK_ID)
 VALUES ('white@google.com', 4);
 
@@ -209,105 +182,222 @@ VALUES ('white@google.com', 6);
 INSERT INTO USER_PICK (USER_ID, STAMPBOOK_ID)
 VALUES ('white@google.com', 7);
 
-INSERT INTO USER_PICK (USER_ID, STAMPBOOK_ID)
-VALUES ('white@google.com', 8);
-
 ---------------------------------------------------------유저 좋아요 더미 데이터
 --레드(4~8)--
 INSERT INTO USER_LIKE (USER_ID, STAMPBOOK_ID)
 VALUES ('red@google.com', 4);
 
+UPDATE STAMPBOOK
+SET LIKECOUNT = LIKECOUNT + 1
+WHERE STAMPBOOK_ID = 4;
+
 INSERT INTO USER_LIKE (USER_ID, STAMPBOOK_ID)
 VALUES ('red@google.com', 5);
+
+UPDATE STAMPBOOK
+SET LIKECOUNT = LIKECOUNT + 1
+WHERE STAMPBOOK_ID = 5;
 
 INSERT INTO USER_LIKE (USER_ID, STAMPBOOK_ID)
 VALUES ('red@google.com', 6);
 
+UPDATE STAMPBOOK
+SET LIKECOUNT = LIKECOUNT + 1
+WHERE STAMPBOOK_ID = 6;
+
 INSERT INTO USER_LIKE (USER_ID, STAMPBOOK_ID)
 VALUES ('red@google.com', 7);
 
+UPDATE STAMPBOOK
+SET LIKECOUNT = LIKECOUNT + 1
+WHERE STAMPBOOK_ID = 7;
+
 INSERT INTO USER_LIKE (USER_ID, STAMPBOOK_ID)
 VALUES ('red@google.com', 8);
+
+UPDATE STAMPBOOK
+SET LIKECOUNT = LIKECOUNT + 1
+WHERE STAMPBOOK_ID = 8;
 
 --그린(4~8)--
 INSERT INTO USER_LIKE(USER_ID, STAMPBOOK_ID)
 VALUES ('green@google.com', 4);
 
+UPDATE STAMPBOOK
+SET LIKECOUNT = LIKECOUNT + 1
+WHERE STAMPBOOK_ID = 4;
+
 INSERT INTO USER_LIKE(USER_ID, STAMPBOOK_ID)
 VALUES ('green@google.com', 5);
+
+UPDATE STAMPBOOK
+SET LIKECOUNT = LIKECOUNT + 1
+WHERE STAMPBOOK_ID = 5;
 
 INSERT INTO USER_LIKE(USER_ID, STAMPBOOK_ID)
 VALUES ('green@google.com', 6);
 
+UPDATE STAMPBOOK
+SET LIKECOUNT = LIKECOUNT + 1
+WHERE STAMPBOOK_ID = 6;
+
 INSERT INTO USER_LIKE(USER_ID, STAMPBOOK_ID)
 VALUES ('green@google.com', 7);
 
+UPDATE STAMPBOOK
+SET LIKECOUNT = LIKECOUNT + 1
+WHERE STAMPBOOK_ID = 7;
+
 INSERT INTO USER_LIKE(USER_ID, STAMPBOOK_ID)
 VALUES ('green@google.com',  8);
+
+UPDATE STAMPBOOK
+SET LIKECOUNT = LIKECOUNT + 1
+WHERE STAMPBOOK_ID = 8;
 
 --골드(4~8)--
 INSERT INTO USER_LIKE(USER_ID, STAMPBOOK_ID)
 VALUES ('gold@google.com', 4);
 
+UPDATE STAMPBOOK
+SET LIKECOUNT = LIKECOUNT + 1
+WHERE STAMPBOOK_ID = 4;
+
 INSERT INTO USER_LIKE(USER_ID, STAMPBOOK_ID)
 VALUES ('gold@google.com', 5);
+
+UPDATE STAMPBOOK
+SET LIKECOUNT = LIKECOUNT + 1
+WHERE STAMPBOOK_ID = 5;
 
 INSERT INTO USER_LIKE(USER_ID, STAMPBOOK_ID)
 VALUES ('gold@google.com', 6);
 
+UPDATE STAMPBOOK
+SET LIKECOUNT = LIKECOUNT + 1
+WHERE STAMPBOOK_ID = 6;
+
 INSERT INTO USER_LIKE(USER_ID, STAMPBOOK_ID)
 VALUES ('gold@google.com', 7);
 
+UPDATE STAMPBOOK
+SET LIKECOUNT = LIKECOUNT + 1
+WHERE STAMPBOOK_ID = 7;
+
 INSERT INTO USER_LIKE(USER_ID, STAMPBOOK_ID)
 VALUES ('gold@google.com',  8);
+
+UPDATE STAMPBOOK
+SET LIKECOUNT = LIKECOUNT + 1
+WHERE STAMPBOOK_ID = 8;
 
 --실버(4~8)--
 INSERT INTO USER_LIKE(USER_ID, STAMPBOOK_ID)
 VALUES ('silver@google.com', 4);
 
+UPDATE STAMPBOOK
+SET LIKECOUNT = LIKECOUNT + 1
+WHERE STAMPBOOK_ID = 4;
+
 INSERT INTO USER_LIKE(USER_ID, STAMPBOOK_ID)
 VALUES ('silver@google.com', 5);
+
+UPDATE STAMPBOOK
+SET LIKECOUNT = LIKECOUNT + 1
+WHERE STAMPBOOK_ID = 5;
 
 INSERT INTO USER_LIKE(USER_ID, STAMPBOOK_ID)
 VALUES ('silver@google.com', 6);
 
+UPDATE STAMPBOOK
+SET LIKECOUNT = LIKECOUNT + 1
+WHERE STAMPBOOK_ID = 6;
+
 INSERT INTO USER_LIKE(USER_ID, STAMPBOOK_ID)
 VALUES ('silver@google.com', 7);
 
+UPDATE STAMPBOOK
+SET LIKECOUNT = LIKECOUNT + 1
+WHERE STAMPBOOK_ID = 7;
+
 INSERT INTO USER_LIKE(USER_ID, STAMPBOOK_ID)
 VALUES ('silver@google.com',  8);
+
+UPDATE STAMPBOOK
+SET LIKECOUNT = LIKECOUNT + 1
+WHERE STAMPBOOK_ID = 8;
 
 --루비(4~8)--
 INSERT INTO USER_LIKE(USER_ID, STAMPBOOK_ID)
 VALUES ('ruby@google.com', 4);
 
+UPDATE STAMPBOOK
+SET LIKECOUNT = LIKECOUNT + 1
+WHERE STAMPBOOK_ID = 4;
+
 INSERT INTO USER_LIKE(USER_ID, STAMPBOOK_ID)
 VALUES ('ruby@google.com', 5);
+
+UPDATE STAMPBOOK
+SET LIKECOUNT = LIKECOUNT + 1
+WHERE STAMPBOOK_ID = 5;
 
 INSERT INTO USER_LIKE(USER_ID, STAMPBOOK_ID)
 VALUES ('ruby@google.com', 6);
 
+UPDATE STAMPBOOK
+SET LIKECOUNT = LIKECOUNT + 1
+WHERE STAMPBOOK_ID = 6;
+
 INSERT INTO USER_LIKE(USER_ID, STAMPBOOK_ID)
 VALUES ('ruby@google.com', 7);
 
+UPDATE STAMPBOOK
+SET LIKECOUNT = LIKECOUNT + 1
+WHERE STAMPBOOK_ID = 7;
+
 INSERT INTO USER_LIKE(USER_ID, STAMPBOOK_ID)
 VALUES ('ruby@google.com',  8);
+
+UPDATE STAMPBOOK
+SET LIKECOUNT = LIKECOUNT + 1
+WHERE STAMPBOOK_ID = 8;
 
 --사파이어(4~8)
 INSERT INTO USER_LIKE(USER_ID, STAMPBOOK_ID)
 VALUES ('sapphire@google.com', 4);
 
+UPDATE STAMPBOOK
+SET LIKECOUNT = LIKECOUNT + 1
+WHERE STAMPBOOK_ID = 4;
+
 INSERT INTO USER_LIKE(USER_ID, STAMPBOOK_ID)
 VALUES ('sapphire@google.com', 5);
+
+UPDATE STAMPBOOK
+SET LIKECOUNT = LIKECOUNT + 1
+WHERE STAMPBOOK_ID = 5;
 
 INSERT INTO USER_LIKE(USER_ID, STAMPBOOK_ID)
 VALUES ('sapphire@google.com', 6);
 
+UPDATE STAMPBOOK
+SET LIKECOUNT = LIKECOUNT + 1
+WHERE STAMPBOOK_ID = 6;
+
 INSERT INTO USER_LIKE(USER_ID, STAMPBOOK_ID)
 VALUES ('sapphire@google.com', 7);
 
+UPDATE STAMPBOOK
+SET LIKECOUNT = LIKECOUNT + 1
+WHERE STAMPBOOK_ID = 7;
+
 INSERT INTO USER_LIKE(USER_ID, STAMPBOOK_ID)
 VALUES ('sapphire@google.com',  8);
+
+UPDATE STAMPBOOK
+SET LIKECOUNT = LIKECOUNT + 1
+WHERE STAMPBOOK_ID = 8;
 
 --------------------------------------------------------스탬프 북 댓글(필요하시면 사용하세요.)
 --레드--
@@ -360,7 +450,6 @@ INSERT INTO STB_CMT (COMMENT_ID, STAMPBOOK_ID, USER_ID, BCOMMENT)
 VALUES (seq_comment_id.nextval, 8, 'gold@google.com', '감사감사');
 
 --실버(4~8)--
-
 INSERT INTO STB_CMT (COMMENT_ID, STAMPBOOK_ID, USER_ID, BCOMMENT)
 VALUES (seq_comment_id.nextval, 4, 'silver@google.com', '감사합니다');
 
@@ -375,6 +464,7 @@ VALUES (seq_comment_id.nextval, 7, 'silver@google.com', '개꿀.');
 
 INSERT INTO STB_CMT (COMMENT_ID, STAMPBOOK_ID, USER_ID, BCOMMENT)
 VALUES (seq_comment_id.nextval, 8, 'silver@google.com', '괜찮은듯');
+
 --루비(4~8)--
 INSERT INTO STB_CMT (COMMENT_ID, STAMPBOOK_ID, USER_ID, BCOMMENT)
 VALUES (seq_comment_id.nextval, 4, 'ruby@google.com', '좋아요');
@@ -424,7 +514,6 @@ INSERT INTO STB_CMT (COMMENT_ID, STAMPBOOK_ID, USER_ID, BCOMMENT)
 VALUES (seq_comment_id.nextval, 4, 'diamond@google.com', 'GOOD');
 
 --펄(0~4)--
-
 INSERT INTO STB_CMT (COMMENT_ID, STAMPBOOK_ID, USER_ID, BCOMMENT)
 VALUES (seq_comment_id.nextval, 0, 'pearl@google.com', 'GOOD');
 
@@ -441,7 +530,6 @@ INSERT INTO STB_CMT (COMMENT_ID, STAMPBOOK_ID, USER_ID, BCOMMENT)
 VALUES (seq_comment_id.nextval, 4, 'pearl@google.com', 'GOOD');
 
 --블랙(1~5)--
-
 INSERT INTO STB_CMT (COMMENT_ID, STAMPBOOK_ID, USER_ID, BCOMMENT)
 VALUES (seq_comment_id.nextval, 1, 'black@google.com', 'GOOD');
 
@@ -459,7 +547,6 @@ INSERT INTO STB_CMT (COMMENT_ID, STAMPBOOK_ID, USER_ID, BCOMMENT)
 VALUES (seq_comment_id.nextval, 5, 'black@google.com', 'GOOD');
 
 --화이트(1~5)--
-
 INSERT INTO STB_CMT (COMMENT_ID, STAMPBOOK_ID, USER_ID, BCOMMENT)
 VALUES (seq_comment_id.nextval, 1, 'white@google.com', 'GOOD');
 
@@ -496,7 +583,6 @@ VALUES ('gold@google.com', 4, 8, '/boogimon/images/upload/user/stamp/gold8.jpg')
 INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
 VALUES ('gold@google.com', 4, 9, '/boogimon/images/upload/user/stamp/gold9.jpg');
 
-
 -- 골드 담은 4번 스탬프북을 완성함
 UPDATE USER_PICK
 SET COMPLETE_DATE = SYSDATE
@@ -521,7 +607,6 @@ INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
 VALUES ('gold@google.com', 5, 8, '/boogimon/images/upload/user/stamp/silver8.jpg');
 INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
 VALUES ('gold@google.com', 5, 9, '/boogimon/images/upload/user/stamp/silver9.jpg');
-
 
 -- 골드 담은 5번 스탬프북을 완성함
 UPDATE USER_PICK
@@ -548,7 +633,6 @@ VALUES ('gold@google.com', 6, 8, '/boogimon/images/upload/user/stamp/ruby8.jpg')
 INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
 VALUES ('gold@google.com', 6, 9, '/boogimon/images/upload/user/stamp/ruby9.jpg');
 
-
 -- 골드 담은 6번 스탬프북을 완성함
 UPDATE USER_PICK
 SET COMPLETE_DATE = SYSDATE
@@ -573,7 +657,6 @@ INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
 VALUES ('gold@google.com', 7, 8, '/boogimon/images/upload/user/stamp/sapphire8.jpg');
 INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
 VALUES ('gold@google.com', 7, 9, '/boogimon/images/upload/user/stamp/sapphire9.jpg');
-
 
 -- 골드 담은 7번 스탬프북을 완성함
 UPDATE USER_PICK
@@ -600,62 +683,11 @@ VALUES ('gold@google.com', 8, 8, '/boogimon/images/upload/user/stamp/white8.jpg'
 INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
 VALUES ('gold@google.com', 8, 9, '/boogimon/images/upload/user/stamp/white9.jpg');
 
-
 -- 골드 담은 8번 스탬프북을 완성함
 UPDATE USER_PICK
 SET COMPLETE_DATE = SYSDATE
 WHERE USER_ID = 'gold@google.com' AND STAMPBOOK_ID = 8;
 
-
---실버(4~8)--
-INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
-VALUES ('silver@google.com', 4, 1, '/boogimon/images/upload/user/stamp/gold1.jpg');
-INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
-VALUES ('silver@google.com', 4, 2, '/boogimon/images/upload/user/stamp/gold2.jpg');
-INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
-VALUES ('silver@google.com', 4, 3, '/boogimon/images/upload/user/stamp/gold3.jpg');
-INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
-VALUES ('silver@google.com', 4, 4, '/boogimon/images/upload/user/stamp/gold4.jpg');
-INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
-VALUES ('silver@google.com', 4, 5, '/boogimon/images/upload/user/stamp/gold5.jpg');
-INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
-VALUES ('silver@google.com', 4, 6, '/boogimon/images/upload/user/stamp/gold6.jpg');
-INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
-VALUES ('silver@google.com', 4, 7, '/boogimon/images/upload/user/stamp/gold7.jpg');
-INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
-VALUES ('silver@google.com', 4, 8, '/boogimon/images/upload/user/stamp/gold8.jpg');
-INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
-VALUES ('silver@google.com', 4, 9, '/boogimon/images/upload/user/stamp/gold9.jpg');
-
-
--- 실버 담은 4번 스탬프북을 완성함
-UPDATE USER_PICK
-SET COMPLETE_DATE = SYSDATE
-WHERE USER_ID = 'silver@google.com' AND STAMPBOOK_ID = 4;
-
-INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
-VALUES ('silver@google.com', 5, 1, '/boogimon/images/upload/user/stamp/silver1.jpg');
-INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
-VALUES ('silver@google.com', 5, 2, '/boogimon/images/upload/user/stamp/silver2.jpg');
-INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
-VALUES ('silver@google.com', 5, 3, '/boogimon/images/upload/user/stamp/silver3.jpg');
-INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
-VALUES ('silver@google.com', 5, 4, '/boogimon/images/upload/user/stamp/silver4.jpg');
-INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
-VALUES ('silver@google.com', 5, 5, '/boogimon/images/upload/user/stamp/silver5.jpg');
-INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
-VALUES ('silver@google.com', 5, 6, '/boogimon/images/upload/user/stamp/silver6.jpg');
-INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
-VALUES ('silver@google.com', 5, 7, '/boogimon/images/upload/user/stamp/silver7.jpg');
-INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
-VALUES ('silver@google.com', 5, 8, '/boogimon/images/upload/user/stamp/silver8.jpg');
-INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
-VALUES ('silver@google.com', 5, 9, '/boogimon/images/upload/user/stamp/silver9.jpg');
-
--- 실버 담은 5번 스탬프북을 완성함
-UPDATE USER_PICK
-SET COMPLETE_DATE = SYSDATE
-WHERE USER_ID = 'silver@google.com' AND STAMPBOOK_ID = 5;
 
 INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
 VALUES ('silver@google.com', 6, 1, '/boogimon/images/upload/user/stamp/ruby1.jpg');
@@ -680,6 +712,7 @@ VALUES ('silver@google.com', 6, 9, '/boogimon/images/upload/user/stamp/ruby9.jpg
 UPDATE USER_PICK
 SET COMPLETE_DATE = SYSDATE
 WHERE USER_ID = 'silver@google.com' AND STAMPBOOK_ID = 6;
+
 
 INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
 VALUES ('silver@google.com', 7, 1, '/boogimon/images/upload/user/stamp/sapphire1.jpg');
@@ -725,87 +758,13 @@ VALUES ('silver@google.com', 8, 8, '/boogimon/images/upload/user/stamp/white8.jp
 INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
 VALUES ('silver@google.com', 8, 9, '/boogimon/images/upload/user/stamp/white9.jpg');
 
--- 실버 담은 8번 스탬프북을 완성함
+--실버 담은 8번 스탬프북을 완성함
 UPDATE USER_PICK
 SET COMPLETE_DATE = SYSDATE
 WHERE USER_ID = 'silver@google.com' AND STAMPBOOK_ID = 8;
 
 
---루비(4~8)--
-INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
-VALUES ('ruby@google.com', 4, 1, '/boogimon/images/upload/user/stamp/gold1.jpg');
-INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
-VALUES ('ruby@google.com', 4, 2, '/boogimon/images/upload/user/stamp/gold2.jpg');
-INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
-VALUES ('ruby@google.com', 4, 3, '/boogimon/images/upload/user/stamp/gold3.jpg');
-INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
-VALUES ('ruby@google.com', 4, 4, '/boogimon/images/upload/user/stamp/gold4.jpg');
-INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
-VALUES ('ruby@google.com', 4, 5, '/boogimon/images/upload/user/stamp/gold5.jpg');
-INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
-VALUES ('ruby@google.com', 4, 6, '/boogimon/images/upload/user/stamp/gold6.jpg');
-INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
-VALUES ('ruby@google.com', 4, 7, '/boogimon/images/upload/user/stamp/gold7.jpg');
-INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
-VALUES ('ruby@google.com', 4, 8, '/boogimon/images/upload/user/stamp/gold8.jpg');
-INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
-VALUES ('ruby@google.com', 4, 9, '/boogimon/images/upload/user/stamp/gold9.jpg');
-
-
--- 루비 담은 4번 스탬프북을 완성함
-UPDATE USER_PICK
-SET COMPLETE_DATE = SYSDATE
-WHERE USER_ID = 'ruby@google.com' AND STAMPBOOK_ID = 4;
-
-
-INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
-VALUES ('ruby@google.com', 5, 1, '/boogimon/images/upload/user/stamp/silver1.jpg');
-INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
-VALUES ('ruby@google.com', 5, 2, '/boogimon/images/upload/user/stamp/silver2.jpg');
-INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
-VALUES ('ruby@google.com', 5, 3, '/boogimon/images/upload/user/stamp/silver3.jpg');
-INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
-VALUES ('ruby@google.com', 5, 4, '/boogimon/images/upload/user/stamp/silver4.jpg');
-INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
-VALUES ('ruby@google.com', 5, 5, '/boogimon/images/upload/user/stamp/silver5.jpg');
-INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
-VALUES ('ruby@google.com', 5, 6, '/boogimon/images/upload/user/stamp/silver6.jpg');
-INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
-VALUES ('ruby@google.com', 5, 7, '/boogimon/images/upload/user/stamp/silver7.jpg');
-INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
-VALUES ('ruby@google.com', 5, 8, '/boogimon/images/upload/user/stamp/silver8.jpg');
-INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
-VALUES ('ruby@google.com', 5, 9, '/boogimon/images/upload/user/stamp/silver9.jpg');
-
--- 루비 담은 5번 스탬프북을 완성함
-UPDATE USER_PICK
-SET COMPLETE_DATE = SYSDATE
-WHERE USER_ID = 'ruby@google.com' AND STAMPBOOK_ID = 5;
-
-INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
-VALUES ('ruby@google.com', 6, 1, '/boogimon/images/upload/user/stamp/ruby1.jpg');
-INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
-VALUES ('ruby@google.com', 6, 2, '/boogimon/images/upload/user/stamp/ruby2.jpg');
-INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
-VALUES ('ruby@google.com', 6, 3, '/boogimon/images/upload/user/stamp/ruby3.jpg');
-INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
-VALUES ('ruby@google.com', 6, 4, '/boogimon/images/upload/user/stamp/ruby4.jpg');
-INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
-VALUES ('ruby@google.com', 6, 5, '/boogimon/images/upload/user/stamp/ruby5.jpg');
-INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
-VALUES ('ruby@google.com', 6, 6, '/boogimon/images/upload/user/stamp/ruby6.jpg');
-INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
-VALUES ('ruby@google.com', 6, 7, '/boogimon/images/upload/user/stamp/ruby7.jpg');
-INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
-VALUES ('ruby@google.com', 6, 8, '/boogimon/images/upload/user/stamp/ruby8.jpg');
-INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
-VALUES ('ruby@google.com', 6, 9, '/boogimon/images/upload/user/stamp/ruby9.jpg');
-
--- 루비 담은 6번 스탬프북을 완성함
-UPDATE USER_PICK
-SET COMPLETE_DATE = SYSDATE
-WHERE USER_ID = 'ruby@google.com' AND STAMPBOOK_ID = 6;
-
+--루비(7~8)--
 INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
 VALUES ('ruby@google.com', 7, 1, '/boogimon/images/upload/user/stamp/sapphire1.jpg');
 INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
@@ -825,8 +784,7 @@ VALUES ('ruby@google.com', 7, 8, '/boogimon/images/upload/user/stamp/sapphire8.j
 INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
 VALUES ('ruby@google.com', 7, 9, '/boogimon/images/upload/user/stamp/sapphire9.jpg');
 
-
--- 루비 담은 7번 스탬프북을 완성함
+--루비 담은 7번 스탬프북을 완성함
 UPDATE USER_PICK
 SET COMPLETE_DATE = SYSDATE
 WHERE USER_ID = 'ruby@google.com' AND STAMPBOOK_ID = 7;
@@ -851,10 +809,11 @@ VALUES ('ruby@google.com', 8, 8, '/boogimon/images/upload/user/stamp/white8.jpg'
 INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
 VALUES ('ruby@google.com', 8, 9, '/boogimon/images/upload/user/stamp/white9.jpg');
 
--- 루비 담은 8번 스탬프북을 완성함
+--루비 담은 8번 스탬프북을 완성함
 UPDATE USER_PICK
 SET COMPLETE_DATE = SYSDATE
 WHERE USER_ID = 'ruby@google.com' AND STAMPBOOK_ID = 8;
+
 
 --사파이어(4~8)
 INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
@@ -876,7 +835,7 @@ VALUES ('sapphire@google.com', 4, 8, '/boogimon/images/upload/user/stamp/gold8.j
 INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
 VALUES ('sapphire@google.com', 4, 9, '/boogimon/images/upload/user/stamp/gold9.jpg');
 
--- 사파이어 담은 4번 스탬프북을 완성함
+--사파이어 담은 4번 스탬프북을 완성함
 UPDATE USER_PICK
 SET COMPLETE_DATE = SYSDATE
 WHERE USER_ID = 'sapphire@google.com' AND STAMPBOOK_ID = 4;
@@ -901,7 +860,7 @@ VALUES ('sapphire@google.com', 5, 8, '/boogimon/images/upload/user/stamp/silver8
 INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
 VALUES ('sapphire@google.com', 5, 9, '/boogimon/images/upload/user/stamp/silver9.jpg');
 
--- 사파이어 담은 5번 스탬프북을 완성함
+--사파이어 담은 5번 스탬프북을 완성함
 UPDATE USER_PICK
 SET COMPLETE_DATE = SYSDATE
 WHERE USER_ID = 'sapphire@google.com' AND STAMPBOOK_ID = 5;
@@ -926,60 +885,10 @@ VALUES ('sapphire@google.com', 6, 8, '/boogimon/images/upload/user/stamp/ruby8.j
 INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
 VALUES ('sapphire@google.com', 6, 9, '/boogimon/images/upload/user/stamp/ruby9.jpg');
 
--- 사파이어 담은 6번 스탬프북을 완성함
+--사파이어 담은 6번 스탬프북을 완성함
 UPDATE USER_PICK
 SET COMPLETE_DATE = SYSDATE
 WHERE USER_ID = 'sapphire@google.com' AND STAMPBOOK_ID = 6;
-
-
-INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
-VALUES ('sapphire@google.com', 7, 1, '/boogimon/images/upload/user/stamp/sapphire1.jpg');
-INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
-VALUES ('sapphire@google.com', 7, 2, '/boogimon/images/upload/user/stamp/sapphire2.jpg');
-INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
-VALUES ('sapphire@google.com', 7, 3, '/boogimon/images/upload/user/stamp/sapphire3.jpg');
-INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
-VALUES ('sapphire@google.com', 7, 4, '/boogimon/images/upload/user/stamp/sapphire4.jpg');
-INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
-VALUES ('sapphire@google.com', 7, 5, '/boogimon/images/upload/user/stamp/sapphire5.jpg');
-INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
-VALUES ('sapphire@google.com', 7, 6, '/boogimon/images/upload/user/stamp/sapphire6.jpg');
-INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
-VALUES ('sapphire@google.com', 7, 7, '/boogimon/images/upload/user/stamp/sapphire7.jpg');
-INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
-VALUES ('sapphire@google.com', 7, 8, '/boogimon/images/upload/user/stamp/sapphire8.jpg');
-INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
-VALUES ('sapphire@google.com', 7, 9, '/boogimon/images/upload/user/stamp/sapphire9.jpg');
-
--- 사파이어 담은 7번 스탬프북을 완성함
-UPDATE USER_PICK
-SET COMPLETE_DATE = SYSDATE
-WHERE USER_ID = 'sapphire@google.com' AND STAMPBOOK_ID = 7;
-
-
-INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
-VALUES ('sapphire@google.com', 8, 1, '/boogimon/images/upload/user/stamp/white1.jpg');
-INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
-VALUES ('sapphire@google.com', 8, 2, '/boogimon/images/upload/user/stamp/white2.jpg');
-INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
-VALUES ('sapphire@google.com', 8, 3, '/boogimon/images/upload/user/stamp/white3.jpg');
-INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
-VALUES ('sapphire@google.com', 8, 4, '/boogimon/images/upload/user/stamp/white4.jpg');
-INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
-VALUES ('sapphire@google.com', 8, 5, '/boogimon/images/upload/user/stamp/white5.jpg');
-INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
-VALUES ('sapphire@google.com', 8, 6, '/boogimon/images/upload/user/stamp/white6.jpg');
-INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
-VALUES ('sapphire@google.com', 8, 7, '/boogimon/images/upload/user/stamp/white7.jpg');
-INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
-VALUES ('sapphire@google.com', 8, 8, '/boogimon/images/upload/user/stamp/white8.jpg');
-INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
-VALUES ('sapphire@google.com', 8, 9, '/boogimon/images/upload/user/stamp/white9.jpg');
-
--- 사파이어 담은 8번 스탬프북을 완성함
-UPDATE USER_PICK
-SET COMPLETE_DATE = SYSDATE
-WHERE USER_ID = 'sapphire@google.com' AND STAMPBOOK_ID = 8;
 
 --화이트(4)
 INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
@@ -1001,20 +910,20 @@ VALUES ('white@google.com', 4, 8, '/boogimon/images/upload/user/stamp/gold8.jpg'
 INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
 VALUES ('white@google.com', 4, 9, '/boogimon/images/upload/user/stamp/gold9.jpg');
 
--- 화이트 담은 4번 스탬프북을 완성함
+--화이트 담은 4번 스탬프북을 완성함
 UPDATE USER_PICK
 SET COMPLETE_DATE = SYSDATE
 WHERE USER_ID = 'white@google.com' AND STAMPBOOK_ID = 4;
+
+
 ---------------------------------------------------------------------------------------------------스탬프북의 스탬프를 찍음
---  white 5번 스탬프북의 1, 4, 5번째 스탬프를 찍음
+--white 5번 스탬프북의 1, 5번째 스탬프를 찍음
 INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
 VALUES ('white@google.com', 5, 1, '/boogimon/images/upload/user/stamp/silver1.jpg');
 INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
-VALUES ('white@google.com', 5, 4, '/boogimon/images/upload/user/stamp/silver4.jpg');
-INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
 VALUES ('white@google.com', 5, 5, '/boogimon/images/upload/user/stamp/silver5.jpg');
 
--- white 6번 스탬프북의 2, 4, 6번째 스탬프를 찍음
+--white 6번 스탬프북의 2, 4, 6번째 스탬프를 찍음
 INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
 VALUES ('white@google.com', 5, 2, '/boogimon/images/upload/user/stamp/silver2.jpg');
 INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
@@ -1022,7 +931,7 @@ VALUES ('white@google.com', 5, 4, '/boogimon/images/upload/user/stamp/silver4.jp
 INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
 VALUES ('white@google.com', 5, 6, '/boogimon/images/upload/user/stamp/silver6.jpg');
 
--- white 7번 스탬프북의 2, 3, 7, 8번째 스탬프를 찍음
+--white 7번 스탬프북의 2, 3, 7, 8번째 스탬프를 찍음
 INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
 VALUES ('white@google.com', 7, 2, '/boogimon/images/upload/user/stamp/sapphire2.jpg');
 INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
@@ -1032,13 +941,4 @@ VALUES ('white@google.com', 7, 7, '/boogimon/images/upload/user/stamp/sapphire7.
 INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
 VALUES ('white@google.com', 7, 8, '/boogimon/images/upload/user/stamp/sapphire8.jpg');
 
--- white 8번 스탬프북의 2, 3, 7, 8번째 스탬프를 찍음
-
-INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
-VALUES ('white@google.com', 8, 2, '/boogimon/images/upload/user/stamp/white2.jpg');
-INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
-VALUES ('white@google.com', 8, 3, '/boogimon/images/upload/user/stamp/white3.jpg');
-INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
-VALUES ('white@google.com', 8, 7, '/boogimon/images/upload/user/stamp/white7.jpg');
-INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG)
-VALUES ('white@google.com', 8, 8, '/boogimon/images/upload/user/stamp/white8.jpg');
+commit;
