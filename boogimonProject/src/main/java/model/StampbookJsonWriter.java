@@ -83,6 +83,8 @@ public class StampbookJsonWriter extends JsonWriter{
 				stObj.put("stampNo", stamp.getStampNo());
 				stObj.put("name", stamp.getName());
 				stObj.put("thumbnail", stamp.getThumbnail());
+				stObj.put("stampedDate", stamp.getStampedDate());
+				stObj.put("isStamped", stamp.getStampedDate() != null ? true : false);
 				
 				jsonArr.add(stObj);
 			}
