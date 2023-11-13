@@ -35,7 +35,7 @@
 					if(userDO.getUserId() != null) { 	// 로그인유저
 						// 스탬프북DO에 요청받은 정보 탑재
 						stampbookDO = stbDAO.getStampbook(stampbookId, userDO.getUserId());
-						stampbookDO.setStampList(stbdDAO.getStamp(stampbookId));
+						stampbookDO.setStampList(stbdDAO.getStamp(stampbookId, userDO.getUserId()));
 						stampbookDO.setCommentList(stbdDAO.getComments(stampbookId));
 					}
 					else { 								// 비 로그인유저
