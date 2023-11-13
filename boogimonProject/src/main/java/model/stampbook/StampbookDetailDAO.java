@@ -195,6 +195,7 @@ public class StampbookDetailDAO {
 		boolean isStampedDuplicate = false;
 		boolean userStampedFailure = false;
 		boolean expUpdateFailure = false;
+		boolean expUpdateSuccess = false;
 		
 		try {
 			// 사용자가 담은 스탬프북인지 검사
@@ -230,7 +231,7 @@ public class StampbookDetailDAO {
 					rowCount = pstmt.executeUpdate();
 					
 					if(rowCount == 1) {
-						this.conn.commit();
+						expUpdateSuccess = true;
 					}
 					else {
 						this.conn.rollback();
@@ -240,6 +241,17 @@ public class StampbookDetailDAO {
 				else {
 					this.conn.rollback();
 					userStampedFailure = true;
+				}
+				
+				// 경험치 연산까지 끝난 후, 스탬프북 컴플리트 검사
+				if(expUpdateSuccess) {
+//					this.sql = "UPDATE boogiTrainer "
+//							+ "SET exp = exp + 100 "
+//							+ "WHERE user_id = ? ";
+//					this.pstmt = this.conn.prepareStatement(sql);
+//					
+//					this.pstmt.setString(1, user_id);
+//					rowCount = pstmt.executeUpdate();
 				}
 			}
 			else {
