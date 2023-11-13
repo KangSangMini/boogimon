@@ -31,6 +31,14 @@
 		if(command != null && command.equals("randomNickname")){
 			jsonStr = userJson.getRandomNickname();
 		}
+		if(command != null && command.equals("newPasswd")){
+			if(userDO.getUserId() != null){
+				jsonStr = userJson.getNewPasswd(userDO);
+			}
+			else{
+				jsonStr = userJson.getGeneralResponse(OperationResult.NO_MANDATORY_REQUEST_PARAMETERS_ERROR);
+			}
+		}
 	}
 	
 	if(request.getMethod().equals("POST")){
