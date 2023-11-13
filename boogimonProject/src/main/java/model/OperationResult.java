@@ -17,6 +17,7 @@ public enum OperationResult {
 	DUPLICATE_NICKNAME_ERROR(23, "중복된 닉네임"),
 	DELETED_USER_ERROR(24, "탈퇴한 회원"),
 	RANDOM_NICKNAME_GENERATION_FAILED_ERROR(25, "랜덤 닉네임 생성 실패"),
+	USER_EXP_CHANGE_FAILED(26, "경험치 증감 처리 실패"),
 	NON_EXISTENT_STAMPBOOK_ERROR(30, "존재하지 않는 스탬프북"),
 	DELETED_STAMPBOOK_ERROR(31, "삭제된 스탬프북"),
 	LIKE_PROCESSING_FAILED_ERROR(32, "좋아요 작업 실패"),
@@ -29,6 +30,7 @@ public enum OperationResult {
 	STAMPBOOK_PICK_FAILED_ERROR(39, "스탬프북 담기 실패"),
 	NON_EXISTENT_STAMP_ERROR(50, "존재하지 않는 스탬프"),
 	STAMP_CREATION_FAILED_ERROR(51, "스탬프 생성 실패"),
+	STAMP_UPLOAD_FAILED_ERROR(52, "스탬프 업로드 실패"),
 	NON_EXISTENT_PLACE_ERROR(60, "존재하지 않는 명소"),
 	UNKNOWN_ERROR(99, "기타 에러");
 	

@@ -193,6 +193,8 @@ public class StampbookDetailDAO {
 		
 		boolean notExists = false;
 		boolean isStampedDuplicate = false;
+		boolean userStampedFailure = false;
+		boolean expUpdateFailure = false;
 		
 		try {
 			// 사용자가 담은 스탬프북인지 검사
@@ -205,6 +207,7 @@ public class StampbookDetailDAO {
 			rs = pstmt.executeQuery();
 			
 			if(rs.next()) {
+				this.conn.setAutoCommit(false);
 				this.sql = "INSERT INTO USER_STAMP_HISTORY (USER_ID, STAMPBOOK_ID, STAMPNO, UPLOAD_IMG) "
 						+ "VALUES (?, ?, ?, ?)";
 				
@@ -215,6 +218,29 @@ public class StampbookDetailDAO {
 				this.pstmt.setInt(3, stamp.getStampNo());
 				this.pstmt.setString(4, stamp.getUploadImg());
 				rowCount = pstmt.executeUpdate();
+				
+				// 정상적으로 찍혔다면 경험치 증가
+				if(rowCount == 1) {
+					this.sql = "UPDATE boogiTrainer "
+							+ "SET exp = exp + 100 "
+							+ "WHERE user_id = ? ";
+					this.pstmt = this.conn.prepareStatement(sql);
+					
+					this.pstmt.setString(1, user_id);
+					rowCount = pstmt.executeUpdate();
+					
+					if(rowCount == 1) {
+						this.conn.commit();
+					}
+					else {
+						this.conn.rollback();
+						expUpdateFailure = true;
+					}
+				} 
+				else {
+					this.conn.rollback();
+					userStampedFailure = true;
+				}
 			}
 			else {
 				notExists = true;
@@ -225,6 +251,8 @@ public class StampbookDetailDAO {
 		}
 		finally {
 			try {
+				this.conn.setAutoCommit(true);
+				
 				if(!pstmt.isClosed()) {
 					pstmt.close();
 				}
@@ -236,6 +264,12 @@ public class StampbookDetailDAO {
 		
 		if(notExists) {
 			throw new BoogiException(OperationResult.UNPICKED_STAMPBOOK_ERROR);
+		}
+		if(userStampedFailure) {
+			throw new BoogiException(OperationResult.STAMP_UPLOAD_FAILED_ERROR);
+		}
+		if(expUpdateFailure) {
+			throw new BoogiException(OperationResult.USER_EXP_CHANGE_FAILED);
 		}
 		
 		return rowCount;
