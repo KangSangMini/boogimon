@@ -10,7 +10,7 @@
 	response.setHeader("Access-Control-Allow-Origin","*");
 	out.clearBuffer();
 	
-	// String directory = request.getServletContext().getRealPath("/upload/user/stamp/");
+	// String directory = request.getServletContext().getRealPath("/images/upload/user/stamp/");
 	// 테스트 환경의 절대경로 입력
 	String directory = "/Users//projects/boogimon/boogimonProject/src/main/webapp/images/upload/user/stamp/";
 	int sizeLimit = 1024 * 1024 * 5;		// 5MB 제한

@@ -10,7 +10,7 @@
 	response.setHeader("Access-Control-Allow-Origin","*");
 	out.clearBuffer();
 	
-	// String directory = request.getServletContext().getRealPath("/upload/user/profile/");
+	// String directory = request.getServletContext().getRealPath("/images/upload/user/profile/");
 	// 테스트 환경의 절대경로 입력
 	String directory = "/Users//projects/boogimon/boogimonProject/src/main/webapp/images/upload/user/profile/";
 	int sizeLimit = 1024 * 1024 * 5;		// 5MB 제한
@@ -45,7 +45,7 @@
 		if(command.equals("changeImg")){
 			userDO.setUserId((String)multi.getParameter("userId"));
 			if(multi.getFileNames().hasMoreElements()){
-				userDO.setProfileImg("/boogimon/upload/user/profile/" + multi.getFilesystemName((String)multi.getFileNames().nextElement()));
+				userDO.setProfileImg("/boogimon/images/upload/user/profile/" + multi.getFilesystemName((String)multi.getFileNames().nextElement()));
 				try {
 					or = userDAO.changeImg(userDO) == 1 ? OperationResult.NORMAL_CODE : OperationResult.UPDATE_FAILED_ERROR;
 				}
