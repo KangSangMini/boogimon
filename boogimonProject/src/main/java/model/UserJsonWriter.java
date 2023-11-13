@@ -52,7 +52,6 @@ public class UserJsonWriter extends JsonWriter{
 	/** 로그인 체크 */
 	public String authLogin(UserDO user) {
 		JSONObject jsonObj = null;
-		
 		if(userDAO.loginCheck(user)) {
 			jsonObj = OperationResult.NORMAL_CODE.getResponseJsonObj();
 		}

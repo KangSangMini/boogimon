@@ -102,7 +102,7 @@ public class UserDAO {
 	public boolean loginCheck(UserDO user) {
 		boolean result = false;
 		
-		sql = "select PASSWD, SALT, NICKNAME from BoogiTrainer where USER_ID = ?";
+		sql = "select PASSWD, SALT, NICKNAME from BoogiTrainer where USER_ID = ? AND deleted = 0";
 		
 		try {
 			pstmt = conn.prepareStatement(sql);
