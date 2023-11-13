@@ -150,9 +150,14 @@ public class StampbookDetailDAO {
 					stamp.setName(rs.getString("name"));
 					stamp.setLat(rs.getString("lat"));
 					stamp.setLon(rs.getString("lon"));
-					stamp.setThumbnail(rs.getString("thumbnail"));
-					stamp.setUploadImg(rs.getString("upload_img"));
-					stamp.setStampedDate(rs.getString("stamped_date"));
+					
+					if(rs.getString("upload_img") != null) {
+						stamp.setThumbnail(rs.getString("upload_img"));
+						stamp.setStampedDate(rs.getString("stamped_date"));
+					}
+					else {
+						stamp.setThumbnail(rs.getString("thumbnail"));
+					}
 					
 					stampList.add(stamp);
 				}
