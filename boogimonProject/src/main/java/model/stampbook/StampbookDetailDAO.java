@@ -196,6 +196,7 @@ public class StampbookDetailDAO {
 		boolean userStampedFailure = false;
 		boolean expUpdateFailure = false;
 		boolean expUpdateSuccess = false;
+		boolean completeFailure = false;
 		
 		try {
 			// 사용자가 담은 스탬프북인지 검사
@@ -222,6 +223,7 @@ public class StampbookDetailDAO {
 				
 				// 정상적으로 찍혔다면 경험치 증가
 				if(rowCount == 1) {
+					
 					this.sql = "UPDATE boogiTrainer "
 							+ "SET exp = exp + 100 "
 							+ "WHERE user_id = ? ";
@@ -245,13 +247,59 @@ public class StampbookDetailDAO {
 				
 				// 경험치 연산까지 끝난 후, 스탬프북 컴플리트 검사
 				if(expUpdateSuccess) {
-//					this.sql = "UPDATE boogiTrainer "
-//							+ "SET exp = exp + 100 "
-//							+ "WHERE user_id = ? ";
-//					this.pstmt = this.conn.prepareStatement(sql);
-//					
-//					this.pstmt.setString(1, user_id);
-//					rowCount = pstmt.executeUpdate();
+					System.out.println("경험치 연산까지 끝난 후, 스탬프북 컴플리트 검사");
+					this.sql = "select (select count(s.stampno) from stamp s where s.stampbook_id = ?) originCount, "
+							+ "(select count(ush.stamped_date) from user_stamp_history ush where ush.stampbook_id = ? and ush.user_id = ?) userCount "
+							+ "from dual";
+					this.pstmt = this.conn.prepareStatement(sql);
+					
+					this.pstmt.setInt(1, stampbook_id);
+					this.pstmt.setInt(2, stampbook_id);
+					this.pstmt.setString(3, user_id);
+					rs = pstmt.executeQuery();
+					
+					if(rs.next()) {
+						if(rs.getInt("originCount") == rs.getInt("userCount")) {
+							// 사용자의 스탬프 갯수가 스탬프북의 스탬프 갯수와 같다면 컴플리트 경험치 지급
+							this.sql = "UPDATE boogiTrainer "
+									+ "SET exp = exp + ( 100 * ? )"
+									+ "WHERE user_id = ? ";
+							this.pstmt = this.conn.prepareStatement(sql);
+							
+							this.pstmt.setInt(1, rs.getInt("originCount"));
+							this.pstmt.setString(2, user_id);
+							rowCount = pstmt.executeUpdate();
+							
+							if(rowCount == 1) {
+								// 컴플리트 경험치 지급 완료, 컴플리트 처리
+								this.sql = "UPDATE user_pick "
+										+ "SET complete_date = SYSDATE "
+										+ "WHERE user_id = ? AND stampbook_id = ?";
+								this.pstmt = this.conn.prepareStatement(sql);
+								
+								this.pstmt.setString(1, user_id);
+								this.pstmt.setInt(2, stampbook_id);
+								rowCount = pstmt.executeUpdate();
+								
+								if(rowCount != 1) {
+									// 스탬프북 완성 처리 실패
+									this.conn.rollback();
+									completeFailure = true;
+								}
+							}
+							else {
+								// 경험치 지급 실패
+								this.conn.rollback();
+								expUpdateFailure = true;
+							}
+						}
+						this.conn.commit();
+					}
+					else {
+						// 그럴리가 없는데 무언가 잘못됨
+						this.conn.rollback();
+						userStampedFailure = false;
+					}
 				}
 			}
 			else {
@@ -282,6 +330,9 @@ public class StampbookDetailDAO {
 		}
 		if(expUpdateFailure) {
 			throw new BoogiException(OperationResult.USER_EXP_CHANGE_FAILED);
+		}
+		if(completeFailure) {
+			throw new BoogiException(OperationResult.STAMPBOOK_COMPLETE_PROCESS_FAILED_ERROR);
 		}
 		
 		return rowCount;

@@ -28,6 +28,7 @@ public enum OperationResult {
 	UNPICKED_STAMPBOOK_ERROR(37, "사용자가 담지 않은 스탬프북"),
 	STAMPBOOK_CREATION_FAILED_ERROR(38, "스탬프북 생성 실패"),
 	STAMPBOOK_PICK_FAILED_ERROR(39, "스탬프북 담기 실패"),
+	STAMPBOOK_COMPLETE_PROCESS_FAILED_ERROR(40, "스탬프북 컴플리트 처리 실패"),
 	NON_EXISTENT_STAMP_ERROR(50, "존재하지 않는 스탬프"),
 	STAMP_CREATION_FAILED_ERROR(51, "스탬프 생성 실패"),
 	STAMP_UPLOAD_FAILED_ERROR(52, "스탬프 업로드 실패"),
