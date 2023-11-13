@@ -1048,6 +1048,7 @@ public class StampbookDAO {
 						stampbook.setCompleteDate(rs.getString("complete_date"));
 						stampbook.setLikeCount(rs.getInt("likeCount"));
 						stampbook.setLiked(rs.getInt("isLike"));
+						stampbook.setPicked(1); // user_pick에서 불러옴으로 무조건 pick
 						
 						// 스탬프북 썸네일 
 						sub = "SELECT st.stampno, st.place_id, p.name, p.lat, p.lon, p.thumbnail, ush.user_id, ush.upload_img, to_char(ush.stamped_date, 'YYYY-MM-DD HH24:MI:SS') as stamped_date "
@@ -1069,6 +1070,7 @@ public class StampbookDAO {
 							
 							if(rs2.getString("upload_img") != null) {
 								stamp.setThumbnail(rs2.getString("upload_img"));
+								stamp.setStampedDate(rs2.getString("stamped_date"));
 							}
 							else {
 								stamp.setThumbnail(rs2.getString("thumbnail"));
