@@ -1,6 +1,7 @@
 package model.user;
 
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
 public class UserEncryption {
@@ -9,6 +10,13 @@ public class UserEncryption {
 	
 	public UserEncryption() {
 		
+	}
+	
+	public String sha256(String passwd) throws NoSuchAlgorithmException {
+		MessageDigest md;
+		md = MessageDigest.getInstance("SHA-256");
+		md.update(passwd.getBytes());
+		return byteToString(md.digest());
 	}
 	
 	public String hashing(String passwd, String salt) {

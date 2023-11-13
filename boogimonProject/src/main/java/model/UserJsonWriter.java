@@ -87,4 +87,30 @@ public class UserJsonWriter extends JsonWriter{
 		
 		return jsonObj.toJSONString();
 	}
+	
+	/** 패스워드 발급 */
+	@SuppressWarnings("unchecked")
+	public String getNewPasswd(UserDO user) {
+		JSONObject jsonObj = null;
+		
+		try {
+			String newPasswd = userDAO.getNewPasswd(user);
+			
+			if(!newPasswd.isEmpty()) {
+				jsonObj = OperationResult.NORMAL_CODE.getResponseJsonObj();
+				JSONObject userObj = new JSONObject();
+				userObj.put("newPasswd", newPasswd);
+				jsonObj.put("user", userObj);
+			}
+			else {
+				jsonObj = OperationResult.UNKNOWN_ERROR.getResponseJsonObj();
+			}
+		}
+		catch (Exception e) {
+			// TODO: handle exception
+			jsonObj = BoogiException.getResult(e).getResponseJsonObj();
+		}
+		
+		return jsonObj.toJSONString();
+	}
 }

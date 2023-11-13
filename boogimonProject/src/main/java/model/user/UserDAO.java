@@ -307,6 +307,71 @@ public class UserDAO {
 		
 		return rowCount;
 	}
+	
+	/** 새 비밀번호 발급
+	 *  비밀번호 변경은 변경되는 비밀번호와 salt를 새로 발급받아 같이 저장해야함
+	 * @throws Exception */		
+	public String getNewPasswd(UserDO user) throws Exception{
+		int rowCount = 0;
+		boolean notExists = false;
+		String pw = ue.getSalt().substring(0, 8);
+		
+		try {
+			this.conn.setAutoCommit(false);
+			
+			this.sql = "SELECT user_id FROM boogiTrainer WHERE user_id = ?";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, user.getUserId());
+			this.rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+
+				this.sql = "UPDATE boogiTrainer SET passwd = ?, salt = ? WHERE user_id = ?";
+				
+				String salt = ue.getSalt();
+
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1, ue.hashing(ue.sha256(pw), salt));
+				pstmt.setString(2, salt);
+				pstmt.setString(3, user.getUserId());
+				
+				rowCount = pstmt.executeUpdate();
+				
+				if(rowCount == 1) {
+					this.conn.commit();
+				}
+				else {
+					throw new BoogiException(OperationResult.UPDATE_FAILED_ERROR);
+				}
+
+			}
+			else {
+				notExists = true;
+			}
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+		finally {
+			this.conn.setAutoCommit(true);
+			try {
+				if(!pstmt.isClosed()) {
+					pstmt.close();
+				}
+			}
+			catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		if(notExists) {
+			throw new BoogiException(OperationResult.NON_EXISTENT_USER_ERROR);
+		}
+		
+		return pw;
+	}
 
 	/** 회원 탈퇴 처리 (deleted = 1) 
 	 * @throws Exception */
