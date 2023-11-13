@@ -12,7 +12,7 @@
 	
 	// String directory = request.getServletContext().getRealPath("/upload/user/stamp/");
 	// 테스트 환경의 절대경로 입력
-	String directory = "/Users//projects/boogimon/boogimonProject/src/main/webapp/upload/user/stamp/";
+	String directory = "/Users//projects/boogimon/boogimonProject/src/main/webapp/images/upload/user/stamp/";
 	int sizeLimit = 1024 * 1024 * 5;		// 5MB 제한
 	MultipartRequest multi = new MultipartRequest(request, directory, sizeLimit, "UTF-8", new BoogiFileRenamePolicy());
 	
@@ -31,7 +31,7 @@
 			stampDO.setStampNo(Integer.parseInt(multi.getParameter("stampNo")));
 			
 			if(multi.getFileNames().hasMoreElements()){
-				stampDO.setUploadImg("/boogimon/upload/user/stamp/" + multi.getFilesystemName((String)multi.getFileNames().nextElement()));
+				stampDO.setUploadImg("/boogimon/images/upload/user/stamp/" + multi.getFilesystemName((String)multi.getFileNames().nextElement()));
 				
 				try {
 					or = stbdDAO.setStampImg(userId, stampbookId, stampDO) == 1 ? OperationResult.NORMAL_CODE : OperationResult.UPDATE_FAILED_ERROR;

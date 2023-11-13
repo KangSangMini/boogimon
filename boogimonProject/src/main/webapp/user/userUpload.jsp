@@ -12,7 +12,7 @@
 	
 	// String directory = request.getServletContext().getRealPath("/upload/user/profile/");
 	// 테스트 환경의 절대경로 입력
-	String directory = "/Users//projects/boogimon/boogimonProject/src/main/webapp/upload/user/profile/";
+	String directory = "/Users//projects/boogimon/boogimonProject/src/main/webapp/images/upload/user/profile/";
 	int sizeLimit = 1024 * 1024 * 5;		// 5MB 제한
 	MultipartRequest multi = new MultipartRequest(request, directory, sizeLimit, "UTF-8", new BoogiFileRenamePolicy());
 	
@@ -28,7 +28,7 @@
 			userDO.setPasswd((String)multi.getParameter("passwd"));
 			userDO.setNickname((String)multi.getParameter("nickname"));
 			if(multi.getFileNames().hasMoreElements()){
-				userDO.setProfileImg("/boogimon/upload/user/profile/" + multi.getFilesystemName((String)multi.getFileNames().nextElement()));	
+				userDO.setProfileImg("/boogimon/images/upload/user/profile/" + multi.getFilesystemName((String)multi.getFileNames().nextElement()));	
 			}
 			
 			try {

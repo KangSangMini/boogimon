@@ -373,6 +373,7 @@ public class StampbookDAO {
 	public int pickStampbook(int stampbook_id, String user_id) throws Exception {
 		int rowCount = 0;
 		boolean idDeleted = false;
+		boolean pickStampbookFailure = false;
 		
 		try {
 			this.conn.setAutoCommit(false);
@@ -395,7 +396,13 @@ public class StampbookDAO {
 				this.pstmt.setInt(2, stampbook_id);
 				rowCount = pstmt.executeUpdate();
 				
-				this.conn.commit();
+				if(rowCount == 1) {
+					this.conn.commit();
+				}
+				else {
+					pickStampbookFailure = true;
+					this.conn.rollback();
+				}
 			}
 			else {
 				idDeleted = true;
@@ -422,6 +429,9 @@ public class StampbookDAO {
 		
 		if(idDeleted) {
 			throw new BoogiException(OperationResult.DELETED_STAMPBOOK_ERROR);
+		}
+		if(pickStampbookFailure) {
+			throw new BoogiException(OperationResult.STAMPBOOK_PICK_FAILED_ERROR);
 		}
 		
 		return rowCount;
@@ -693,6 +703,7 @@ public class StampbookDAO {
 		boolean isDeleted = false;
 		boolean insertStampbookFailure = false;
 		boolean insertStampFailure = false;
+		boolean pickStampbookFailure = false;
 		
 		try {
 			// 회원 체크
@@ -736,8 +747,24 @@ public class StampbookDAO {
 							}
 						}
 						
+						// 스탬프 생성도 정상으로 끝났다면
 						if(!insertStampbookFailure) {
-							this.conn.commit();
+							// 스탬프북 작성자에게 자동으로 스탬프북 담기
+							this.sql = "INSERT INTO USER_PICK (USER_ID, STAMPBOOK_ID) "
+									+ "VALUES (?, seq_stampbook_id.currval)";
+							
+							this.pstmt = this.conn.prepareStatement(sql);
+							this.pstmt.setString(1, userId);
+							rowCount = pstmt.executeUpdate();
+							
+							// 정상적으로 pick된다면
+							if(rowCount == 1) {
+								this.conn.commit();
+							}
+							else {
+								this.conn.rollback();
+								pickStampbookFailure = true;
+							}
 						}
 					}
 					else {
@@ -784,6 +811,9 @@ public class StampbookDAO {
 		}
 		if(insertStampFailure) {
 			throw new BoogiException(OperationResult.STAMP_CREATION_FAILED_ERROR);
+		}
+		if(pickStampbookFailure) {
+			throw new BoogiException(OperationResult.STAMPBOOK_PICK_FAILED_ERROR);
 		}
 		
 		return rowCount; 
